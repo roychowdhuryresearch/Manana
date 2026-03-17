@@ -14,7 +14,7 @@ from tqdm import tqdm
 async def main():
     parser = argparse.ArgumentParser(description="Consilium: Multi-Agent Epilepsy Drug Prediction")
     parser.add_argument("--visit", type=int, default=1, choices=[1, 2, 3], help="Visit number (1, 2, or 3)")
-    parser.add_argument("--model", type=str, default="openai/gpt-oss-120b", help="LLM model name")
+    parser.add_argument("--model", type=str, default="openai.gpt-oss-120b-1:0", help="LLM model name")
     parser.add_argument("--limit", type=int, default=None, help="Limit number of patients (for debugging)")
     parser.add_argument("--no-debate", action="store_true", help="Disable pharmacologist-epileptologist debate")
     parser.add_argument("--no-format", action="store_true", help="Skip LLM formatting of output trace")

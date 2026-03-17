@@ -1,7 +1,7 @@
 """Async LLM client using AWS Bedrock.
 
 All model calls are routed through Amazon Bedrock's Converse API.
-Default model: openai/gpt-oss-120b
+Default model: openai.gpt-oss-120b-1:0
 """
 
 import os
@@ -12,7 +12,7 @@ import dotenv
 
 dotenv.load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
-DEFAULT_MODEL = "openai/gpt-oss-120b"
+DEFAULT_MODEL = "openai.gpt-oss-120b-1:0"
 
 
 class LLMClient:

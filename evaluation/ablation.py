@@ -32,7 +32,7 @@ ABLATION_CONFIGS = {
 async def run_ablation_config(
     config_name: str,
     visit_num: int = 1,
-    model: str = "openai/gpt-oss-120b",
+    model: str = "openai.gpt-oss-120b-1:0",
     limit: int | None = None,
     output_dir: str | None = None,
 ) -> dict:
@@ -91,7 +91,7 @@ async def run_ablation_config(
 
 async def run_all_ablations(
     visit_num: int = 1,
-    model: str = "openai/gpt-oss-120b",
+    model: str = "openai.gpt-oss-120b-1:0",
     limit: int | None = None,
 ) -> list[dict]:
     """Run all 9 ablation configurations sequentially."""

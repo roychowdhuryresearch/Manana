@@ -7,7 +7,7 @@ Multi-agent LLM system for epilepsy drug prediction targeting NeurIPS. 7 special
 - `schemas/` — Dataclasses: PatientCase, AgentResponse, ReasoningTrace, FinalRecommendation
 - `agents/` — 7 specialist agents inheriting from BaseAgent ABC. Prompts in `agents/prompts/`
 - `orchestrator/` — 4-phase pipeline: parallel assessment → conflict detection → prescription → debate → synthesis
-- `llm/` — Async LLM client via AWS Bedrock (Converse API), default model: `openai/gpt-oss-120b`
+- `llm/` — Async LLM client via AWS Bedrock (Converse API), default model: `openai.gpt-oss-120b-1:0`
 - `data/loader.py` — Loads pre-computed pipeline outputs into PatientCase objects
 - `pipeline/` — Data cleaning pipeline (from existing work, copy as-is)
 - `baseline/` — Single-agent 7-stage reasoning baseline for comparison

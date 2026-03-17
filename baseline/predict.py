@@ -8,6 +8,7 @@ import os
 import re
 import json
 import asyncio
+from orchestrator.synthesis import _find_drug_in_line
 from tqdm import tqdm
 
 from llm.client import LLMClient
@@ -40,7 +41,7 @@ def parse_options(content: str) -> dict:
             s = line.strip()
             if not s:
                 continue
-            rat = re.match(r'Rationale\s*:\s*(.*)', s, re.IGNORECASE)
+            rat = re.match(r'[*_`]*Rationale[*_`]*\s*:?\s*(.*)', s, re.IGNORECASE)
             if rat:
                 in_rationale = True
                 rationale_parts.append(rat.group(1).strip())
@@ -48,12 +49,22 @@ def parse_options(content: str) -> dict:
             if in_rationale:
                 rationale_parts.append(s)
                 continue
-            dm = re.match(r'-\s*(\w+)\s*:\s*(\w+)', s)
-            if dm:
-                drug = dm.group(1).lower()
-                action = dm.group(2).lower()
-                if drug in DRUG_COLUMNS and action in ALLOWED_ACTIONS:
-                    drugs.append({"drug": drug, "action": action})
+            # Strip markdown bold/italic markers before matching
+            clean = re.sub(r'[*_`]', '', s)
+            segments = re.split(r'[.;]\s*', clean)
+            for seg in segments:
+                seg_lower = seg.lower().strip()
+                if not seg_lower:
+                    continue
+                found_drug = _find_drug_in_line(seg_lower)
+                found_action = None
+                for act in ALLOWED_ACTIONS:
+                    if act in seg_lower:
+                        found_action = act
+                        break
+                if found_drug and found_action:
+                    if found_drug not in {d["drug"] for d in drugs}:
+                        drugs.append({"drug": found_drug, "action": found_action})
 
         options[f"option_{num}"] = {
             "label": label,
@@ -69,7 +80,7 @@ def format_drugs_str(drugs: list) -> str:
 
 async def run_baseline(
     visit_num: int = 1,
-    model: str = "openai/gpt-oss-120b",
+    model: str = "openai.gpt-oss-120b-1:0",
     limit: int | None = None,
     output_dir: str | None = None,
 ):

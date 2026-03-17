@@ -15,6 +15,35 @@ from schemas.output import (
     FinalRecommendation, DrugOption, DrugAction,
     DRUG_COLUMNS, ALLOWED_ACTIONS,
 )
+
+# Map common synonyms/brand names to canonical drug names
+DRUG_ALIASES = {
+    "valproic acid": "valproate", "valproic": "valproate",
+    "sodium valproate": "valproate", "depakote": "valproate",
+    "epilim": "valproate", "vpa": "valproate",
+    "tegretol": "carbamazepine", "cbz": "carbamazepine",
+    "keppra": "levetiracetam", "lev": "levetiracetam",
+    "lamictal": "lamotrigine", "ltg": "lamotrigine",
+    "topamax": "topiramate", "tpm": "topiramate",
+    "dilantin": "phenytoin", "pht": "phenytoin",
+    "phenobarbitone": "phenobarbital", "pb": "phenobarbital", "phb": "phenobarbital",
+    "zarontin": "ethosuximide", "esm": "ethosuximide",
+    "frisium": "clobazam", "clb": "clobazam",
+    "rivotril": "clonazepam", "czp": "clonazepam",
+}
+
+
+def _find_drug_in_line(text_lower: str) -> str | None:
+    """Find a canonical drug name in a line of text."""
+    # Check canonical names first
+    for dc in DRUG_COLUMNS:
+        if dc in text_lower:
+            return dc
+    # Check aliases
+    for alias, canonical in DRUG_ALIASES.items():
+        if alias in text_lower:
+            return canonical
+    return None
 from llm.client import LLMClient
 
 PROMPTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "agents", "prompts")
@@ -24,17 +53,23 @@ def parse_epileptologist_options(raw_output: str) -> list[DrugOption]:
     """Parse the epileptologist's 3 ranked options from raw output."""
     options = []
 
+    # Strip markdown formatting for more reliable matching
+    clean_output = re.sub(r'[*_`]', '', raw_output)
+
+    # Match "Option 1:" or "Option 1 –" or "Option 1 -" patterns
     block_pattern = re.compile(
-        r'Option\s+(\d)\s*:\s*(.+?)(?=Option\s+\d\s*:|$)',
+        r'Option\s+(\d)\s*[\s:–—\-]+\s*(.+?)(?=Option\s+\d\s*[\s:–—\-]|$)',
         re.DOTALL | re.IGNORECASE,
     )
 
-    for m in block_pattern.finditer(raw_output):
+    for m in block_pattern.finditer(clean_output):
         num = int(m.group(1))
         if num not in (1, 2, 3):
             continue
 
-        block_lines = m.group(2).strip().split('\n')
+        # Split on both newlines and <br> tags (table format uses <br>)
+        block_text = m.group(2).replace('<br>', '\n').replace('|', '\n')
+        block_lines = block_text.strip().split('\n')
         label = block_lines[0].strip() if block_lines else ""
         drugs = []
         rationale_parts = []
@@ -44,7 +79,7 @@ def parse_epileptologist_options(raw_output: str) -> list[DrugOption]:
             s = line.strip()
             if not s:
                 continue
-            rat = re.match(r'Rationale\s*:\s*(.*)', s, re.IGNORECASE)
+            rat = re.match(r'[*_`]*Rationale[*_`]*\s*:?\s*(.*)', s, re.IGNORECASE)
             if rat:
                 in_rationale = True
                 rationale_parts.append(rat.group(1).strip())
@@ -52,12 +87,24 @@ def parse_epileptologist_options(raw_output: str) -> list[DrugOption]:
             if in_rationale:
                 rationale_parts.append(s)
                 continue
-            dm = re.match(r'-\s*(\w+)\s*:\s*(\w+)', s)
-            if dm:
-                drug = dm.group(1).lower()
-                action = dm.group(2).lower()
-                if drug in DRUG_COLUMNS and action in ALLOWED_ACTIONS:
-                    drugs.append(DrugAction(drug=drug, action=action))
+            # Strip markdown bold/italic markers before matching
+            clean = re.sub(r'[*_`]', '', s)
+            # Split on sentence boundaries to handle multi-drug lines
+            # e.g. "Sodium valproate – continue. Phenytoin – stop."
+            segments = re.split(r'[.;]\s*', clean)
+            for seg in segments:
+                seg_lower = seg.lower().strip()
+                if not seg_lower:
+                    continue
+                found_drug = _find_drug_in_line(seg_lower)
+                found_action = None
+                for act in ALLOWED_ACTIONS:
+                    if act in seg_lower:
+                        found_action = act
+                        break
+                if found_drug and found_action:
+                    if found_drug not in {d.drug for d in drugs}:
+                        drugs.append(DrugAction(drug=found_drug, action=found_action))
 
         options.append(DrugOption(
             rank=num,

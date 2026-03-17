@@ -14,6 +14,19 @@ from schemas.responses import AgentResponse, Severity, ConcernCategory
 from schemas.trace import ConflictRecord
 
 
+def _to_str_set(items: list) -> set[str]:
+    """Normalize a list of drug names (which may contain dicts) to a set of strings."""
+    result = set()
+    for item in items:
+        if isinstance(item, str):
+            result.add(item.lower().strip())
+        elif isinstance(item, dict):
+            # Handle cases like {"drug": "valproate", "action": "continue"}
+            name = item.get("drug", item.get("name", str(item)))
+            result.add(str(name).lower().strip())
+    return result
+
+
 def detect_conflicts(phase1_responses: dict[str, AgentResponse]) -> list[ConflictRecord]:
     """Detect conflicts between Phase 1 agent assessments.
 
@@ -29,8 +42,8 @@ def detect_conflicts(phase1_responses: dict[str, AgentResponse]) -> list[Conflic
 
     # 1. Seizure type vs treatment continuity conflict
     if diagnostician and treatment_analyst:
-        diag_contras = set(diagnostician.contraindicated_drugs)
-        treatment_recs = set(treatment_analyst.recommended_drugs)
+        diag_contras = _to_str_set(diagnostician.contraindicated_drugs)
+        treatment_recs = _to_str_set(treatment_analyst.recommended_drugs)
         overlap = diag_contras & treatment_recs
         if overlap:
             conflicts.append(ConflictRecord(
@@ -53,12 +66,12 @@ def detect_conflicts(phase1_responses: dict[str, AgentResponse]) -> list[Conflic
     if pediatrician:
         for concern in pediatrician.concerns:
             if concern.severity in (Severity.CRITICAL, Severity.HIGH):
-                affected = set(concern.affected_drugs)
+                affected = _to_str_set(concern.affected_drugs)
                 # Check if any other agent recommends these drugs
                 for agent_name, resp in phase1_responses.items():
                     if agent_name == "pediatrician":
                         continue
-                    rec_overlap = affected & set(resp.recommended_drugs)
+                    rec_overlap = affected & _to_str_set(resp.recommended_drugs)
                     if rec_overlap:
                         conflicts.append(ConflictRecord(
                             conflict_type="pediatric_safety_conflict",
@@ -85,12 +98,12 @@ def detect_conflicts(phase1_responses: dict[str, AgentResponse]) -> list[Conflic
         unavailable_drugs = set()
         for concern in formulary.concerns:
             if concern.category == ConcernCategory.AVAILABILITY:
-                unavailable_drugs.update(concern.affected_drugs)
+                unavailable_drugs.update(_to_str_set(concern.affected_drugs))
         if unavailable_drugs:
             for agent_name, resp in phase1_responses.items():
                 if agent_name == "formulary":
                     continue
-                rec_overlap = unavailable_drugs & set(resp.recommended_drugs)
+                rec_overlap = unavailable_drugs & _to_str_set(resp.recommended_drugs)
                 if rec_overlap:
                     conflicts.append(ConflictRecord(
                         conflict_type="availability_conflict",

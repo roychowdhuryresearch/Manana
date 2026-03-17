@@ -1,0 +1,1680 @@
+{
+  "1_Nanyonga Aisha": {
+    "Visit_1": {
+      "gt": [
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "VPA alone is the most evidence‑based, cost‑effective choice for GTCS; eliminating PB reduces sedation and removing CBZ avoids seizure aggravation. **"
+        },
+        "option_2": {
+          "label": "Dual therapy – valproate + levetiracetam**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Retains VPA’s strong efficacy while adding LEV (different mechanism) for additional control without significant added cost or interactions; removes sedating PB and inappropriate CBZ. **"
+        },
+        "option_3": {
+          "label": "Dual therapy – valproate + clobazam**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Provides a benzodiazepine adjunct useful for breakthrough GTCS; keeps the inexpensive VPA as backbone while discarding sedating PB and seizure‑worsening CBZ."
+        }
+      },
+      "multi_agent": {
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "continue"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate + Low‑Dose Phenobarbital Bridge”",
+          "rationale": "If monotherapy is insufficient, a low‑dose phenobarbital provides additional control while keeping the regimen limited to readily available drugs. Sedation is minimised by low dosing; still avoids enzyme‑inducing carbamazepine. ---"
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "“Valproate + Levetiracetam (contingent on availability)”",
+          "rationale": "Levetiracetam offers a well‑tolerated, non‑inducing add‑on with minimal cognitive impact. This option is preferred if the family can secure the medication; it avoids phenobarbital‑related sedation and carbamazepine‑induced VPA level reductions."
+        },
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "label": "“Simplify to Valproate Monotherapy”",
+          "rationale": "Removes drug‑interaction burden and sedation, relies on the most effective, formulary‑available ASM for generalized seizures. Suitable if VPA at therapeutic dose achieves seizure control. ---"
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 1,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 17
+      }
+    },
+    "Visit_2": {
+      "gt": [
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            }
+          ],
+          "rationale": "Provides broad‑spectrum control; seizure frequency already low; inexpensive and already in use. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – levetiracetam (switch)**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Removes long‑term teratogenic risk of VPA; levetiracetam is cheap, well‑tolerated, and effective for mixed seizure types. **"
+        },
+        "option_3": {
+          "label": "Adjunct – clobazam added to valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Maintains effective baseline VPA while addressing the single breakthrough seizure with a benzodiazepine adjunct; minimal additional cost and dosing complexity."
+        }
+      },
+      "multi_agent": {
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "continue"
+            }
+          ],
+          "label": "“Valproate + Low‑dose Phenobarbital safety net”",
+          "rationale": "Retains a small dose of phenobarbital as a backup should seizures recur, while still removing carbamazepine and keeping overall cost modest. This option balances maximal safety with the current excellent control."
+        },
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate‑only, minimal regimen”",
+          "rationale": "Keeps the regimen simple and inexpensive, preserving the excellent seizure control already achieved while eliminating unnecessary drugs and pill burden."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "stop"
+            }
+          ],
+          "label": "“Optimised Valproate Dose”",
+          "rationale": "Provides a guideline‑based therapeutic valproate dose to safeguard against future breakthrough seizures while still avoiding carbamazepine and phenobarbital; still a single‑drug, low‑cost regimen."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 0,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 10
+      }
+    },
+    "Visit_3": {
+      "gt": [
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – Valproate (dose optimisation)**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            }
+          ],
+          "rationale": "Broad‑spectrum control for mixed seizures; inexpensive; current regimen already effective, only modest dose escalation needed. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – Levetiracetam (valproate substitution)**",
+          "drugs": [
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Provides comparable broad‑spectrum coverage without valproate’s teratogenic risk; well‑tolerated and rapidly titratable, suitable if future avoidance of valproate is desired. **"
+        },
+        "option_3": {
+          "label": "Adjunct – Valproate + Clobazam**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Retains effective valproate while adding a benzodiazepine (different mechanism) to address occasional focal motor seizures; clobazam is inexpensive and widely available in Uganda."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            }
+          ],
+          "label": "Optimised Valproate Monotherapy",
+          "rationale": "The child is already partially controlled on valproate; a modest dose optimisation may achieve complete control without adding another drug, preserving simplicity and minimizing side‑effects."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "Valproate + Levetiracetam Adjunct",
+          "rationale": "Levetiracetam offers a different mechanism, is well‑tolerated in children with CP, and has minimal drug‑interaction risk with valproate. It aligns with the Diagnostician’s recommendation and the Treatment Analyst’s suggestion for a second agent, provided the medication can be sourced."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "label": "Valproate + Low‑Dose Phenobarbital Adjunct (cost‑driven)",
+          "rationale": "When levetiracetam is not affordable or unavailable, phenobarbital provides an inexpensive add‑on. The dose is kept low to limit sedation; close monitoring for excessive drowsiness and hepatic interaction with valproate is required, per Pediatric safety concerns."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 0,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 16
+      }
+    }
+  },
+  "2_Mwania Sheldon": {
+    "Visit_1": {
+      "gt": [
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – carbamazepine**",
+          "drugs": [
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            }
+          ],
+          "rationale": "First‑line, inexpensive sodium‑channel blocker for focal seizures; avoids VPA hepatotoxicity in a 1.5‑year‑old and provides a clear switch from ineffective phenytoin. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – phenobarbital**",
+          "drugs": [
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "rationale": "Widely available, effective for focal seizures; useful if carbamazepine intolerance or contraindication emerges, though sedation must be monitored. **"
+        },
+        "option_3": {
+          "label": "Combination – carbamazepine + clobazam**",
+          "drugs": [
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Carbamazepine addresses the primary focal pathology; clobazam adds a benzodiazepine adjunct for rapid breakthrough control without overlapping sodium‑channel effects."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "Switch to Valproate (preferred first‑line)",
+          "rationale": "Broad‑spectrum coverage for focal‑to‑generalized seizures, inexpensive, syrup formulation reliably stocked, and no need for serum‑level monitoring."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "phenytoin",
+              "action": "continue"
+            }
+          ],
+          "label": "Continue Phenytoin with Dose Confirmation",
+          "rationale": "Short‑term safety has been observed; maintaining continuity avoids premature change while the dose is verified and serum levels remain unavailable."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "Carbamazepine Substitute (focal‑seizure focus)",
+          "rationale": "Available locally, effective for focal seizures; serves as an alternative if valproate is contraindicated or not tolerated."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 1,
+        "debate_triggered": true,
+        "agreement_score": 0.16666666666666666,
+        "total_concerns": 11
+      }
+    },
+    "Visit_2": {
+      "gt": [
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – continue valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            }
+          ],
+          "rationale": "Valproate already covers the focal‑onset with secondary generalization, is cheap and available, and only one breakthrough seizure has occurred; dose optimisation is the next step before adding drugs. **"
+        },
+        "option_2": {
+          "label": "Switch to carbamazepine monotherapy**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            }
+          ],
+          "rationale": "Carbamazepine is inexpensive, effective for focal seizures, and avoids valproate‑related weight gain; suitable if valproate dose escalation is not possible or tolerated. **"
+        },
+        "option_3": {
+          "label": "Dual therapy – valproate + levetiracetam**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Adding levetiracetam (a broad‑spectrum agent with a different mechanism) may achieve better seizure control after a breakthrough while keeping the inexpensive backbone of valproate; monitor for possible behavioral agitation."
+        }
+      },
+      "multi_agent": {
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "Levetiracetam Switch (safer broad‑spectrum alternative)",
+          "rationale": "Levetiracetam offers comparable efficacy for focal‑to‑bilateral seizures, excellent tolerability, and eliminates valproate‑related hepatic risk."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "Carbamazepine for Confirmed Focal Epilepsy (narrow‑spectrum)",
+          "rationale": "If a routine/interictal EEG demonstrates a focal pattern, carbamazepine (available on formulary) is the preferred narrow‑spectrum agent for focal‑onset seizures, avoiding valproate’s hepatic toxicity and levetiracetam’s cost when not needed."
+        },
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "Optimised Valproate (continue current broad‑spectrum therapy)",
+          "rationale": "Valproate already provides substantial seizure reduction; with proper dosing and safety monitoring it remains the most evidence‑based choice while awaiting EEG results."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 0,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 13
+      }
+    },
+    "Visit_3": {
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "“Monotherapy – high‑dose Valproate”**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Utilises the already‐available drug, raises the dose into the therapeutic range for focal seizures, avoids new drug costs. **"
+        },
+        "option_2": {
+          "label": "“Switch to Carbamazepine monotherapy”**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "rationale": "First‑line cheap focal‑seizure agent; eliminates valproate‑related weight gain and hepatic monitoring; aligns with LMIC cost‑priority. **"
+        },
+        "option_3": {
+          "label": "“Adjunctive Levetiracetam to Valproate”**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Adds a broad‑spectrum drug with a different mechanism, improving chance of seizure freedom while keeping the inexpensive valproate base; monitor for behavioural changes."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate optimisation”",
+          "rationale": "Keeps the only ASM the child has already tolerated, increases the dose to the therapeutic range (25‑30 mg kg⁻¹ day⁻¹), and avoids additional drug costs or monitoring."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "“Switch to levetiracetam”",
+          "rationale": "Removes valproate‑related hepatotoxicity risk, introduces a well‑tolerated, low‑interaction drug with a rapid titration schedule, suitable for focal seizures and more affordable than many newer agents."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "stop"
+            }
+          ],
+          "label": "“Combination therapy (valproate + levetiracetam)”",
+          "rationale": "After titrating valproate to therapeutic levels, adds levetiracetam (different mechanism) to improve seizure control without overlapping sodium‑channel blockade, preserving flexibility if later one drug is discontinued. All options require: weight measurement, valproate dose titration (if continued), baseline LFT/CBC/ammonia, and a routine EEG within the next month."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 0,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 10
+      }
+    }
+  },
+  "5_Nalumu Martha": {
+    "Visit_1": {
+      "gt": [
+        "carbamazepine"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – phenytoin**",
+          "drugs": [
+            {
+              "drug": "phenytoin",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Phenytoin is cheap, effective for tonic seizures, and addresses the incomplete control seen with carbamazepine. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – lamotrigine**",
+          "drugs": [
+            {
+              "drug": "lamotrigine",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Lamotrigine is also effective for tonic seizures and is well‑tolerated; switching avoids the sub‑optimal efficacy of carbamazepine. **"
+        },
+        "option_3": {
+          "label": "Polytherapy – carbamazepine + levetiracetam**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Retains the current sodium‑channel blocker while adding a broad‑spectrum agent with a different mechanism to improve seizure control without combining multiple sodium‑channel drugs."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "label": "“Carbamazepine Optimisation”",
+          "rationale": "The current drug is already providing partial control; a modest dose escalation brings the regimen into the higher therapeutic range while preserving monotherapy and minimizing added sedation or drug‑interaction burden."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "“Levetiracetam Switch (if available)”",
+          "rationale": "Levetiracetam has a favorable safety profile, simple dosing, and minimal drug interactions—particularly useful when tablets are problematic. It is an effective broad‑spectrum agent for focal seizures and would avoid carbamazepine‑related hepatic monitoring, provided the medication can be sourced locally."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "label": "“Adjunct Phenobarbital”",
+          "rationale": "Phenobarbital is guaranteed to be on the national formulary and inexpensive. Adding it offers a different mechanism (GABA‑ergic) to further reduce seizure frequency while retaining the partially effective carbamazepine. Sedation risk is acknowledged, but the low adjunct dose aims to balance efficacy with tolerability. All three options assume the child’s weight will be measured, baseline labs obtained, and an EEG scheduled to refine long‑term management."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 1,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 12
+      }
+    },
+    "Visit_2": {
+      "gt": [
+        "carbamazepine"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – optimized carbamazepine**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "rationale": "Keeps the cheapest, already‑available drug, corrects likely sub‑therapeutic dosing, and avoids additional sedation or behavioural risks. **"
+        },
+        "option_2": {
+          "label": "Dual therapy – carbamazepine + levetiracetam**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Adds a broad‑spectrum, non‑sodium‑channel agent (LEV) to address breakthrough tonic seizures while preserving the low‑cost CBZ backbone; minimal drug‑drug interaction. **"
+        },
+        "option_3": {
+          "label": "Monotherapy – levetiracetam**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Switches to a well‑tolerated, inexpensive broad‑spectrum ASM that is effective for tonic seizures and avoids the need for dose escalation of CBZ; useful if CBZ intolerance or rash emerges."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "label": "Carbamazepine Dose Optimization (Monotherapy)",
+          "rationale": "The seizure type is focal, carbamazepine is effective for focal motor seizures, the current dose is sub‑therapeutic, and the drug is reliably available and inexpensive."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "label": "Switch to Valproic Acid Monotherapy",
+          "rationale": "Provides broad‑spectrum coverage in case the EEG later reveals a generalized component, avoids the need for multiple sodium‑channel agents, and uses a drug that is consistently stocked in the formulary."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "Add‑on Levetiracetam (Adjunct Therapy)",
+          "rationale": "If carbamazepine titration alone does not achieve seizure control, levetiracetam adds a different mechanism with minimal sedation and drug‑interaction risk. It is the diagnostician’s preferred adjunct, though its availability may be limited; the option is kept for use when the drug can be obtained."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 1,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 15
+      }
+    },
+    "Visit_3": {
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – continue carbamazepine**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "rationale": "Current dose (100 mg twice daily) has achieved seizure‑free status for a month; drug is inexpensive and well‑tolerated. **"
+        },
+        "option_2": {
+          "label": "Switch to phenytoin (tonic‑seizure‑focused)**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenytoin",
+              "action": "start"
+            }
+          ],
+          "rationale": "Phenytoin has strong efficacy for tonic seizures and is cheap; switching replaces a less‑optimal drug with a better‑matched agent. **"
+        },
+        "option_3": {
+          "label": "Adjunct levetiracetam while retaining carbamazepine**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Levetiracetam adds broad‑spectrum coverage and a different mechanism, useful if seizures recur; it has minimal drug–drug interactions and is relatively affordable."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "label": "“Optimised Current Therapy”",
+          "rationale": "The child is seizure‑free on carbamazepine; the only unmet need is proper dosing and formulation. This respects the pediatric safety priority and avoids unnecessary poly‑therapy. ###"
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "label": "“Broad‑Spectrum Switch”",
+          "rationale": "If the EEG later reveals generalized seizure patterns, VPA provides broad‑spectrum coverage, is inexpensive, and is reliably stocked in Uganda. Switching avoids the theoretical risk of carbamazepine aggravating generalized tonic seizures. ###"
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "“Adjunct‑Therapy Add‑on”",
+          "rationale": "Should seizures recur, adding levetiracetam introduces a different mechanism (SV2A binding) without overlapping sodium‑channel effects. Levetiracetam is generally well‑tolerated, has a liquid formulation, and can be tapered later if seizure control is re‑achieved. (If levetiracetam is out of stock, phenobarbital could be used, but it is lower‑priority due to sedation risk.) All three options require: - Obtain up‑to‑date weight and height. - Use liquid or dispersible formulations for accurate dosing. - Repeat serum sodium and liver function tests in 4‑6 weeks, then periodically. - Arrange EEG within the next month to guide long‑term ASM selection."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 1,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 13
+      }
+    }
+  },
+  "8_Tisma Natabi": {
+    "Visit_1": {
+      "gt": [
+        "carbamazepine"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – levetiracetam**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Switch from ineffective, potentially aggravating CBZ to a safe, broad‑spectrum oral agent suitable for infants and GTCS; keeps regimen simple. **"
+        },
+        "option_2": {
+          "label": "Dual therapy – levetiracetam + phenobarbital**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "rationale": "LEV provides broad‑spectrum control with minimal side‑effects; PB adds proven efficacy for refractory GTCS in this setting, using two different mechanisms. **"
+        },
+        "option_3": {
+          "label": "Monotherapy – valproate (alternative)**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "rationale": "VPA is the most potent drug for generalized tonic‑clonic seizures and multifocal epilepsy; offered only as a backup when LEV ± PB are unavailable or ineffective, acknowledging heightened hepatic risk in a 1‑year‑old."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "label": "Valproic‑Acid Switch (preferred first‑line)",
+          "rationale": "Meets the diagnostician’s demand for a broad‑spectrum agent, uses a drug that is reliably stocked (formulary), avoids the safety concerns of carbamazepine, and provides the most effective monotherapy for multifocal early‑infantile epileptic encephalopathy. Liver function and platelet counts will be monitored per pediatric guidelines."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "label": "Carbamazepine Optimisation + Adjunct Valproic Acid",
+          "rationale": "Honors the treatment‑response analyst’s recommendation to maximise the current drug before abandoning it, while adding a low‑dose broad‑spectrum adjunct to cover uncontrolled focal seizures. The modest VPA dose limits hepatic exposure; carbamazepine level will be checked after dose adjustment to avoid toxicity."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "label": "Phenobarbital Replacement Strategy",
+          "rationale": "Provides an affordable, widely‑available broad‑spectrum ASM when valproic acid is contraindicated or unavailable. Although phenobarbital can cause sedation, it is less likely to exacerbate multifocal seizures than carbamazepine and fits the formulary constraints. Sedation will be monitored, and dosing can be adjusted based on clinical response."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 2,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 16
+      }
+    },
+    "Visit_2": {
+      "gt": [
+        "carbamazepine"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "VPA is the most effective, low‑cost broad‑spectrum ASM for GTCS and multifocal epilepsy in infants; replaces the ineffective CBZ. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – levetiracetam**",
+          "drugs": [
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "LEV provides broad‑spectrum coverage with minimal sedation and good safety in young children; suitable when VPA is undesired. **"
+        },
+        "option_3": {
+          "label": "Monotherapy – phenobarbital**",
+          "drugs": [
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "rationale": "PB is cheap, widely available, and effective for generalized seizures in infants; offers an alternative low‑cost option despite its sedating profile."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate‑First Switch” (preferred in the current formulary)",
+          "rationale": "VPA is a cheap, broad‑spectrum ASM available on the national formulary, effective for both focal and generalized seizures, and does not induce hepatic enzymes. Switching removes the carbamazepine‑related toxicity and interaction risk while providing robust seizure control. ###"
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "label": "“Levetiracetam Add‑on with Tapered Carbamazepine”",
+          "rationale": "If LEV can be obtained, it offers a mechanistically distinct, well‑tolerated adjunct that often synergises with carbamazepine. Reducing carbamazepine dose lowers toxicity risk while maintaining any residual benefit. This option respects pediatric dosing limits and retains two agents with different mechanisms (sodium‑channel blocker + SV2A modulator). ###"
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            }
+          ],
+          "label": "“Phenobarbital Add‑on while Maintaining Low‑Dose Carbamazepine”",
+          "rationale": "Phenobarbital is the cheapest, reliably stocked GABAergic ASM and can augment seizure control when carbamazepine alone is insufficient. Keeping carbamazepine at a safer dose avoids high‑dose toxicity. This regimen avoids combining multiple sodium‑channel blockers and uses drugs readily available in the public sector. --- Monitoring & Follow‑up for All Options 1. Seizure diary – caregiver to record frequency, duration, and precipitating factors (e.g., shouting, fever). 2. Drug‑level – if carbamazepine is continued, obtain a serum level in 1 week after dose change. 3. Safety labs – baseline CBC, liver enzymes, electrolytes (especially for VPA). Repeat in 1 month. 4. Growth & Development – weight, head control, tone assessment at each visit; adjust baclofen dosing accordingly. 5. Side‑effect surveillance – sedation, rash, hyponatremia (CBZ), hepatotoxicity (VPA), behavioral change (LEV), respiratory depression (PB, baclofen). Family counselling should include tablet‑crushing technique, administration with soft food, and prompt reporting of any new fever or illness."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 2,
+        "debate_triggered": true,
+        "agreement_score": 0.03333333333333333,
+        "total_concerns": 17
+      }
+    },
+    "Visit_3": {
+      "gt": [
+        "carbamazepine"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "valproate",
+              "action": "start"
+            }
+          ],
+          "rationale": "Valproate is the inexpensive broad‑spectrum drug of choice for generalized tonic‑clonic seizures and multifocal epilepsy; it addresses both focal and generalized components and aligns with LMIC drug availability. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – phenobarbital**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "rationale": "Phenobarbital is cheap, widely stocked, and effective for tonic‑clonic seizures; it serves as an alternative when VPA is to be avoided due to future pregnancy concerns or hepatic cautions. **"
+        },
+        "option_3": {
+          "label": "Monotherapy – levetiracetam**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Levetiracetam provides broad‑spectrum coverage with minimal enzyme‑inducing effects and good tolerability in young children, making it a viable newer‑agent alternative despite higher cost."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "carbamazepine",
+              "action": "stop"
+            }
+          ],
+          "label": "Valproate‑first switch",
+          "rationale": "Provides a single, broad‑spectrum ASM that aligns with the diagnosed multifocal encephalopathy, eliminates the toxic high‑dose carbamazepine, and uses a drug that is reliably stocked in the public formulary."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "Carbamazepine (dose‑reduced) + Levetiracetam",
+          "rationale": "Preserves any seizure control already achieved with carbamazepine while adding a non‑inducing, broad‑spectrum agent that addresses focal‑to‑bilateral seizures; suitable when levetiracetam is obtainable."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "continue"
+            },
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "label": "Carbamazepine (dose‑reduced) + Phenobarbital",
+          "rationale": "Keeps the familiar carbamazepine at a safe dose and adds the cheapest, widely available broad‑spectrum ASM; appropriate if levetiracetam or valproate are not affordable or obtainable."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 3,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 19
+      }
+    }
+  },
+  "10_Muduku Matthew": {
+    "Visit_1": {
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – carbamazepine**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            }
+          ],
+          "rationale": "Cheapest effective focal‑first agent, widely available in Uganda, good efficacy for focal seizures. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – phenobarbital**",
+          "drugs": [
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            }
+          ],
+          "rationale": "Very low cost, strong seizure control for focal epilepsy; chosen when concern for CBZ rash or hyponatraemia, accepting sedation risk. **"
+        },
+        "option_3": {
+          "label": "Monotherapy – levetiracetam**",
+          "drugs": [
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Rapid titration, broad‑spectrum efficacy, useful if caregiver prefers a newer drug despite higher price; avoids sedation and enzyme‑induction issues."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "levetiracetam",
+              "action": "start"
+            }
+          ],
+          "label": "Levetiracetam Monotherapy (Preferred)",
+          "rationale": "Aligns with diagnostician, pediatric, and ID recommendations; no enzyme induction, excellent safety profile, and effective for focal seizures. (Requires confirmed weight and drug availability.)"
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "label": "Phenobarbital ± Clobazam (If levetiracetam unavailable)",
+          "rationale": "Phenobarbital is inexpensive and reliably stocked, providing rapid seizure control for focal seizures; clobazam may allow a lower phenobarbital dose, mitigating sedation and neurodevelopmental impact."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "start"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "label": "Valproic Acid ± Clobazam (Alternative when enzyme‑inducers undesirable)",
+          "rationale": "Valproate is effective for focal epilepsy and does not induce hepatic enzymes, reducing interaction risk with antimalarials/ART; however, it requires hepatic monitoring, especially in a child with recent CNS infection. All three options assume the child’s current weight will be measured at the next visit to finalize exact dosing."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 2,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 16
+      }
+    },
+    "Visit_2": {
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Keeps the inexpensive, broadly effective VPA as sole therapy; eliminates unnecessary polypharmacy and reduces cost. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – carbamazepine (switch)**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Uses the classic first‑line focal seizure drug (CBZ) that is cheap and widely available; removes both existing agents to simplify to a single sodium‑channel blocker. **"
+        },
+        "option_3": {
+          "label": "Dual therapy – valproate + clobazam**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Retains VPA as primary agent and adds low‑dose CLB as an adjunct for breakthrough seizures while still avoiding costly polytherapy."
+        }
+      },
+      "multi_agent": {
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "continue"
+            }
+          ],
+          "label": "Optimised Dual Therapy (Valproate + Levetiracetam)",
+          "rationale": "Keeps the two agents that have already shown partial seizure reduction, brings each to therapeutic levels, and avoids adding a new drug that may be unavailable. Intensive LFT, ammonia and lipase monitoring is required because of the child’s age and recent CNS infection."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "label": "Carbamazepine Monotherapy (replace both agents)",
+          "rationale": "Carbamazepine is inexpensive, reliably stocked, and highly effective for focal epilepsy.  Removing valproate eliminates the hepatic‑risk issue; stopping levetiracetam avoids reliance on an intermittently out‑of‑stock medication.  Single‑drug therapy simplifies adherence and monitoring."
+        },
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "phenobarbital",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "label": "Phenobarbital Fallback Monotherapy",
+          "rationale": "Phenobarbital is the cheapest, most consistently available ASM in the formulary and provides reliable control of focal seizures.  Although it carries sedation risk and may impact neuro‑development, it is acceptable as a third‑line option when carbamazepine is contraindicated or unavailable.  Monotherapy limits polypharmacy and improves adherence."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 2,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 17
+      }
+    },
+    "Visit_3": {
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "baseline": {
+        "option_1": {
+          "label": "Monotherapy – valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Keeps the inexpensive, broad‑spectrum drug that already shows partial efficacy; simplifies to monotherapy and eliminates unnecessary LEV. **"
+        },
+        "option_2": {
+          "label": "Monotherapy – carbamazepine**",
+          "drugs": [
+            {
+              "drug": "carbamazepine",
+              "action": "start"
+            },
+            {
+              "drug": "valproate",
+              "action": "stop"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "rationale": "Switches to the inexpensive focal‑seizure first‑line agent (CBZ) which may provide better control for focal epilepsy while removing polypharmacy. **"
+        },
+        "option_3": {
+          "label": "Adjunct – clobazam added to valproate**",
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            }
+          ],
+          "rationale": "Retains VPA as the backbone, adds a low‑dose benzodiazepine to curb the twice‑daily breakthrough seizures, and removes LEV to reduce cost and potential behavioural side‑effects."
+        }
+      },
+      "multi_agent": {
+        "option_3": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "clobazam",
+              "action": "start"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate + Clobazam Adjunct”",
+          "rationale": "Provides a cost‑effective adjunct for the persistent twice‑daily focal seizures after valproate optimisation, using a non‑inducing benzodiazepine that does not worsen developmental outcomes; stops levetiracetam to avoid supply issues."
+        },
+        "option_1": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "continue"
+            }
+          ],
+          "label": "“Optimised Dual Therapy”",
+          "rationale": "Keeps the regimen that has already reduced seizure frequency while correcting sub‑therapeutic valproate and ensuring accurate levetiracetam dosing; aligns with the treatment analyst’s recommendation to maximise current agents before adding others."
+        },
+        "option_2": {
+          "drugs": [
+            {
+              "drug": "valproate",
+              "action": "continue"
+            },
+            {
+              "drug": "levetiracetam",
+              "action": "stop"
+            }
+          ],
+          "label": "“Valproate Monotherapy”",
+          "rationale": "Addresses formulary concerns about levetiracetam stock‑outs and cost, simplifies the regimen to a single, reliably available drug, and retains broad‑spectrum coverage; appropriate once valproate reaches an efficacious dose and liver function is acceptable."
+        }
+      },
+      "trace_summary": {
+        "agents_activated": [
+          "diagnostician",
+          "treatment_analyst",
+          "pediatrician",
+          "tropical_medicine",
+          "formulary",
+          "epileptologist",
+          "pharmacologist"
+        ],
+        "conflicts": 0,
+        "debate_triggered": true,
+        "agreement_score": 0.0,
+        "total_concerns": 16
+      }
+    }
+  }
+}

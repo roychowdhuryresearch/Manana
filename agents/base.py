@@ -16,6 +16,19 @@ from llm.client import LLMClient
 PROMPTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompts")
 
 
+def _normalize_drug_list(items: list) -> list[str]:
+    """Ensure all drug entries are plain strings (LLM sometimes returns dicts)."""
+    result = []
+    for item in items:
+        if isinstance(item, str):
+            result.append(item)
+        elif isinstance(item, dict):
+            result.append(str(item.get("drug", item.get("name", str(item)))))
+        else:
+            result.append(str(item))
+    return result
+
+
 class BaseAgent(ABC):
     """Abstract base class for specialist agents."""
 
@@ -129,13 +142,13 @@ class BaseAgent(ABC):
             response.concerns.append(Concern(
                 severity=severity,
                 category=category,
-                affected_drugs=c.get("affected_drugs", []),
+                affected_drugs=_normalize_drug_list(c.get("affected_drugs", [])),
                 description=c.get("description", ""),
                 recommendation=c.get("recommendation", ""),
             ))
 
-        response.recommended_drugs = data.get("recommended_drugs", [])
-        response.contraindicated_drugs = data.get("contraindicated_drugs", [])
+        response.recommended_drugs = _normalize_drug_list(data.get("recommended_drugs", []))
+        response.contraindicated_drugs = _normalize_drug_list(data.get("contraindicated_drugs", []))
         response.confidence = float(data.get("confidence", 0.0))
 
         return response
