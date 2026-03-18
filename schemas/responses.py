@@ -72,7 +72,7 @@ class AgentResponse:
             lines.append("Concerns:")
             for c in self.concerns:
                 drugs = ", ".join(c.affected_drugs) if c.affected_drugs else "general"
-                lines.append(f"  - [{c.severity.value}] {c.description} (affects: {drugs})")
+                lines.append(f"  - [{c.severity.value}][{c.category.value}] {c.description} (affects: {drugs})")
                 if c.recommendation:
                     lines.append(f"    Recommendation: {c.recommendation}")
         if self.recommended_drugs:
