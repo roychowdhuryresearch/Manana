@@ -56,16 +56,30 @@ def parse_epileptologist_options(raw_output: str) -> list[DrugOption]:
     # Strip markdown formatting for more reliable matching
     clean_output = re.sub(r'[*_`]', '', raw_output)
 
+    # Try to isolate Section 2 (regimen options) to avoid false matches
+    # from reasoning text that references "Option 1" etc.
+    sec2 = re.search(
+        r'(?:---\s*SECTION\s*2|REGIMEN\s*OPTIONS).*?---?\s*(.*?)$',
+        clean_output, re.DOTALL | re.IGNORECASE,
+    )
+    search_text = sec2.group(1).strip() if sec2 else clean_output
+
     # Match "Option 1:" or "Option 1 –" or "Option 1 -" patterns
     block_pattern = re.compile(
         r'Option\s+(\d)\s*[\s:–—\-]+\s*(.+?)(?=Option\s+\d\s*[\s:–—\-]|$)',
         re.DOTALL | re.IGNORECASE,
     )
 
-    for m in block_pattern.finditer(clean_output):
+    # Track which option numbers we've already seen — keep only the first match
+    seen_options = set()
+
+    for m in block_pattern.finditer(search_text):
         num = int(m.group(1))
         if num not in (1, 2, 3):
             continue
+        if num in seen_options:
+            continue  # skip duplicate "Option N" references
+        seen_options.add(num)
 
         # Split on both newlines and <br> tags (table format uses <br>)
         block_text = m.group(2).replace('<br>', '\n').replace('|', '\n')
