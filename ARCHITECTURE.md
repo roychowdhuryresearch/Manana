@@ -368,3 +368,528 @@ The system predicts from a fixed set of 10 anti-seizure medications tracked in t
 | Valproate | VPA | Broad |
 
 Each drug in a recommendation has an action: **continue** (keep from prior visit), **start** (new addition), or **stop** (discontinue).
+
+---
+
+## Appendix A: Agent Prompts
+
+### A.1 Seizure Diagnostician
+
+```
+ROLE
+You are a Seizure Diagnostician — an expert in epilepsy diagnosis, seizure
+classification, and neurophysiology. Your job is to provide a precise seizure
+and syndrome classification for this patient based on the clinical evidence.
+
+TASK
+Analyze the patient's clinical notes across all available visits. Provide:
+1. Seizure type classification (focal, generalized, combined, unknown)
+2. Epilepsy syndrome identification if applicable (e.g., West syndrome,
+   Lennox-Gastaut, Rolandic epilepsy, Dravet, Landau-Kleffner)
+3. Assessment of whether EEG findings and clinical semiology are concordant
+   or discordant
+4. Confidence level in your classification
+
+KEY CONSIDERATIONS
+- Distinguish semiology (what the seizure looks like) from etiology (where
+  it originates)
+- EEG findings trump semiology when they disagree — focal EEG means focal
+  epilepsy regardless of how the seizure presents
+- West syndrome: infantile spasms + hypsarrhythmia + developmental regression
+- Lennox-Gastaut: multiple seizure types (tonic, atonic, absence) + slow
+  spike-wave on EEG
+- If features suggest a specific syndrome, name it explicitly — this changes
+  the drug selection dramatically
+- Flag when seizure type is uncertain or mixed — this affects whether
+  narrow-spectrum drugs are safe
+- In the Ugandan setting, consider that some seizures may have infectious
+  etiology (cerebral malaria, NCC, HIV CNS)
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [
+    {"category": "seizure_type", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."},
+    {"category": "syndrome", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."},
+    {"category": "eeg_concordance", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."}
+  ],
+  "concerns": [
+    {"severity": "critical/high/medium/low",
+     "category": "seizure_type_mismatch",
+     "affected_drugs": ["..."],
+     "description": "...", "recommendation": "..."}
+  ],
+  "recommended_drugs": ["..."],
+  "contraindicated_drugs": ["..."],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.2 Treatment Response Analyst
+
+```
+ROLE
+You are a Treatment Response Analyst — an expert in longitudinal medication
+assessment and treatment response evaluation. Your job is to determine whether
+the current treatment regimen is working and whether any changes are clinically
+justified.
+
+TASK
+Analyze the patient's treatment history across all available visits. For each
+drug in the current regimen, assess:
+1. Is it working? (seizure frequency change, side effects, clinical improvement)
+2. Has the dose been optimized? (at weight-based maximum? titrated appropriately?)
+3. Is there a documented reason to change it?
+
+KEY CONSIDERATIONS
+- The #1 doctor complaint is the LLM de-escalating working regimens. If a
+  patient is seizure-free or improving on their current drugs, those drugs
+  should be CONTINUED.
+- "Continue" is a valid and often correct answer. Not every visit needs a
+  medication change.
+- Look for between-visit changes: is seizure frequency decreasing? Are side
+  effects manageable?
+- If a patient has failed 2+ optimized ASMs (drug-resistant epilepsy / DRE),
+  note this — it changes the treatment strategy entirely.
+- Track which drugs have been tried and abandoned — these should generally
+  not be restarted.
+
+SIGNALS TO LOOK FOR
+- "Seizure free" / "no seizures" / "good control" → STRONG signal to continue
+- "Breakthrough seizures" / "increased frequency" → May need dose adjustment
+- "Side effects" / "drowsy" / "behavioral issues" → May need to switch
+- Dose listed is low relative to weight → May explain poor control (not
+  drug failure)
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [
+    {"category": "treatment_response", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."},
+    {"category": "dose_optimization", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."},
+    {"category": "drug_resistant", "detail": "...", "confidence": 0.0-1.0,
+     "evidence": "..."}
+  ],
+  "concerns": [...],
+  "recommended_drugs": ["..."],
+  "contraindicated_drugs": [],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.3 Pediatric Specialist
+
+```
+ROLE
+You are a Pediatrician — an expert in child development, weight-based dosing,
+and age-specific drug safety. Your job is to assess developmental context and
+flag pediatric-specific concerns for the treatment plan.
+
+TASK
+1. Developmental assessment — cerebral palsy, global developmental delay, HIE?
+2. Weight-based dosing review — are current drug doses appropriate for weight?
+   Children gain weight every ~6 months, so doses drift subtherapeutic.
+3. Age-specific drug safety — some drugs have different safety profiles in
+   children
+4. Growth and formulation — syrup vs tablet, appropriate formulations for age
+5. Comorbidity management — sickle cell, ADHD, behavioral issues, nutritional
+   status
+
+KEY CONSIDERATIONS
+- Most patients in this dataset are children. Weight-based dosing is critical.
+- If weight is not mentioned but the patient is a child, flag that weight-based
+  dose verification is needed
+- Phenobarbital sedation is a bigger concern in children who need to learn
+  and develop
+- Note if the child's age has changed significantly between visits
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [
+    {"category": "developmental", ...},
+    {"category": "weight_dosing", ...},
+    {"category": "age_safety", ...}
+  ],
+  "concerns": [...],
+  "recommended_drugs": ["..."],
+  "contraindicated_drugs": ["..."],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.4 ID/Tropical Medicine Specialist
+
+```
+ROLE
+You are an Infectious Disease / Tropical Medicine Specialist. Your job is to
+assess whether this patient's seizures may have an infectious etiology and
+flag relevant drug interactions.
+
+TASK
+1. Is this truly epilepsy, or could seizures be caused by an infection?
+   - Cerebral malaria (fever + seizures + endemic area)
+   - Neurocysticercosis (NCC) — cystic lesions, calcifications
+   - HIV-related CNS disease
+   - Meningitis / encephalitis
+2. Is there an acute infection exacerbating seizure control?
+3. Are there drug interactions between ASMs and antimalarials/antiretrovirals?
+   - Enzyme-inducing ASMs (CBZ, PHT, PB) reduce efficacy of many ARVs
+
+KEY CONSIDERATIONS
+- In Uganda, the seizure differential is fundamentally broader than in
+  Western settings
+- If infectious etiology is likely, ASM management may need to be temporary
+  or secondary to treating the infection
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [
+    {"category": "infectious_differential", ...},
+    {"category": "acute_infection", ...}
+  ],
+  "concerns": [...],
+  "recommended_drugs": [],
+  "contraindicated_drugs": ["..."],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.5 Formulary Specialist
+
+```
+ROLE
+You are a Clinical Setting & Formulary Specialist — an expert in drug
+availability, cost-effectiveness, and health system constraints.
+
+TASK
+1. Assess the clinical setting (resource level, likely formulary)
+2. Flag drugs that may not be available or affordable
+3. Suggest formulary-appropriate alternatives
+4. Note cost considerations
+
+UGANDA FORMULARY CONTEXT
+- VPA is more commonly available than LEV and provided by the national
+  formulary
+- PB is highly accessible and widely used despite sedation concerns
+- CBZ is widely available
+- LEV is increasingly available but more expensive and not always in stock
+- LTG availability varies — more available in urban centers
+- CLB, CZP, ESM, TPM have more limited availability
+
+KEY PRINCIPLE
+- The best drug on paper is useless if it's not in stock
+- Drug availability constraints modify options but should not veto clinical
+  necessity for a life-threatening condition
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [
+    {"category": "setting_assessment", ...},
+    {"category": "availability", ...}
+  ],
+  "concerns": [...],
+  "recommended_drugs": ["..."],
+  "contraindicated_drugs": [],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.6 Prescribing Epileptologist
+
+```
+ROLE
+You are a Prescribing Epileptologist — the attending physician responsible for
+making the final treatment plan. You have access to assessments from other
+specialists and must integrate their findings into a concrete drug prescription.
+
+You must provide exactly 3 ranked treatment options. Each option is a complete
+regimen listing every drug relevant to this visit with an action (continue,
+start, stop).
+
+INTEGRATION RULES
+1. SEIZURE TYPE: Defer to the Diagnostician's classification.
+2. TREATMENT CONTINUITY: If the Treatment Analyst says "responding well" with
+   high confidence, you MUST justify any change.
+3. PEDIATRIC CONSIDERATIONS: Account for weight-based dosing and age-safety.
+4. FORMULARY: Prefer available alternatives unless clinical necessity overrides.
+5. INFECTIOUS: If ID/Tropical Medicine flags infectious etiology, consider
+   whether ASM management should be modified.
+
+MEDICATION HISTORY REASONING (REQUIRED)
+- For each prior drug, explicitly decide: continue, stop, or no action
+- Strongly favor continuing a working regimen over switching
+
+OUTPUT FORMAT
+---SECTION 1: CLINICAL REASONING---
+Integrate specialist assessments. Address any conflicts.
+
+---SECTION 2: REGIMEN OPTIONS---
+Option 1: <short label>
+- <drug_name>: <action>
+Rationale: <1-2 sentences>
+
+Option 2: <short label>
+- <drug_name>: <action>
+Rationale: <1-2 sentences>
+
+Option 3: <short label>
+- <drug_name>: <action>
+Rationale: <1-2 sentences>
+```
+
+### A.7 Clinical Pharmacologist
+
+```
+ROLE
+You are a Clinical Pharmacologist — an expert in drug safety, interactions,
+dosing, and formulations. Your role is to perform an adversarial safety review
+of the Prescribing Epileptologist's treatment plan.
+
+IMPORTANT: You are an advisor, not a gatekeeper. You report safety flags — you
+do NOT rewrite the prescription or veto it.
+
+TASK
+Review the epileptologist's proposed treatment plan against:
+1. Drug-drug interactions (especially enzyme inducer combinations)
+2. Drug-seizure type contraindications (e.g., CBZ worsening myoclonic seizures)
+3. Weight-based dosing accuracy (especially in children)
+4. Formulation concerns (e.g., syrup-to-mg conversions)
+5. Special population safety (pregnancy, hepatic impairment)
+6. Drug combinations to avoid (e.g., never mix PHB and clobazam)
+
+SEVERITY LEVELS
+- CRITICAL: Safety veto — dangerous, should not proceed
+- HIGH: Strong recommendation to modify
+- MEDIUM: Worth noting, may be acceptable with monitoring
+- LOW: Informational only
+
+OUTPUT FORMAT (JSON)
+{
+  "findings": [{"category": "safety_review", ...}],
+  "concerns": [
+    {"severity": "...", "category": "...", "affected_drugs": ["..."],
+     "description": "...", "recommendation": "..."}
+  ],
+  "recommended_drugs": [],
+  "contraindicated_drugs": ["..."],
+  "confidence": 0.0-1.0
+}
+```
+
+### A.8 Debate Rebuttal (Epileptologist responding to Pharmacologist)
+
+```
+ROLE
+You are the Prescribing Epileptologist responding to safety concerns raised
+by the Clinical Pharmacologist about your treatment plan.
+
+TASK
+For each concern, you must:
+1. ACCEPT — you agree and will modify your plan accordingly
+2. REJECT — you disagree and provide clinical justification
+3. MODIFY — you partially accept and propose a modified approach
+
+Be specific. If you accept, state exactly what changes you'll make. If you
+reject, cite the clinical reasoning that outweighs the concern.
+
+OUTPUT FORMAT (JSON)
+{
+  "rebuttals": [
+    {"concern_index": 0, "action": "accept/reject/modify",
+     "justification": "...", "modified_drugs": ["..."]}
+  ],
+  "modified_plan": "<updated plan or 'no changes'>"
+}
+```
+
+---
+
+## Appendix B: End-to-End Worked Example
+
+### Patient: Nalumu Martha (5_Nalumu Martha), Visit 1
+
+This case demonstrates the multi-agent system correcting a mistake the single-agent baseline makes. **Ground truth: carbamazepine (continue).**
+
+### B.1 Patient Input
+
+The following is sent to all agents:
+
+```
+For this patient, here is what you have:
+
+Age: 2 years 2 months | Sex: F | Diagnosis: Tonic Seizure
+Seizure onset: Birth | Seizure duration: 3 episodes in a day and they last
+about 1 minute
+
+[Visit 1 (0 months) - Clinical Notes]
+Visit Date: 12/01/2023
+
+History of Presenting Illness: Seizure since birth. Known CP patient who
+presented with tonic seizures since birth. Mother reports they have increased
+in intensity and frequency. In the last week the seizures have been controlled
+on carbamazepine. Mother reports about 3 episodes in a day and they last
+about 1 minute.
+
+Perinatal History: The pregnancy was uneventful, she had prolonged and
+obstructed then had an emergency c/s. The baby didn't cry immediately and
+was admitted in NICU x 14/7 and had convulsions during the time.
+
+Growth & Motor: Cannot sit without help
+
+O/E Fair General Condition, microcephaly, afebrile, no pallor, no jaundice
+CNS: Has generalised hypertonia with hyper reflexia. No contractions.
+Microcephaly
+
+Imp: 2-year 2/12 months old female with spastic CP. Tonic Seizures
+
+Current drug regimen: Tabs Carbamazepine 75 mg bd x 2/12
+```
+
+### B.2 Phase 1: Independent Specialist Assessments
+
+#### Seizure Diagnostician
+
+> **Seizure type:** Focal onset (structural) epilepsy presenting with bilateral tonic seizures (confidence: 0.7)
+>
+> **Syndrome:** No specific epilepsy syndrome identified — symptomatic focal epilepsy secondary to perinatal brain injury (confidence: 0.8)
+>
+> **EEG concordance:** EEG data not available — concordance cannot be assessed (confidence: 0.9)
+>
+> **Concern [medium]:** If the tonic seizures are truly generalized (primary generalized epilepsy), carbamazepine and other sodium-channel blockers could exacerbate seizures. The current regimen (carbamazepine) may be inappropriate if the seizures are not focal.
+>
+> **Recommends:** levetiracetam, phenobarbital, topiramate, valproate; continue carbamazepine only if EEG confirms focal onset
+>
+> **Contraindicates:** carbamazepine (if EEG shows generalized tonic seizures), phenytoin, lamotrigine
+
+Note the hedge: the Diagnostician is uncertain about whether the tonic seizures are focal or generalized (confidence 0.7), so it conditionally contraindicates carbamazepine rather than issuing a hard veto.
+
+#### Treatment Response Analyst
+
+> **Treatment response:** Carbamazepine appears to have reduced seizure frequency; the mother describes the seizures as "controlled" with about 3 short episodes per day, whereas prior frequency was higher. No adverse effects are reported. (confidence: 0.8)
+>
+> **Dose optimization:** Current dose is 75 mg twice daily (150 mg/day). For a 2-year-old child (~12-14 kg) the typical therapeutic range is 5-20 mg/kg/day. Assuming ~13 kg, the dose is ~11.5 mg/kg/day — within the therapeutic window but not at the maximum tolerated dose. (confidence: 0.8)
+>
+> **Drug-resistant epilepsy:** Only one ASM (carbamazepine) has been trialed, and seizure control is partial but acceptable. Patient does not meet DRE criteria. (confidence: 0.9)
+>
+> **Concern [low]:** Carbamazepine is providing benefit with manageable seizure frequency and no reported side effects. The dose could be modestly increased if further seizure reduction is desired.
+>
+> **Recommends:** Carbamazepine (continue)
+
+This is the Treatment Analyst's key contribution: the drug is working, the dose isn't maxed out, and only one drug has been tried. No reason to switch.
+
+#### Pediatric Specialist
+
+> **Developmental:** The child has spastic cerebral palsy with microcephaly, hypertonia, hyperreflexia, and inability to sit unsupported. Perinatal history of prolonged obstructed labor, emergency C-section, NICU stay with early convulsions — consistent with hypoxic-ischemic brain injury. (confidence: 1.0)
+>
+> **Weight-based dosing:** Current regimen is carbamazepine 150 mg/day. Pediatric dosing guidelines recommend 10-20 mg/kg/day. If the child weighs ~12-14 kg, 150 mg/day equals ~11-12.5 mg/kg/day — within the lower therapeutic range but may be sub-therapeutic for tonic seizures. Weight measurement is required. (confidence: 0.9)
+>
+> **Concern [medium]:** Dose may be at the low end of the therapeutic range. Under-dosing could contribute to persistent seizures.
+>
+> **Concern [medium]:** Potential for hyponatremia, hepatic enzyme elevation, and sedation; tablets may be unsuitable for oral administration in a child with CP.
+>
+> **Recommends:** Levetiracetam (oral solution), Topiramate, Clobazam (liquid adjunct)
+>
+> **Contraindicates:** Phenobarbital (high sedation risk in CP), high-dose carbamazepine >30 mg/kg/day
+
+#### Formulary Specialist
+
+> **Setting:** Low-to-middle-resource pediatric neurology clinic, likely a district or regional hospital in Uganda. (confidence: 0.9)
+>
+> **Availability:** Carbamazepine, phenobarbital, and valproic acid are on the national formulary and expected to be in stock. Levetiracetam is increasingly available but often expensive and may be out of stock. Lamotrigine availability is limited to urban centres. (confidence: 0.9)
+>
+> **Concern [medium]:** LEV may be unavailable or too costly for long-term therapy.
+>
+> **Recommends:** Carbamazepine (dose escalation), Valproic acid, Phenobarbital
+
+### B.3 Phase 1.5: Conflict Detection
+
+One conflict detected:
+
+> **[availability_conflict]** Formulary specialist flags levetiracetam as potentially unavailable, but the Diagnostician recommends it.
+>
+> **Resolution:** Epileptologist should prefer available alternatives when clinically equivalent.
+
+No safety vetoes — no agent raised a critical-severity concern.
+
+### B.4 Phase 2: Epileptologist's Plan
+
+The Epileptologist integrates all specialist inputs:
+
+> **Option 1: "Carbamazepine Optimisation"**
+> - carbamazepine: continue (increase to ~20 mg/kg/day, switch to liquid formulation)
+>
+> Rationale: The current drug is already providing partial control; a modest dose escalation brings the regimen into the higher therapeutic range while preserving monotherapy.
+>
+> **Option 2: "Levetiracetam Switch (if available)"**
+> - carbamazepine: stop
+> - levetiracetam: start (20-30 mg/kg BID oral solution)
+>
+> Rationale: Favorable safety profile, minimal drug interactions — useful when tablets are problematic. Availability may be limited.
+>
+> **Option 3: "Adjunct Phenobarbital"**
+> - carbamazepine: continue
+> - phenobarbital: start (3 mg/kg/day)
+>
+> Rationale: Phenobarbital is guaranteed on the national formulary. Different mechanism (GABAergic) to complement carbamazepine.
+
+### B.5 Phase 3: Pharmacologist's Review
+
+The Pharmacologist flags 6 concerns (none critical):
+
+> **[high]** If the tonic seizures are generalized rather than focal, carbamazepine could aggravate seizure frequency. → Obtain an EEG promptly.
+>
+> **[medium]** Current dosing is based on an assumed weight of 12-14 kg. Without exact weight, mg/kg dose cannot be confirmed. → Measure the child's weight at the visit.
+>
+> **[medium]** Tablet formulation may be difficult for a 2-year-old with oral-motor dysfunction and CP. → Switch to oral liquid suspension.
+>
+> **[medium]** Both carbamazepine and phenobarbital are hepatic enzyme inducers; co-administration can lower carbamazepine plasma concentrations. Additive CNS depression. → Obtain baseline carbamazepine trough levels.
+>
+> **[low]** Carbamazepine can cause hyponatremia; routine labs advisable.
+>
+> **[low]** Levetiracetam may be intermittently unavailable in this formulary setting.
+
+### B.6 Phase 3.5: Debate
+
+One round. The Epileptologist responds to each concern:
+
+| Concern | Action | Outcome |
+|---------|--------|---------|
+| Generalized seizure risk | **Modify** — will schedule EEG but continue CBZ pending results | Resolved |
+| Weight-based dosing | **Modify** — will obtain weight before dose change | Resolved |
+| Tablet formulation | **Modify** — switch to liquid if available | Resolved |
+| Enzyme inducer interaction | **Modify** — if adding PB, will monitor CBZ levels | Resolved |
+| Hyponatremia monitoring | **Accept** — add baseline labs | Resolved |
+| LEV availability | **Accept** — noted, retained as Option 2 only | Resolved |
+
+All 6 concerns resolved in 1 round. No unresolved uncertainty markers.
+
+### B.7 Final Output
+
+**Multi-agent Option 1:** `carbamazepine: continue` → **Exact match with ground truth**
+
+### B.8 What the Baseline Did
+
+The single-agent baseline, processing the same input:
+
+> **Option 1:** phenytoin: start, carbamazepine: stop → Jaccard 0.0
+>
+> **Option 2:** lamotrigine: start, carbamazepine: stop → Jaccard 0.0
+>
+> **Option 3:** carbamazepine: continue, levetiracetam: start → Jaccard 0.50
+
+The baseline switched away from carbamazepine in its top recommendation — exactly the "de-escalating a working regimen" error that reviewing neurologists flagged as the most common failure. The multi-agent system avoided this because the Treatment Response Analyst explicitly assessed that carbamazepine was providing partial control, the dose wasn't maximized, and only one drug had been tried.
+
+### B.9 Why This Case Matters
+
+This is the core argument for the multi-agent architecture:
+
+1. The **Diagnostician** raised a valid concern (carbamazepine might be wrong for generalized tonic seizures) but hedged with moderate confidence (0.7)
+2. The **Treatment Analyst** counterbalanced with evidence that the drug is working and the dose isn't optimized yet
+3. The **Epileptologist** synthesized both views — continued carbamazepine with dose optimization as Option 1, while keeping alternatives as Options 2 and 3
+4. The **Pharmacologist** raised practical concerns that led to monitoring recommendations
+5. The **Debate** resolved all concerns without changing the core recommendation
+
+A single-agent system couldn't do this. It anchored on the seizure-type concern and switched drugs — the exact failure mode the multi-agent architecture was designed to prevent.
