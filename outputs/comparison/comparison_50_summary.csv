@@ -1,0 +1,147 @@
+patient_id,visit,ground_truth,gt_size,baseline_opt1,baseline_exact,baseline_jaccard,multiagent_opt1,multiagent_exact,multiagent_jaccard,agents_activated,conflicts,debate_triggered,total_concerns
+1_Nanyonga Aisha,Visit_1,valproate,1,valproate:continue; phenobarbital:stop; carbamazepine:stop,True,1.0,valproate:start; phenobarbital:stop; carbamazepine:stop,True,1.0,6,1,True,18
+1_Nanyonga Aisha,Visit_2,valproate,1,valproate:continue,True,1.0,,False,0.0,6,1,True,13
+1_Nanyonga Aisha,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,6,0,True,15
+2_Mwania Sheldon,Visit_1,valproate,1,carbamazepine:start; phenytoin:stop,False,0.0,phenytoin:stop; carbamazepine:start,False,0.0,6,2,True,11
+2_Mwania Sheldon,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue; phenytoin:stop,True,1.0,6,0,True,14
+2_Mwania Sheldon,Visit_3,"levetiracetam, valproate",2,carbamazepine:start; valproate:stop,False,0.0,valproate:continue; phenytoin:stop,False,0.5,6,0,True,15
+5_Nalumu Martha,Visit_1,carbamazepine,1,carbamazepine:stop; phenytoin:start,False,0.0,carbamazepine:stop,False,0.0,6,2,True,13
+5_Nalumu Martha,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,carbamazepine:continue,True,1.0,6,1,True,13
+5_Nalumu Martha,Visit_3,"carbamazepine, valproate",2,carbamazepine:continue,False,0.5,carbamazepine:continue,False,0.5,6,1,True,11
+8_Tisma Natabi,Visit_1,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,valproate:start; carbamazepine:stop,False,0.0,7,4,True,17
+8_Tisma Natabi,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,valproate:start; carbamazepine:stop,False,0.0,7,3,True,17
+8_Tisma Natabi,Visit_3,carbamazepine,1,phenobarbital:start; carbamazepine:stop,False,0.0,valproate:start; carbamazepine:stop,False,0.0,7,3,True,18
+10_Muduku Matthew,Visit_1,"levetiracetam, valproate",2,carbamazepine:start,False,0.0,levetiracetam:start,False,0.5,7,3,True,14
+10_Muduku Matthew,Visit_2,"levetiracetam, valproate",2,carbamazepine:start; valproate:stop; levetiracetam:stop,False,0.0,carbamazepine:start; valproate:stop; levetiracetam:stop,False,0.0,7,2,True,17
+10_Muduku Matthew,Visit_3,"levetiracetam, valproate",2,valproate:continue; levetiracetam:continue,True,1.0,valproate:continue; levetiracetam:stop,False,0.5,7,1,True,17
+11_Lupuia Michael,Visit_1,valproate,1,valproate:start,True,1.0,levetiracetam:start,False,0.0,7,2,True,13
+11_Lupuia Michael,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:start,True,1.0,7,1,True,14
+11_Lupuia Michael,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,14
+13_Hikima Rautha,Visit_1,carbamazepine,1,valproate:start,False,0.0,valproate:start,False,0.0,6,2,True,17
+13_Hikima Rautha,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,carbamazepine:continue,True,1.0,6,2,True,15
+13_Hikima Rautha,Visit_3,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,valproate:start; carbamazepine:stop,False,0.0,6,2,True,17
+14_Mulungi Jemimah,Visit_1,valproate,1,ethosuximide:start; valproate:stop; phenobarbital:continue,False,0.0,,False,0.0,7,2,True,14
+14_Mulungi Jemimah,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,15
+14_Mulungi Jemimah,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,18
+15_Moses Zinabala,Visit_1,valproate,1,valproate:continue,True,1.0,valproate:continue; clobazam:start,False,0.5,7,0,True,17
+15_Moses Zinabala,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,0,True,14
+15_Moses Zinabala,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,14
+19_Kimuli Aksam,Visit_1,"carbamazepine, valproate",2,valproate:continue; phenobarbital:stop; carbamazepine:stop,False,0.5,levetiracetam:start; carbamazepine:stop; clobazam:start,False,0.0,6,1,True,17
+19_Kimuli Aksam,Visit_2,"carbamazepine, levetiracetam",2,valproate:start; carbamazepine:stop; levetiracetam:stop; phenobarbital:stop,False,0.0,valproate:start; carbamazepine:stop; phenobarbital:stop; levetiracetam:stop,False,0.0,6,2,True,18
+19_Kimuli Aksam,Visit_3,"carbamazepine, levetiracetam",2,levetiracetam:continue; carbamazepine:stop,False,0.5,levetiracetam:continue; lamotrigine:start; carbamazepine:stop; valproate:stop; phenobarbital:stop,False,0.333,6,3,True,16
+20_Ainebyona David,Visit_2,carbamazepine,1,carbamazepine:stop,False,0.0,carbamazepine:stop; clonazepam:start,False,0.0,7,4,True,13
+20_Ainebyona David,Visit_3,carbamazepine,1,carbamazepine:stop,False,0.0,carbamazepine:stop,False,0.0,7,4,True,13
+21_Valencia Wasswa,Visit_1,"carbamazepine, valproate",2,valproate:start,False,0.5,valproate:start; carbamazepine:stop,False,0.5,7,2,True,15
+21_Valencia Wasswa,Visit_2,"carbamazepine, valproate",2,valproate:continue; carbamazepine:stop,False,0.5,valproate:start; carbamazepine:stop,False,0.5,7,2,True,16
+21_Valencia Wasswa,Visit_3,"levetiracetam, valproate",2,valproate:continue; carbamazepine:stop; levetiracetam:stop,False,0.5,valproate:continue; levetiracetam:stop; carbamazepine:stop; phenobarbital:stop; clobazam:stop,False,0.5,7,3,True,18
+22_Awor Veronica,Visit_1,"carbamazepine, valproate",2,carbamazepine:continue,False,0.5,carbamazepine:continue,False,0.5,7,3,True,16
+22_Awor Veronica,Visit_2,"carbamazepine, valproate",2,carbamazepine:continue; valproate:stop,False,0.5,carbamazepine:continue; valproate:stop,False,0.5,7,5,True,16
+22_Awor Veronica,Visit_3,"carbamazepine, valproate",2,carbamazepine:continue; valproate:stop,False,0.5,carbamazepine:continue; valproate:stop,False,0.5,7,3,True,19
+23_Namayanja Shuhaira,Visit_1,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,valproate:start; carbamazepine:stop,False,0.0,7,4,True,16
+23_Namayanja Shuhaira,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,carbamazepine:stop; valproate:start,False,0.0,7,2,True,14
+23_Namayanja Shuhaira,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,,False,0.0,7,2,True,13
+24_Nangobi Jazmine,Visit_1,valproate,1,phenobarbital:start,False,0.0,levetiracetam:start; clobazam:start,False,0.0,7,2,True,15
+24_Nangobi Jazmine,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,12
+24_Nangobi Jazmine,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,0,True,17
+25_Sentongo Edrien,Visit_1,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,3,True,10
+25_Sentongo Edrien,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,1,True,14
+25_Sentongo Edrien,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:stop,False,0.0,6,2,True,11
+26_Nalweyiso Zahara,Visit_1,carbamazepine,1,carbamazepine:start,True,1.0,levetiracetam:start,False,0.0,7,2,True,16
+26_Nalweyiso Zahara,Visit_2,carbamazepine,1,lamotrigine:start; carbamazepine:stop,False,0.0,carbamazepine:stop; phenobarbital:start,False,0.0,7,3,True,16
+26_Nalweyiso Zahara,Visit_3,carbamazepine,1,levetiracetam:start; carbamazepine:stop,False,0.0,carbamazepine:continue,True,1.0,7,2,True,18
+27_kiwujjo Micheal,Visit_1,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,2,True,13
+27_kiwujjo Micheal,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,0,True,11
+27_kiwujjo Micheal,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,2,True,10
+29_Malik Wongho,Visit_1,"clobazam, valproate",2,valproate:continue; clobazam:continue,True,1.0,valproate:continue; clobazam:continue,True,1.0,7,2,True,18
+29_Malik Wongho,Visit_2,"clobazam, levetiracetam, valproate",3,valproate:continue; levetiracetam:continue; topiramate:continue; clobazam:continue,False,0.75,valproate:continue; levetiracetam:continue; topiramate:continue; clobazam:continue,False,0.75,7,5,True,17
+29_Malik Wongho,Visit_3,"clobazam, levetiracetam, valproate",3,valproate:continue; levetiracetam:continue; clobazam:continue,True,1.0,valproate:start; levetiracetam:start; clobazam:start; lamotrigine:start,False,0.75,7,6,True,17
+30_Magezi Walter,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,6,2,True,15
+30_Magezi Walter,Visit_2,valproate,1,valproate:continue,True,1.0,,False,0.0,6,1,True,12
+30_Magezi Walter,Visit_3,"levetiracetam, valproate",2,valproate:continue,False,0.5,valproate:continue; levetiracetam:start,True,1.0,6,1,True,15
+31_Baita Christian,Visit_1,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,1,True,13
+31_Baita Christian,Visit_2,"carbamazepine, phenobarbital",2,carbamazepine:continue,False,0.5,,False,0.0,7,3,True,16
+31_Baita Christian,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue; phenobarbital:stop,True,1.0,7,3,True,14
+33_Nakalyango Nicole,Visit_1,valproate,1,carbamazepine:start,False,0.0,levetiracetam:start,False,0.0,7,3,True,17
+33_Nakalyango Nicole,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,16
+33_Nakalyango Nicole,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,15
+34_Semakula Miracle,Visit_2,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,7,1,True,13
+34_Semakula Miracle,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,13
+35_Nanyanzi Victoria,Visit_1,valproate,1,valproate:start,True,1.0,levetiracetam:start,False,0.0,6,1,True,13
+35_Nanyanzi Victoria,Visit_2,valproate,1,levetiracetam:start; valproate:stop,False,0.0,levetiracetam:start; valproate:stop,False,0.0,6,1,True,12
+35_Nanyanzi Victoria,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,6,0,True,15
+37_Tamale Jonathan,Visit_1,valproate,1,carbamazepine:start,False,0.0,carbamazepine:start,False,0.0,7,3,True,14
+37_Tamale Jonathan,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,14
+37_Tamale Jonathan,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,13
+38_Nansera George,Visit_1,valproate,1,carbamazepine:start,False,0.0,levetiracetam:start,False,0.0,7,2,True,14
+38_Nansera George,Visit_2,valproate,1,carbamazepine:start; valproate:stop,False,0.0,valproate:continue,True,1.0,7,3,True,14
+38_Nansera George,Visit_3,"carbamazepine, valproate",2,carbamazepine:start; valproate:stop,False,0.5,valproate:continue,False,0.5,7,4,True,14
+39_Najjemba Christine,Visit_1,valproate,1,phenobarbital:start,False,0.0,valproate:start,True,1.0,6,2,True,13
+39_Najjemba Christine,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,6,0,True,16
+39_Najjemba Christine,Visit_3,carbamazepine,1,valproate:continue,False,0.0,valproate:continue,False,0.0,6,1,True,14
+40_Nankya Favour,Visit_1,levetiracetam,1,levetiracetam:continue,True,1.0,levetiracetam:stop,False,0.0,6,4,True,15
+40_Nankya Favour,Visit_2,levetiracetam,1,levetiracetam:continue,True,1.0,levetiracetam:continue,True,1.0,6,2,True,13
+40_Nankya Favour,Visit_3,levetiracetam,1,levetiracetam:continue,True,1.0,levetiracetam:continue,True,1.0,6,0,True,11
+41_Muvunyi Dvir,Visit_1,carbamazepine,1,phenobarbital:stop; carbamazepine:start,True,1.0,carbamazepine:start; phenobarbital:stop,True,1.0,7,2,True,12
+41_Muvunyi Dvir,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,2,True,11
+41_Muvunyi Dvir,Visit_3,"carbamazepine, levetiracetam",2,carbamazepine:continue,False,0.5,carbamazepine:continue; phenobarbital:stop,False,0.5,7,3,True,12
+42_Nabagala Hellen,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,7,2,True,13
+42_Nabagala Hellen,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,15
+42_Nabagala Hellen,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,14
+43_Babirye Joan,Visit_1,valproate,1,valproate:start,True,1.0,levetiracetam:start,False,0.0,7,2,True,11
+43_Babirye Joan,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,6,True,17
+43_Babirye Joan,Visit_3,valproate,1,valproate:continue,True,1.0,,False,0.0,7,3,True,16
+44_Nakidde Zoe,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,7,2,True,15
+44_Nakidde Zoe,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,13
+44_Nakidde Zoe,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,15
+46_Kabonge Aaron,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,6,2,True,12
+46_Kabonge Aaron,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,15
+46_Kabonge Aaron,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,2,True,10
+47_Mugisha Silver,Visit_1,carbamazepine,1,carbamazepine:start,True,1.0,carbamazepine:start; levetiracetam:start,False,0.5,7,2,True,16
+47_Mugisha Silver,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,3,True,11
+47_Mugisha Silver,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,0,True,12
+48_Mukisa Jeremiah,Visit_1,valproate,1,valproate:start,True,1.0,levetiracetam:start,False,0.0,7,3,True,15
+48_Mukisa Jeremiah,Visit_2,valproate,1,valproate:stop; levetiracetam:start,False,0.0,,False,0.0,7,2,True,14
+48_Mukisa Jeremiah,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,16
+49_Magezi Jeremiah,Visit_1,carbamazepine,1,valproate:start,False,0.0,levetiracetam:start,False,0.0,7,5,True,13
+49_Magezi Jeremiah,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,1,True,13
+49_Magezi Jeremiah,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:start,True,1.0,7,2,True,13
+50_Talindeka Jeremiah,Visit_1,valproate,1,carbamazepine:start,False,0.0,levetiracetam:start; clobazam:stop,False,0.0,7,2,True,15
+50_Talindeka Jeremiah,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:start,True,1.0,7,3,True,15
+52_Ssemwogerere Farid,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start,True,1.0,7,0,True,16
+52_Ssemwogerere Farid,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,12
+52_Ssemwogerere Farid,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,14
+53_Bukenya Patrick,Visit_1,carbamazepine,1,carbamazepine:continue,True,1.0,levetiracetam:start; carbamazepine:stop,False,0.0,7,2,True,15
+53_Bukenya Patrick,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,carbamazepine:stop; levetiracetam:start,False,0.0,7,2,True,16
+53_Bukenya Patrick,Visit_3,"carbamazepine, valproate",2,valproate:continue; carbamazepine:stop,False,0.5,levetiracetam:start; carbamazepine:stop; valproate:stop,False,0.0,7,2,False,11
+54_Sekito Abdulhakim,Visit_1,carbamazepine,1,carbamazepine:start,True,1.0,carbamazepine:start,True,1.0,6,3,True,13
+54_Sekito Abdulhakim,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,3,True,13
+54_Sekito Abdulhakim,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue; clonazepam:start,False,0.5,7,1,True,11
+55_Semwanga Raphael,Visit_1,valproate,1,valproate:continue,True,1.0,valproate:continue; levetiracetam:start,False,0.5,6,2,True,15
+55_Semwanga Raphael,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,6,1,True,12
+56_Masanso Wallace,Visit_1,carbamazepine,1,carbamazepine:start,True,1.0,valproate:start; carbamazepine:stop; levetiracetam:stop,False,0.0,6,1,True,14
+56_Masanso Wallace,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,3,True,12
+56_Masanso Wallace,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,7,2,True,13
+57_Pirwot Travis,Visit_1,carbamazepine,1,phenobarbital:start,False,0.0,phenobarbital:start,False,0.0,7,3,True,15
+57_Pirwot Travis,Visit_2,carbamazepine,1,phenobarbital:start; carbamazepine:stop,False,0.0,carbamazepine:stop; levetiracetam:start,False,0.0,7,1,True,15
+57_Pirwot Travis,Visit_3,"carbamazepine, valproate",2,valproate:start; carbamazepine:stop; phenobarbital:stop,False,0.5,carbamazepine:stop; phenobarbital:stop; levetiracetam:start,False,0.0,7,0,True,15
+58_Sekyeru Jeremiah,Visit_1,"carbamazepine, clobazam, phenobarbital, valproate",4,phenobarbital:start,False,0.25,levetiracetam:start,False,0.0,7,2,True,15
+58_Sekyeru Jeremiah,Visit_2,"clobazam, phenobarbital, valproate",3,valproate:continue; clobazam:continue; phenobarbital:stop; levetiracetam:start,False,0.5,valproate:continue; phenobarbital:continue; clobazam:continue; levetiracetam:start,False,0.75,7,1,True,18
+58_Sekyeru Jeremiah,Visit_3,"carbamazepine, phenobarbital, valproate",3,valproate:continue; phenobarbital:stop; clobazam:stop,False,0.333,valproate:continue; phenobarbital:continue; clobazam:stop,False,0.667,7,4,True,20
+59_Adikin Kerin,Visit_1,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:stop; levetiracetam:start,False,0.0,6,6,True,12
+59_Adikin Kerin,Visit_2,"carbamazepine, valproate",2,lamotrigine:start; carbamazepine:stop,False,0.0,carbamazepine:continue,False,0.5,6,2,True,13
+59_Adikin Kerin,Visit_3,"carbamazepine, valproate",2,carbamazepine:continue; valproate:stop,False,0.5,valproate:start; carbamazepine:stop,False,0.5,6,1,True,10
+60_Kabenge Rayan,Visit_1,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,16
+60_Kabenge Rayan,Visit_2,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,1,True,15
+60_Kabenge Rayan,Visit_3,valproate,1,valproate:continue,True,1.0,valproate:continue,True,1.0,7,3,True,15
+61_Nakate Liza,Visit_1,valproate,1,valproate:start,True,1.0,valproate:start; carbamazepine:stop,True,1.0,6,1,True,14
+61_Nakate Liza,Visit_2,"topiramate, valproate",2,valproate:continue; carbamazepine:stop,False,0.5,valproate:continue; carbamazepine:stop; phenobarbital:start,False,0.333,6,1,True,15
+61_Nakate Liza,Visit_3,"topiramate, valproate",2,valproate:continue; topiramate:continue,True,1.0,valproate:continue; topiramate:continue,True,1.0,6,2,True,16
+62_Bros Collins,Visit_1,valproate,1,valproate:continue; carbamazepine:stop,True,1.0,,False,0.0,6,1,False,9
+62_Bros Collins,Visit_2,valproate,1,valproate:continue; phenobarbital:stop,True,1.0,levetiracetam:start; valproate:stop; phenobarbital:stop,False,0.0,7,1,True,19
+62_Bros Collins,Visit_3,valproate,1,valproate:continue; levetiracetam:start; clobazam:start; phenobarbital:stop,False,0.333,valproate:continue; phenobarbital:start; carbamazepine:stop,False,0.5,7,1,True,17
+63_Buyinza Alex,Visit_1,carbamazepine,1,valproate:start,False,0.0,valproate:start,False,0.0,6,2,True,15
+63_Buyinza Alex,Visit_2,carbamazepine,1,valproate:start; carbamazepine:stop,False,0.0,carbamazepine:stop; valproate:start,False,0.0,6,4,True,10
+63_Buyinza Alex,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,valproate:start; carbamazepine:stop,False,0.0,6,2,True,11
+65_Kasana Aidah,Visit_1,carbamazepine,1,carbamazepine:start,True,1.0,carbamazepine:start; levetiracetam:stop; phenobarbital:stop; valproate:stop,True,1.0,6,2,True,14
+65_Kasana Aidah,Visit_2,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,2,True,11
+65_Kasana Aidah,Visit_3,carbamazepine,1,carbamazepine:continue,True,1.0,carbamazepine:continue,True,1.0,6,3,True,10
