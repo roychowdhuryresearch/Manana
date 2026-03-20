@@ -15,44 +15,14 @@ KEY CONSIDERATIONS
 - Track which drugs have been tried and abandoned — these should generally not be restarted.
 - If a drug was recently started, it may need more time before judging efficacy.
 
+LMIC CONTEXT
+- In this Uganda setting, VPA, CBZ, and PB are the foundation drugs. Do not recommend switching away from a working VPA/CBZ/PB regimen to a newer drug (LEV, LTG, TPM) unless there is a documented clinical reason (failure at adequate dose, intolerable side effects, or contraindication).
+- Therapeutic drug monitoring (serum levels) may not be available. Assess dose adequacy based on weight-based dosing ranges and clinical response, not serum levels.
+
 SIGNALS TO LOOK FOR
 - "Seizure free" / "no seizures" / "good control" → STRONG signal to continue current regimen
 - "Breakthrough seizures" / "increased frequency" → May need dose adjustment or add-on
 - "Side effects" / "drowsy" / "behavioral issues" → May need to switch, but only if serious
 - Dose listed is low relative to weight → May explain poor control (not drug failure)
 
-OUTPUT FORMAT (JSON)
-{
-  "findings": [
-    {
-      "category": "treatment_response",
-      "detail": "<assessment of current regimen efficacy>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<supporting text from clinical notes>"
-    },
-    {
-      "category": "dose_optimization",
-      "detail": "<are current doses optimized? any subtherapeutic?>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<dose and weight evidence>"
-    },
-    {
-      "category": "drug_resistant",
-      "detail": "<DRE assessment: has patient failed 2+ optimized ASMs?>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<treatment history evidence>"
-    }
-  ],
-  "concerns": [
-    {
-      "severity": "<critical/high/medium/low>",
-      "category": "treatment_continuity",
-      "affected_drugs": ["<drugs being inappropriately changed>"],
-      "description": "<why the current regimen should or shouldn't be maintained>",
-      "recommendation": "<continue/adjust/change and why>"
-    }
-  ],
-  "recommended_drugs": ["<drugs that should be continued based on response>"],
-  "contraindicated_drugs": [],
-  "confidence": <0.0-1.0>
-}
+Reason carefully and ground every claim in the clinical evidence provided. Do not speculate beyond what the notes support.

@@ -16,38 +16,7 @@ KEY CONSIDERATIONS
 - Phenobarbital sedation is a bigger concern in children who need to learn and develop
 - Note if the child's age has changed significantly between visits (e.g., "first age is 4 months, second is 1 year")
 
-OUTPUT FORMAT (JSON)
-{
-  "findings": [
-    {
-      "category": "developmental",
-      "detail": "<developmental assessment>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<clinical evidence>"
-    },
-    {
-      "category": "weight_dosing",
-      "detail": "<weight-based dosing assessment>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<weight and dose evidence>"
-    },
-    {
-      "category": "age_safety",
-      "detail": "<age-specific safety considerations>",
-      "confidence": <0.0-1.0>,
-      "evidence": "<age-related evidence>"
-    }
-  ],
-  "concerns": [
-    {
-      "severity": "<critical/high/medium/low>",
-      "category": "<dosing_error/age_safety/other>",
-      "affected_drugs": ["<drug>"],
-      "description": "<pediatric-specific concern>",
-      "recommendation": "<what to adjust>"
-    }
-  ],
-  "recommended_drugs": ["<drugs with good pediatric profiles>"],
-  "contraindicated_drugs": ["<drugs unsafe for this child's age/weight>"],
-  "confidence": <0.0-1.0>
-}
+LMIC CONTEXT
+- In this Uganda setting, syrup formulations and some newer drugs (LEV, LTG) may not be reliably available. Note formulation concerns but do not recommend switching to drugs that may not be accessible.
+
+Reason carefully and ground every claim in the clinical evidence provided. Do not speculate beyond what the notes support.

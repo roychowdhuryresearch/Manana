@@ -22,11 +22,15 @@ def extract_prescribed_set(gt_entry: dict) -> set[str]:
 
 
 def extract_prediction_set(option: dict) -> set[str]:
-    """Extract the set of active drugs from a prediction option."""
+    """Extract the set of active drugs from a prediction option.
+
+    V2 format: {"drugs": {"valproate": "continue", ...}}
+    """
+    drugs = option.get("drugs", {})
     return set(
-        d["drug"].lower()
-        for d in option.get("drugs", [])
-        if d.get("action") in ("continue", "start")
+        drug.lower()
+        for drug, action in drugs.items()
+        if action in ("continue", "start")
     )
 
 
@@ -125,7 +129,9 @@ def grade_all(
 
     for pid, pred in predictions.items():
         patient_gt = gt.get(pid, {})
-        result = grade_patient(pred, patient_gt, visit)
+        # V2 format: read from final_regimen
+        regimen = pred.get("final_regimen", pred)
+        result = grade_patient(regimen, patient_gt, visit)
         results[pid] = result
 
         if result.get("gt_empty"):

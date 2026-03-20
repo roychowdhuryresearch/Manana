@@ -8,6 +8,13 @@ from schemas.responses import AgentResponse
 class PharmacologistAgent(BaseAgent):
     name = "pharmacologist"
     role = "Clinical Pharmacologist"
+    description = (
+        "Adversarial safety review of the epileptologist's plan. "
+        "Identifies drug interactions, dosing errors, contraindications, "
+        "and dangerous combinations."
+    )
+    key_question = "What could go wrong with this plan?"
+    phase = 3
     prompt_file = "pharmacologist.txt"
     always_active = True
 
@@ -22,7 +29,7 @@ class PharmacologistAgent(BaseAgent):
                 parts.append("\n\n--- SPECIALIST ASSESSMENTS (Phase 1) ---")
                 for agent_name, response in phase1_responses.items():
                     if isinstance(response, AgentResponse):
-                        parts.append(response.to_summary())
+                        parts.append(f"=== {response.agent_role} ===\n{response.raw_output}")
 
             # Epileptologist's plan
             epi_response = context.get("epileptologist_response")
