@@ -20,3 +20,4 @@ data/feedback/*.csv
 # OS
 .DS_Store
 Thumbs.db
+data/all_patient_pdfs/
