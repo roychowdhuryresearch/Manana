@@ -17,6 +17,9 @@ data/feedback/*.csv
 .idea/
 *.swp
 
+# Notes (internal discussion, not tracked)
+notes/
+
 # OS
 .DS_Store
 Thumbs.db
