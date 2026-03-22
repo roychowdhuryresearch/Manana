@@ -44,12 +44,20 @@ async def main():
     all_results = {}
     pbar = tqdm(total=len(cases), desc="Processing", unit="patient")
 
-    for case in cases:
+    async def _run_one(case):
         result = await pipeline.run(case)
-        all_results[case.patient_id] = result
         pbar.update(1)
+        return case.patient_id, result
 
+    results = await asyncio.gather(*[_run_one(c) for c in cases], return_exceptions=True)
     pbar.close()
+
+    for item in results:
+        if isinstance(item, Exception):
+            print(f"[ERROR] Patient failed: {item}")
+        else:
+            pid, result = item
+            all_results[pid] = result
     await client.close()
 
     # Save output — patient_id as key, visit in filename

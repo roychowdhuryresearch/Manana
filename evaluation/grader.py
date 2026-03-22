@@ -25,8 +25,15 @@ def extract_prediction_set(option: dict) -> set[str]:
     """Extract the set of active drugs from a prediction option.
 
     V2 format: {"drugs": {"valproate": "continue", ...}}
+    Baseline format: {"drugs": [{"drug": "valproate", "action": "continue"}, ...]}
     """
     drugs = option.get("drugs", {})
+    if isinstance(drugs, list):
+        return set(
+            d["drug"].lower()
+            for d in drugs
+            if d.get("action") in ("continue", "start")
+        )
     return set(
         drug.lower()
         for drug, action in drugs.items()

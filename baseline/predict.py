@@ -8,7 +8,6 @@ import os
 import re
 import json
 import asyncio
-from orchestrator.synthesis import _find_drug_in_line
 from tqdm import tqdm
 
 from llm.client import LLMClient
@@ -17,6 +16,14 @@ from schemas.output import DRUG_COLUMNS, ALLOWED_ACTIONS
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
+
+
+def _find_drug_in_line(text: str) -> str | None:
+    """Find a drug name in a line of text."""
+    for drug in DRUG_COLUMNS:
+        if drug in text:
+            return drug
+    return None
 
 
 def parse_options(content: str) -> dict:
@@ -35,7 +42,7 @@ def parse_options(content: str) -> dict:
             continue
         block_lines = m.group(2).strip().split('\n')
         label = block_lines[0].strip() if block_lines else ""
-        drugs, rationale_parts, in_rationale = [], [], False
+        drugs, rationale_parts, in_rationale = {}, [], False
 
         for line in block_lines[1:]:
             s = line.strip()
@@ -63,8 +70,8 @@ def parse_options(content: str) -> dict:
                         found_action = act
                         break
                 if found_drug and found_action:
-                    if found_drug not in {d["drug"] for d in drugs}:
-                        drugs.append({"drug": found_drug, "action": found_action})
+                    if found_drug not in drugs:
+                        drugs[found_drug] = found_action
 
         options[f"option_{num}"] = {
             "label": label,
@@ -74,8 +81,8 @@ def parse_options(content: str) -> dict:
     return options
 
 
-def format_drugs_str(drugs: list) -> str:
-    return "; ".join(f"{d['drug']}:{d['action']}" for d in drugs)
+def format_drugs_str(drugs: dict) -> str:
+    return "; ".join(f"{drug}:{action}" for drug, action in drugs.items())
 
 
 async def run_baseline(

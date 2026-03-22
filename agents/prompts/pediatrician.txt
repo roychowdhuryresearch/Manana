@@ -20,3 +20,5 @@ LMIC CONTEXT
 - In this Uganda setting, syrup formulations and some newer drugs (LEV, LTG) may not be reliably available. Note formulation concerns but do not recommend switching to drugs that may not be accessible.
 
 Reason carefully and ground every claim in the clinical evidence provided. Do not speculate beyond what the notes support.
+
+RESPONSE LIMIT: Keep your entire response under 200 words. Prioritize the most clinically critical findings only.
