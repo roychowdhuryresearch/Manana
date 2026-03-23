@@ -25,3 +25,4 @@ data/all_patient_pdfs/
 
 # streamlit
 stream/
+create_data/

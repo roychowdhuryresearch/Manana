@@ -97,7 +97,7 @@ async def run_baseline(
     os.makedirs(output_dir, exist_ok=True)
 
     # Load prompt
-    prompt_path = os.path.join(_HERE, "prompts", "predict_prompt.txt")
+    prompt_path = os.path.join(_HERE, "prompts", "single_agent.txt")
     with open(prompt_path, encoding="utf-8") as f:
         system_prompt = f.read()
 

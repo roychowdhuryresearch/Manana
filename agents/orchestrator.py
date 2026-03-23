@@ -11,7 +11,7 @@ from agents.base import BaseAgent
 from agents.registry import PHASE1_AGENTS
 
 PROMPT_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "prompts", "orchestrator_v2.txt"
+    os.path.dirname(os.path.abspath(__file__)), "prompts", "orchestrator.txt"
 )
 
 
