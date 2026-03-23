@@ -21,3 +21,7 @@ data/feedback/*.csv
 .DS_Store
 Thumbs.db
 data/all_patient_pdfs/
+
+
+# streamlit
+stream/
