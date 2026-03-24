@@ -23,7 +23,7 @@ _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, _ROOT)
 
 from llm.client import LLMClient
-from pipeline.loader import load_cases
+from scripts.loader import load_cases
 from schemas.output import DRUG_COLUMNS, ALLOWED_ACTIONS
 
 _OUTPUT_DIR = os.path.join(_ROOT, "outputs", "baseline")
@@ -89,17 +89,24 @@ async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str |
         print(f"  No cases found for visit {visit_num}, skipping.")
         return
 
-    results = {}
     pbar = tqdm(total=len(cases), desc=f"Visit {visit_num}", unit="patient")
 
     async def _one(case):
         thinking, content = await client.call(system_prompt, case.build_input_text())
         pbar.update(1)
-        return case.patient_id, thinking, content
+        return case, thinking, content
 
+    records = []
     for coro in asyncio.as_completed([_one(c) for c in cases]):
-        pid, thinking, content = await coro
-        results[pid] = {"think": thinking, "raw_content": content, **parse_options(content)}
+        case, thinking, content = await coro
+        records.append({
+            "pid": case.patient_id,
+            "cohort": case.cohort,
+            "visit_num": visit_num,
+            "think": thinking,
+            "raw_content": content,
+            **parse_options(content),
+        })
 
     pbar.close()
 
@@ -108,8 +115,8 @@ async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str |
     suffix = f"_{cohort}" if cohort else ""
     out_path = os.path.join(_OUTPUT_DIR, f"baseline_{short_model}_v{visit_num}{suffix}.json")
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-    print(f"  Saved {len(results)} patients → {out_path}")
+        json.dump(records, f, indent=2, ensure_ascii=False)
+    print(f"  Saved {len(records)} patients → {out_path}")
 
 
 async def main():

@@ -15,7 +15,7 @@ from __future__ import annotations
 from schemas.patient import PatientCase
 from schemas.responses import AgentResponse
 from agents.base import BaseAgent
-from orchestrator.regimen_parser import parse_regimen
+from core.regimen_parser import parse_regimen
 
 
 def has_concerns(pharm_output: str) -> bool:

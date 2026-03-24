@@ -1,11 +1,11 @@
 """Evaluate pipeline or baseline predictions against dataset ground truth.
 
-Loads ground truth from the dataset and computes exact match and Jaccard
-similarity for predicted vs prescribed drug sets.
+Loads ground truth from the HuggingFace dataset and computes exact match and
+Jaccard similarity for predicted vs prescribed drug sets.
 
 Usage:
-    uv run python pipeline/evaluate.py --predictions outputs/predictions/consilium_*.json --visit 1
-    uv run python pipeline/evaluate.py --predictions outputs/baseline/baseline_*.json --visit 1 --cohort csv
+    conda run -n global_llm python pipeline/evaluate.py --predictions outputs/predictions/consilium_*.json
+    conda run -n global_llm python pipeline/evaluate.py --predictions outputs/baseline/baseline_*.json
 """
 
 import argparse
@@ -17,23 +17,34 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, _ROOT)
 
-from pipeline.loader import load_ground_truth
+from scripts.loader import load_ground_truth
+
+_OUTPUT_DIR = os.path.join(_ROOT, "outputs", "evaluation")
 
 
 # ---------------------------------------------------------------------------
 # Drug extraction
 # ---------------------------------------------------------------------------
 
-def extract_predicted(prediction: dict) -> set[str]:
-    """Extract active drugs from a prediction entry.
-
-    Handles both consilium format (final_regimen) and baseline format (option_1).
-    """
-    regimen = prediction.get("final_regimen", prediction)
-    drugs = regimen.get("drugs", {})
+def _drugs_from_option(option: dict) -> set[str]:
+    drugs = option.get("drugs", {})
     if isinstance(drugs, list):
         return set(d["drug"].lower() for d in drugs if d.get("action") in ("continue", "start"))
     return set(drug.lower() for drug, action in drugs.items() if action in ("continue", "start"))
+
+
+def extract_all_options(record: dict) -> list[set[str]]:
+    """Extract drugs from all 3 options (top-1, top-2, top-3).
+
+    Returns a list of 3 sets, one per option (option_1 first).
+    """
+    trace = record.get("trace", {})
+    source = trace.get("final_regimen", {}) if trace else record
+    return [
+        _drugs_from_option(source.get("option_1", {})),
+        _drugs_from_option(source.get("option_2", {})),
+        _drugs_from_option(source.get("option_3", {})),
+    ]
 
 
 def extract_gt(gt_entry: dict) -> set[str]:
@@ -56,39 +67,36 @@ def jaccard(a: set, b: set) -> float:
 # Grading
 # ---------------------------------------------------------------------------
 
-def grade(predictions: dict, gt: dict) -> dict:
-    """Grade predictions against ground truth.
+def grade(records: list[dict], gt: dict) -> dict:
+    """Grade predictions against ground truth using top-3 accuracy.
 
-    Args:
-        predictions: {pid: prediction_dict}
-        gt: {pid__vN: gt_dict} from load_ground_truth()
-
-    Returns:
-        Summary + per-patient results.
+    A patient is an exact match if ANY of the 3 options matches GT exactly.
+    Jaccard is the best score across all 3 options.
     """
     results = {}
     exact_matches, jaccards = 0, []
     mono_exact, mono_total, poly_exact, poly_total = 0, 0, 0, 0
 
-    for pid, pred in predictions.items():
-        # Match pid to GT — try exact key, then match by pid prefix
-        gt_entry = None
-        for key, val in gt.items():
-            if val["pid"] == pid:
-                gt_entry = val
-                break
+    for record in records:
+        pid = record["pid"]
+        visit_num = record["visit_num"]
+        key = f"{pid}__v{visit_num}"
 
+        gt_entry = gt.get(key)
         if gt_entry is None:
             continue
 
         gt_drugs = extract_gt(gt_entry)
         if not gt_drugs:
-            results[pid] = {"exact_match": False, "jaccard": 0.0, "gt_empty": True}
+            results[key] = {"gt_empty": True}
             continue
 
-        pred_drugs = extract_predicted(pred)
-        em = pred_drugs == gt_drugs
-        jac = jaccard(pred_drugs, gt_drugs)
+        options = extract_all_options(record)
+        ems = [opts == gt_drugs for opts in options]
+        jacs = [jaccard(opts, gt_drugs) for opts in options]
+
+        em = any(ems)
+        jac = max(jacs)
 
         if em:
             exact_matches += 1
@@ -103,10 +111,14 @@ def grade(predictions: dict, gt: dict) -> dict:
             if em:
                 poly_exact += 1
 
-        results[pid] = {
+        results[key] = {
+            "pid": pid,
+            "cohort": record.get("cohort", ""),
+            "visit_num": visit_num,
             "exact_match": em,
             "jaccard": jac,
-            "predicted": sorted(pred_drugs),
+            "options": [{"predicted": sorted(o), "exact_match": e, "jaccard": j}
+                        for o, e, j in zip(options, ems, jacs)],
             "gt": sorted(gt_drugs),
             "gt_empty": False,
         }
@@ -132,28 +144,30 @@ def grade(predictions: dict, gt: dict) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description="Evaluate predictions against dataset ground truth")
-    parser.add_argument("--predictions", type=str, required=True, help="Path to predictions JSON")
-    parser.add_argument("--visit", type=int, required=True, help="Visit number")
-    parser.add_argument("--cohort", type=str, choices=["csv", "pdf"], default=None)
-    parser.add_argument("--output-dir", type=str, default="outputs/evaluation")
+    parser.add_argument("--predictions", type=str, required=True, help="Path to predictions JSON file")
+    parser.add_argument("--cohort", type=str, choices=["csv", "pdf"], default=None, help="Filter GT by cohort")
     args = parser.parse_args()
 
     with open(args.predictions, encoding="utf-8") as f:
-        predictions = json.load(f)
+        records = json.load(f)
 
-    gt = load_ground_truth(visit_num=args.visit, cohort=args.cohort)
+    # Infer visit numbers from records to load only relevant GT
+    visit_nums = set(r["visit_num"] for r in records)
+    gt = {}
+    for v in visit_nums:
+        gt.update(load_ground_truth(visit_num=v, cohort=args.cohort))
 
-    results = grade(predictions, gt)
+    results = grade(records, gt)
 
-    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(_OUTPUT_DIR, exist_ok=True)
     base = os.path.splitext(os.path.basename(args.predictions))[0]
-    out_path = os.path.join(args.output_dir, f"eval_{base}.json")
+    out_path = os.path.join(_OUTPUT_DIR, f"eval_{base}.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     s = results["summary"]
     print(f"\n{'='*60}")
-    print(f"EVALUATION RESULTS")
+    print(f"EVALUATION RESULTS  (top-3 accuracy)")
     print(f"{'='*60}")
     print(f"  Patients:       {s['n_patients']}")
     print(f"  Exact match:    {s['exact_match_rate']:.1%}")

@@ -10,8 +10,8 @@ from llm.client import LLMClient
 
 from agents.registry import PHASE1_AGENTS, PHASE2_AGENTS, PHASE3_AGENTS
 from agents.orchestrator import run_orchestrator
-from orchestrator.debate import run_debate, has_concerns
-from orchestrator.regimen_parser import parse_regimen
+from core.debate import run_debate, has_concerns
+from core.regimen_parser import parse_regimen
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +57,10 @@ class ConsiliumPipeline:
         result = {}
 
         # ── ORCHESTRATOR: Decide which Phase 1 agents to activate ──
-        decisions = await run_orchestrator(patient, self.llm, self.disabled_agents)
+        decisions = await run_orchestrator(patient, self.llm, available_agents={
+            name: cls for name, cls in PHASE1_AGENTS.items()
+            if name in self.phase1_agents
+        })
         result["orchestrator"] = {
             "decisions": [
                 {"agent": d.agent_name, "activated": d.activated, "reason": d.reason}

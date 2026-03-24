@@ -33,13 +33,13 @@ def _format_agent_block(cls: type[BaseAgent]) -> str:
     return "\n".join(lines)
 
 
-def _build_system_prompt() -> str:
-    """Build the orchestrator system prompt with agent descriptions from classes."""
+def _build_system_prompt(available_agents: dict) -> str:
+    """Build the orchestrator system prompt with only the available agent classes."""
     with open(PROMPT_PATH, encoding="utf-8") as f:
         template = f.read()
 
-    always_on = [cls for cls in PHASE1_AGENTS.values() if cls.always_active]
-    conditional = [cls for cls in PHASE1_AGENTS.values() if not cls.always_active]
+    always_on = [cls for cls in available_agents.values() if cls.always_active]
+    conditional = [cls for cls in available_agents.values() if not cls.always_active]
 
     always_on_text = "\n\n".join(_format_agent_block(cls) for cls in always_on)
     conditional_text = "\n\n".join(_format_agent_block(cls) for cls in conditional)
@@ -81,50 +81,28 @@ def _parse_decisions(raw_output: str, conditional_classes: list[type[BaseAgent]]
 async def run_orchestrator(
     patient: PatientCase,
     llm_client: LLMClient,
-    disabled_agents: set[str] | None = None,
+    available_agents: dict | None = None,
 ) -> list[ActivationDecision]:
     """Run the orchestrator to decide which agents to activate.
 
-    Returns activation decisions for ALL Phase 1 agents (always-on + conditional).
+    available_agents: subset of PHASE1_AGENTS the orchestrator can see and choose from.
+    If None, uses all PHASE1_AGENTS.
     """
-    disabled = disabled_agents or set()
+    agents = available_agents if available_agents is not None else PHASE1_AGENTS
     decisions: list[ActivationDecision] = []
 
-    always_on = {n: c for n, c in PHASE1_AGENTS.items() if c.always_active}
-    conditional = {n: c for n, c in PHASE1_AGENTS.items() if not c.always_active}
+    always_on = {n: c for n, c in agents.items() if c.always_active}
+    conditional = {n: c for n, c in agents.items() if not c.always_active}
 
-    # Always-on agents — activated unless disabled by ablation
-    for name, cls in always_on.items():
-        if name in disabled:
-            decisions.append(ActivationDecision(
-                agent_name=name,
-                activated=False,
-                reason="disabled by ablation config",
-            ))
-        else:
-            decisions.append(ActivationDecision(
-                agent_name=name,
-                activated=True,
-                reason="always active",
-            ))
+    for name in always_on:
+        decisions.append(ActivationDecision(agent_name=name, activated=True, reason="always active"))
 
-    # Conditional agents — ask the LLM
-    active_conditional = [c for n, c in conditional.items() if n not in disabled]
-    disabled_conditional = [n for n in conditional if n in disabled]
-
-    for name in disabled_conditional:
-        decisions.append(ActivationDecision(
-            agent_name=name,
-            activated=False,
-            reason="disabled by ablation config",
-        ))
-
-    if active_conditional:
-        system_prompt = _build_system_prompt()
+    if conditional:
+        system_prompt = _build_system_prompt(agents)
         user_content = patient.build_input_text()
         _, raw_output = await llm_client.call(system_prompt, user_content)
 
-        llm_decisions = _parse_decisions(raw_output, active_conditional)
+        llm_decisions = _parse_decisions(raw_output, list(conditional.values()))
         decisions.extend(llm_decisions)
 
     return decisions

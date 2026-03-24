@@ -43,6 +43,7 @@ def load_cases(
             patient_id=row["pid"],
             current_visit=f"Visit_{row['visit_num']}",
             clinical_context=row["input"],
+            cohort=row["cohort"],
         )
         cases.append(case)
 
