@@ -20,6 +20,12 @@ class EpileptologistAgent(BaseAgent):
     prompt_file = "epileptologist.txt"
     always_active = True
 
+    async def run(self, patient: PatientCase, context: dict | None = None) -> AgentResponse:
+        """Epileptologist runs at temperature=0 for deterministic prescriptions."""
+        user_content = self.build_user_prompt(patient, context)
+        thinking, raw_output = await self.llm.call(self.system_prompt, user_content, temperature=0.0)
+        return self.parse_response(raw_output, thinking)
+
     def build_user_prompt(self, patient: PatientCase, context: dict | None = None) -> str:
         """Epileptologist sees patient + Phase 1 outputs + optional pharma critique + prior plan."""
         parts = [patient.build_input_text()]

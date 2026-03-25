@@ -18,6 +18,12 @@ class PharmacologistAgent(BaseAgent):
     prompt_file = "pharmacologist.txt"
     always_active = True
 
+    async def run(self, patient: PatientCase, context: dict | None = None) -> AgentResponse:
+        """Pharmacologist runs at temperature=0 for deterministic reviews."""
+        user_content = self.build_user_prompt(patient, context)
+        thinking, raw_output = await self.llm.call(self.system_prompt, user_content, temperature=0.0)
+        return self.parse_response(raw_output, thinking)
+
     def build_user_prompt(self, patient: PatientCase, context: dict | None = None) -> str:
         """Pharmacologist sees patient + Phase 1 outputs + epileptologist's plan."""
         parts = [patient.build_input_text()]

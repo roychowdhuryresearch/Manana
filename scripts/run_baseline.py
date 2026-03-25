@@ -27,7 +27,8 @@ from scripts.loader import load_cases
 from schemas.output import DRUG_COLUMNS, ALLOWED_ACTIONS
 
 _OUTPUT_DIR = os.path.join(_ROOT, "outputs", "baseline")
-_PROMPT_PATH = os.path.join(_ROOT, "baseline", "prompts", "single_agent.txt")
+_PROMPTS_DIR = os.path.join(_ROOT, "baseline", "prompts")
+_DEFAULT_PROMPT = "single_agent"
 
 
 def _find_drug(text: str) -> str | None:
@@ -83,7 +84,7 @@ def parse_options(content: str) -> dict:
     return options
 
 
-async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str | None, system_prompt: str, client: LLMClient):
+async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str | None, system_prompt: str, client: LLMClient, prompt_name: str = "single_agent"):
     cases = load_cases(visit_num=visit_num, cohort=cohort, limit=limit)
     if not cases:
         print(f"  No cases found for visit {visit_num}, skipping.")
@@ -92,7 +93,7 @@ async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str |
     pbar = tqdm(total=len(cases), desc=f"Visit {visit_num}", unit="patient")
 
     async def _one(case):
-        thinking, content = await client.call(system_prompt, case.build_input_text())
+        thinking, content = await client.call(system_prompt, case.build_input_text(), temperature=0.0)
         pbar.update(1)
         return case, thinking, content
 
@@ -113,7 +114,7 @@ async def run_visit(visit_num: int, model: str, limit: int | None, cohort: str |
     os.makedirs(_OUTPUT_DIR, exist_ok=True)
     short_model = model.replace("/", "_").replace("-", "")[:20]
     suffix = f"_{cohort}" if cohort else ""
-    out_path = os.path.join(_OUTPUT_DIR, f"baseline_{short_model}_v{visit_num}{suffix}.json")
+    out_path = os.path.join(_OUTPUT_DIR, f"baseline_{prompt_name}_{short_model}_v{visit_num}{suffix}.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2, ensure_ascii=False)
     print(f"  Saved {len(records)} patients → {out_path}")
@@ -126,24 +127,27 @@ async def main():
     parser.add_argument("--cohort", type=str, choices=["csv", "pdf"], default=None)
     parser.add_argument("--model", type=str, default="openai.gpt-oss-120b-1:0")
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--prompt", type=str, default=_DEFAULT_PROMPT,
+                        help="Prompt name (without .txt): single_agent, single_agent_enhanced, all_agents_combined")
     args = parser.parse_args()
 
     visit_nums = list(range(1, 11)) if args.all else (args.visit or [1])
 
-    with open(_PROMPT_PATH, encoding="utf-8") as f:
+    prompt_path = os.path.join(_PROMPTS_DIR, f"{args.prompt}.txt")
+    with open(prompt_path, encoding="utf-8") as f:
         system_prompt = f.read()
 
     client = LLMClient(model=args.model)
 
     print(f"\n{'='*60}")
-    print(f"BASELINE — SINGLE-AGENT PREDICTION")
+    print(f"BASELINE — {args.prompt}")
     print(f"Model: {args.model}  |  Visits: {visit_nums}")
     if args.cohort:
         print(f"Cohort: {args.cohort}")
     print(f"{'='*60}\n")
 
     for v in visit_nums:
-        await run_visit(v, args.model, args.limit, args.cohort, system_prompt, client)
+        await run_visit(v, args.model, args.limit, args.cohort, system_prompt, client, args.prompt)
 
     await client.close()
 

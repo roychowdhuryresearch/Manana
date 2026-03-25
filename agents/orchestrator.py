@@ -100,7 +100,7 @@ async def run_orchestrator(
     if conditional:
         system_prompt = _build_system_prompt(agents)
         user_content = patient.build_input_text()
-        _, raw_output = await llm_client.call(system_prompt, user_content)
+        _, raw_output = await llm_client.call(system_prompt, user_content, temperature=0.0)
 
         llm_decisions = _parse_decisions(raw_output, list(conditional.values()))
         decisions.extend(llm_decisions)

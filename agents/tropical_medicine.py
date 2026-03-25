@@ -18,4 +18,4 @@ class TropicalMedicineAgent(BaseAgent):
     key_question = "Are these seizures from an infection, not epilepsy?"
     phase = 1
     prompt_file = "tropical_medicine.txt"
-    always_active = False
+    always_active = True

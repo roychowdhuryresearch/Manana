@@ -33,7 +33,14 @@ ABLATION_CONFIGS = {
     "no_pediatrician":      {"disabled_agents": {"pediatrician"},                                                                         "max_debate_rounds": 0},
     "no_formulary":         {"disabled_agents": {"formulary"},                                                                            "max_debate_rounds": 0},
     "no_tropical_medicine": {"disabled_agents": {"tropical_medicine"},                                                                    "max_debate_rounds": 0},
-    "epileptologist_only":  {"disabled_agents": {"diagnostician", "treatment_analyst", "pediatrician", "formulary", "tropical_medicine"}, "max_debate_rounds": 0},
+    "epileptologist_only":              {"disabled_agents": {"diagnostician", "treatment_analyst", "pediatrician", "formulary", "tropical_medicine"}, "max_debate_rounds": 0},
+    "no_diag_pedi":                     {"disabled_agents": {"diagnostician", "pediatrician"},                                                               "max_debate_rounds": 0},
+    "no_diag_pedi_trop":                {"disabled_agents": {"diagnostician", "pediatrician", "tropical_medicine"},                                           "max_debate_rounds": 0},
+    "only_diagnostician":               {"disabled_agents": {"treatment_analyst", "pediatrician", "formulary", "tropical_medicine"},                              "max_debate_rounds": 0},
+    "only_treatment":                   {"disabled_agents": {"diagnostician", "pediatrician", "formulary", "tropical_medicine"},                              "max_debate_rounds": 0},
+    "only_pediatrician":                {"disabled_agents": {"diagnostician", "treatment_analyst", "formulary", "tropical_medicine"},                         "max_debate_rounds": 0},
+    "only_formulary":                   {"disabled_agents": {"diagnostician", "treatment_analyst", "pediatrician", "tropical_medicine"},                      "max_debate_rounds": 0},
+    "only_tropical_medicine":           {"disabled_agents": {"diagnostician", "treatment_analyst", "pediatrician", "formulary"},                              "max_debate_rounds": 0},
 }
 
 
@@ -94,25 +101,28 @@ async def run_config(
 
 async def main():
     parser = argparse.ArgumentParser(description="Ablation study")
-    parser.add_argument("--visit", type=int, default=1)
+    parser.add_argument("--visit", type=int, nargs="+", default=None, help="Visit number(s) to run")
+    parser.add_argument("--all", action="store_true", help="Run all visits (1-10)")
     parser.add_argument("--cohort", type=str, choices=["csv", "pdf"], default=None)
     parser.add_argument("--model", type=str, default="openai.gpt-oss-120b-1:0")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--config", type=str, default=None, help="Run a single config by name")
     args = parser.parse_args()
 
+    visit_nums = list(range(1, 11)) if args.all else (args.visit or [1])
     configs = {args.config: ABLATION_CONFIGS[args.config]} if args.config else ABLATION_CONFIGS
 
     print(f"\n{'='*60}")
     print(f"ABLATION STUDY")
-    print(f"Model: {args.model}  |  Visit: {args.visit}  |  Configs: {len(configs)}")
+    print(f"Model: {args.model}  |  Visits: {visit_nums}  |  Configs: {len(configs)}")
     print(f"{'='*60}\n")
 
     for name, config in configs.items():
-        print(f"\n--- {name} ---")
-        out_path = await run_config(name, config, args.visit, args.model, args.limit, args.cohort)
-        if out_path:
-            print(f"  Saved → {out_path}")
+        for v in visit_nums:
+            print(f"\n--- {name}  visit {v} ---")
+            out_path = await run_config(name, config, v, args.model, args.limit, args.cohort)
+            if out_path:
+                print(f"  Saved → {out_path}")
 
 
 if __name__ == "__main__":
