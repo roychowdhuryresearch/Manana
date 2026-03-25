@@ -25,19 +25,18 @@ conda run -n global_llm python scripts/run_baseline.py --visit 1 --limit 5
 # Run evaluation
 conda run -n global_llm python scripts/evaluate.py --predictions outputs/predictions/consilium_*.json
 
-# Run ablations (7 configs)
+# Run ablations
 conda run -n global_llm python scripts/run_ablation.py --visit 1 --limit 5
 ```
 
 ## Data
 - HuggingFace dataset: `kartiksharma4/consilium` (2,549 entries, 3 cohorts: CSV-279, CSV-53, PDF-367)
-- Raw source data in `data/` (combined_dataset.csv, processed/, feedback/)
 - 10 tracked ASMs: carbamazepine, clobazam, clonazepam, ethosuximide, lamotrigine, levetiracetam, phenobarbital, phenytoin, topiramate, valproate
 
 ## Execution Flow
 ```
 Patient → Orchestrator (decides which Phase 1 agents activate)
-        → Phase 1 (parallel: diagnostician, treatment_analyst, pediatrician, [tropical_medicine], formulary)
+        → Phase 1 (parallel: diagnostician, treatment_analyst, pediatrician, tropical_medicine, formulary)
         → Phase 2 (epileptologist sees all Phase 1 outputs)
         → Phase 3 (pharmacologist adversarial review)
         → Debate (if pharmacologist raises concerns, max rounds configurable)
