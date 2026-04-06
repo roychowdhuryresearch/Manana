@@ -1,7 +1,6 @@
 """Prescribing Epileptologist — integrates specialist inputs into treatment plan."""
 
 import re
-import json
 from agents.base import BaseAgent
 from schemas.patient import PatientCase
 from schemas.responses import AgentResponse
@@ -11,11 +10,24 @@ from schemas.output import DRUG_COLUMNS, ALLOWED_ACTIONS
 class EpileptologistAgent(BaseAgent):
     name = "epileptologist"
     role = "Prescribing Epileptologist"
+    description = (
+        "Integrates all specialist inputs into a ranked treatment plan "
+        "with 3 regimen options. Addresses disagreements between "
+        "specialists and justifies departures from their recommendations."
+    )
+    key_question = "What should the prescription be?"
+    phase = 2
     prompt_file = "epileptologist.txt"
     always_active = True
 
+    async def run(self, patient: PatientCase, context: dict | None = None) -> AgentResponse:
+        """Epileptologist runs at temperature=0 for deterministic prescriptions."""
+        user_content = self.build_user_prompt(patient, context)
+        thinking, raw_output = await self.llm.call(self.system_prompt, user_content, temperature=0.0)
+        return self.parse_response(raw_output, thinking)
+
     def build_user_prompt(self, patient: PatientCase, context: dict | None = None) -> str:
-        """Epileptologist sees patient input + all Phase 1 outputs + detected conflicts."""
+        """Epileptologist sees patient + Phase 1 outputs + optional pharma critique + prior plan."""
         parts = [patient.build_input_text()]
 
         if context:
@@ -25,37 +37,32 @@ class EpileptologistAgent(BaseAgent):
                 parts.append("\n\n--- SPECIALIST ASSESSMENTS (Phase 1) ---")
                 for agent_name, response in phase1_responses.items():
                     if isinstance(response, AgentResponse):
-                        parts.append(response.to_summary())
+                        parts.append(f"=== {response.agent_role} ===\n{response.raw_output}")
                     elif isinstance(response, str):
                         parts.append(response)
 
-            # Detected conflicts
-            conflicts = context.get("conflicts", [])
-            if conflicts:
-                parts.append("\n\n--- DETECTED CONFLICTS ---")
-                for conflict in conflicts:
-                    parts.append(f"- [{conflict.conflict_type}] {conflict.description}")
-                    if conflict.resolution_rule:
-                        parts.append(f"  Resolution rule: {conflict.resolution_rule}")
+            # Pharmacologist critique (during debate)
+            pharm_critique = context.get("pharmacologist_critique")
+            if pharm_critique:
+                parts.append("\n\n--- PHARMACOLOGIST CRITIQUE ---")
+                parts.append(pharm_critique)
+
+            # Epi's own prior plan (during debate revision)
+            prior_plan = context.get("prior_plan")
+            if prior_plan:
+                parts.append("\n\n--- YOUR PRIOR PLAN ---")
+                parts.append(prior_plan)
 
         return "\n\n".join(parts)
 
     def parse_response(self, raw_output: str, thinking: str = "") -> AgentResponse:
-        """Parse epileptologist's structured output with drug options."""
+        """Parse epileptologist's output — extract Option 1 drugs for recommended_drugs."""
         response = AgentResponse(
             agent_name=self.name,
             agent_role=self.role,
             raw_output=raw_output,
             reasoning=thinking,
         )
-
-        # Extract reasoning section
-        sec1 = re.search(
-            r'---\s*SECTION\s*1.*?---\s*(.*?)(?=---\s*SECTION\s*2|$)',
-            raw_output, re.DOTALL | re.IGNORECASE,
-        )
-        if sec1:
-            response.reasoning = sec1.group(1).strip()
 
         # Extract drug options and store as recommended drugs from Option 1
         block_pattern = re.compile(
@@ -70,6 +77,8 @@ class EpileptologistAgent(BaseAgent):
                     if dm:
                         drug = dm.group(1).lower()
                         action = dm.group(2).lower()
+                        if action == "discontinue":
+                            action = "stop"
                         if drug in DRUG_COLUMNS and action in ALLOWED_ACTIONS:
                             if action != "stop":
                                 response.recommended_drugs.append(drug)

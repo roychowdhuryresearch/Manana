@@ -42,15 +42,19 @@ class LLMClient:
         self,
         system_prompt: str,
         user_content: str,
+        temperature: float | None = None,
     ) -> tuple[str, str]:
         """Synchronous Bedrock Converse call. Returns (thinking, content)."""
+        inference_config = {"maxTokens": self.max_tokens}
+        if temperature is not None:
+            inference_config["temperature"] = temperature
         kwargs = {
             "modelId": self.model,
             "messages": [
                 {"role": "user", "content": [{"text": user_content}]},
             ],
             "system": [{"text": system_prompt}],
-            "inferenceConfig": {"maxTokens": self.max_tokens},
+            "inferenceConfig": inference_config,
         }
 
         response = self.bedrock.converse(**kwargs)
@@ -75,13 +79,14 @@ class LLMClient:
         system_prompt: str,
         user_content: str,
         max_retries: int = 6,
+        temperature: float | None = None,
     ) -> tuple[str, str]:
         """Make an LLM call via Bedrock. Returns (thinking/reasoning, content)."""
         for attempt in range(max_retries):
             try:
                 async with self.semaphore:
                     return await asyncio.to_thread(
-                        self._call_sync, system_prompt, user_content,
+                        self._call_sync, system_prompt, user_content, temperature,
                     )
             except Exception as e:
                 msg = str(e).lower()

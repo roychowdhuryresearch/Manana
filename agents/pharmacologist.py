@@ -8,8 +8,21 @@ from schemas.responses import AgentResponse
 class PharmacologistAgent(BaseAgent):
     name = "pharmacologist"
     role = "Clinical Pharmacologist"
+    description = (
+        "Adversarial safety review of the epileptologist's plan. "
+        "Identifies drug interactions, dosing errors, contraindications, "
+        "and dangerous combinations."
+    )
+    key_question = "What could go wrong with this plan?"
+    phase = 3
     prompt_file = "pharmacologist.txt"
     always_active = True
+
+    async def run(self, patient: PatientCase, context: dict | None = None) -> AgentResponse:
+        """Pharmacologist runs at temperature=0 for deterministic reviews."""
+        user_content = self.build_user_prompt(patient, context)
+        thinking, raw_output = await self.llm.call(self.system_prompt, user_content, temperature=0.0)
+        return self.parse_response(raw_output, thinking)
 
     def build_user_prompt(self, patient: PatientCase, context: dict | None = None) -> str:
         """Pharmacologist sees patient + Phase 1 outputs + epileptologist's plan."""
@@ -22,7 +35,7 @@ class PharmacologistAgent(BaseAgent):
                 parts.append("\n\n--- SPECIALIST ASSESSMENTS (Phase 1) ---")
                 for agent_name, response in phase1_responses.items():
                     if isinstance(response, AgentResponse):
-                        parts.append(response.to_summary())
+                        parts.append(f"=== {response.agent_role} ===\n{response.raw_output}")
 
             # Epileptologist's plan
             epi_response = context.get("epileptologist_response")

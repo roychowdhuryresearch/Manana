@@ -3,14 +3,17 @@
 .venv/
 __pycache__/
 *.pyc
+.claude/
 
 # Outputs (generated, not tracked)
 outputs/
 
 # Data (large files, tracked separately or via DVC)
-data/combined_dataset.csv
-data/processed/*.json
-data/feedback/*.csv
+data/
+data_prep/
+evaluation/
+extraction/
+pdf_pats/
 
 # IDE
 .vscode/
@@ -20,3 +23,8 @@ data/feedback/*.csv
 # OS
 .DS_Store
 Thumbs.db
+
+
+# streamlit
+stream/
+create_data/

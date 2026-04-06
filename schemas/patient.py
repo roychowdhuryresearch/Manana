@@ -33,6 +33,8 @@ class PatientCase:
     visits: list[VisitData] = field(default_factory=list)
     current_visit: str = ""  # Which visit we're predicting
     medication_history: dict[str, MedicationHistory] = field(default_factory=dict)
+    clinical_context: str = ""  # Full patient context string; if set, used directly by agents
+    cohort: str = ""  # "csv" or "pdf"
 
     @property
     def is_pediatric(self) -> bool:
@@ -62,6 +64,9 @@ class PatientCase:
 
     def build_input_text(self) -> str:
         """Build the full input text string for this patient case."""
+        if self.clinical_context:
+            return self.clinical_context
+
         parts = ["For this patient, here is what you have:\n"]
 
         demo = " | ".join(x for x in [
