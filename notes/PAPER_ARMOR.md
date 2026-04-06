@@ -321,38 +321,6 @@ wrong for the target population. We demonstrate this on a uniquely OOD clinical 
 
 ---
 
-### B1.8 — Why Is Our Baseline Strong Enough? (The Copy-Previous Problem)
-
-**Why this gets flagged:**
-Our single-agent baseline is 7-stage reasoning. Reviewers will notice that our
-single-agent baseline (75.5% V3) is higher than most prior work's single-agent results,
-which is good — but then they'll ask: "What about a zero-intelligence baseline?"
-
-The danger: ~80% of patients don't change their regimen visit-to-visit. A simple
-"copy previous prescription" heuristic will hit approximately 80% exact match on V2/V3.
-If we don't show this number, a reviewer will calculate it from our changed/unchanged
-split and do the math themselves. Our changed/unchanged results show:
-
-- V2 unchanged (N=217): multi-agent 95.9%
-- V2 changed (N=57): multi-agent 54.4%
-
-If the copy-previous baseline is ~80% overall and our multi-agent is 87.2%, the actual
-meaningful gain is on the 57 changed cases (+6.8pp) and the 217 unchanged cases
-(where we're even better). The paper needs to present this framing proactively.
-
-**The answer — must be in paper:**
-Copy-previous-regimen is a critical baseline that MUST be run and reported. If we beat
-it overall (which we should — it gets V1 completely wrong by definition), we can frame
-the result as: "Copy-previous is a strong heuristic for unchanged cases but fails
-completely on changed cases (by design). Multi-agent maintains near-human performance
-on unchanged cases AND achieves +X% on changed cases, which is where clinical value
-lies." The real contribution is on the 20% of visits where the doctor makes a change —
-that's the clinically interesting and hard subset, and that's where our +10-20pp gains
-are.
-
-Never let copy-previous appear as a surprise in the review process. Show it, explain
-it, and frame the contribution around the changed-regimen subset.
-
 ---
 
 ### B1.9 — The Fine-Tuning Baseline: Why Not FLAME-Style Fine-Tuning?
@@ -485,15 +453,6 @@ Performance vs cost Pareto plot.
 **Why:** Both MDAgents and MedAgentBoard were asked for cost analysis during rebuttal.
 Authors had to produce cost tables mid-review. Put it in the paper.
 
-### B2.3 — Copy-or-Reason Decomposition
-
-For every V2/V3 prediction, classify as Copy / Adjust / Innovate based on overlap with
-previous GT. Compute accuracy within each bucket. Compute Treatment Inertia Index
-(Jaccard with previous visit's GT). Show multi-agent value-add is in the Adjust and
-Innovate buckets.
-**Why:** Directly addresses copy-previous baseline concern. Shows contribution without
-running copy-previous (though copy-previous should still be run).
-
 ### B2.4 — Disagreement-as-Uncertainty (AUROC)
 
 From traces: drug-level agreement across agent outputs, contradiction density,
@@ -558,16 +517,6 @@ Pre-empt this.
 ## BUCKET 3 — New Experiments Required (Real Pending Tasks)
 
 These require new LLM inference runs. Estimated effort noted per item.
-
-### B3.1 — Copy-Previous-Regimen Baseline [CRITICAL — P0]
-
-Trivial heuristic: for V2/V3, predict the exact drug set from the previous visit.
-For V1, there is no previous visit — use the most common regimen in the training
-distribution or flag as N/A.
-**Effort:** No LLM calls. Pure logic on existing data.
-**Why critical:** Reviewer will calculate this themselves from changed/unchanged split
-if we don't include it. Must show copy-previous, explain it, and frame why multi-agent
-beats it on the hard cases.
 
 ### B3.2 — Zero-Shot, CoT, CoT-SC Baselines [P0]
 
@@ -676,3 +625,107 @@ These will be cited by reviewers. Know their exact claims and how we differ.
 | RareAgents (AAAI 2025)           | 41-agent MDT for rare disease, memory helps most              | Western ICU data, rare diseases ≠ epilepsy, no LMIC, memory finding supports our longitudinal approach.                  |
 
 
+---
+
+## Addendum — New Deltas From Review Scrape (2026-04-03)
+
+These are not new top-level themes. They are refinements that came up repeatedly in
+the review threads and should be handled explicitly in the paper or supplement. The
+main buckets above already capture most of the substance; this section records the
+extra details that were newly clarified.
+
+### D1 — Experimental Setup Consistency Must Be Explicit
+
+**What we learned:** Reviewers are highly sensitive to any apparent inconsistency in
+base models, prompts, cohort handling, sample sizes, or evaluation subsets across
+tables. MDAgents and MedAgentBoard both had to explain why different setups were used
+for different tasks and why their reported numbers differed from prior literature.
+
+**What this means for us:**
+
+- Every main table should state the exact backbone, prompt, temperature, cohort, and
+  metric definition.
+- If a table uses a subset or a different cohort, say why in the caption or first
+  sentence of the subsection.
+- If numbers differ from README / notes / earlier drafts, explain the canonical source
+  of truth (e.g. final deterministic `d0` runs on the fixed split).
+- Add a short "Evaluation Protocol" paragraph that fixes all choices in one place so
+  reviewers do not reconstruct the setup from scattered details.
+
+### D2 — Human Evaluation Needs Credentials, Not Just Scores
+
+**What we learned:** "Humans rated it" is not enough. MedAgentBoard reviewers pushed on
+who the raters were, whether they matched the target end-user population, and whether
+inter-rater reliability was acceptable.
+
+**What this means for us:**
+
+- In the paper, name the evaluator roles precisely: neurologist / epilepsy clinician /
+  years of practice / Uganda familiarity if relevant.
+- Report inter-rater reliability in the main text or main appendix table, not as an
+  afterthought.
+- If one rater is not an epilepsy specialist, state why that rater is still a valid
+  evaluator for the dimension they scored.
+- The doctor-eval section should answer: who judged, what they saw, how blinding worked,
+  and how agreement was measured.
+
+### D3 — Worked Success/Failure Examples Are Reviewer-Calming Artifacts
+
+**What we learned:** Multiple review threads asked for concrete examples of a good case
+and a failure case, especially when outputs are subjective or when the mechanism is
+hard to visualize.
+
+**What this means for us:**
+
+- Include 2-3 appendix case studies with the same structure:
+  patient context -> single-agent output -> multi-agent output -> GT -> why one is
+  better or where both fail.
+- At least one example should be a failure case for Consilium, not only wins.
+- At least one example should show an LMIC-specific correction (availability / tropical
+  differential / pediatric dosing).
+- At least one should show a changed-regimen or short-gap case.
+
+### D4 — Preprocessing and Temporal Assumptions Are Attack Surfaces
+
+**What we learned:** DrugRec reviewers drilled into note timing, symptom extraction,
+negation, visit spacing, and missing clinical factors like refills / dosing /
+corrections. For us, the analogous vulnerability is the LLM-assisted data construction
+pipeline and the assumption that visit trajectories are comparable despite irregular
+gaps.
+
+**What this means for us:**
+
+- Add a dedicated dataset-construction paragraph covering:
+  note splitting, prescription extraction, chronology assignment, and manual spot-checks.
+- State clearly what kinds of notes are used and what information is unavailable.
+- Explicitly distinguish visit index from calendar time and report visit-gap stats.
+- In limitations, admit that we model regimen identity rather than refill behavior,
+  dose titration, or same-week correction events.
+
+### D5 — Literature Comparability Footnotes Matter More Than Expected
+
+**What we learned:** Reviewers do notice when reproduced baseline numbers differ from
+published papers. MDAgents had to explain option count differences, exemplar count, and
+ensemble choices.
+
+**What this means for us:**
+
+- Wherever we compare to outside literature, add one line on why the tasks are not
+  numerically comparable even if they are conceptually related.
+- For internal baselines, keep prompt names and evaluation rules frozen and documented.
+- If we include any partial runs (e.g. 48-case pilot for `single_agent_enhanced`), do
+  not let them appear beside full-scale results without a label that they are pilot-only.
+
+### D6 — Review-Scrape Scope Discipline
+
+**What we learned:** Not every file labeled like prior work is review evidence.
+`micron.txt` in `open_review/` is the MICRON paper text, not a review thread. The
+reviewer-proofing logic should be grounded in actual review dumps, not inferred
+criticisms.
+
+**What this means for us:**
+
+- When we cite "reviewer concerns," only use papers where we have the actual review
+  thread.
+- For MICRON / FLAME / others without local review dumps, treat them as related-work
+  comparisons, not reviewer-precedent evidence.
