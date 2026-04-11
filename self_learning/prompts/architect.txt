@@ -21,7 +21,7 @@ RULES
 - Only add learnings supported by evidence from 2+ patients in the batch (quorum rule)
 - Keep learnings concise — one sentence each, actionable
 - Maximum 15 active learnings at any time (to prevent context overload)
-- Learnings should be about THIS clinic's prescribing patterns, not general medical textbook knowledge
+- Learnings should be about THIS clinic's prescribing patterns — things discovered from the data, not general textbook knowledge
 - Focus on patterns the system keeps getting wrong — don't add learnings for things it already gets right
 
 OUTPUT FORMAT

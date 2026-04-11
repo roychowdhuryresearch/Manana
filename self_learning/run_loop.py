@@ -1,14 +1,12 @@
-"""Self-learning loop with held-out evaluation.
+"""Self-learning loop with stratified train/eval split.
 
-Splits data into train and eval sets. Runs batches through:
-1. Predictor predicts (with current shared learnings)
-2. Inspector diagnoses errors
-3. Architect updates shared learnings
-4. Evaluate on held-out eval set (same learnings, no feedback)
-5. Repeat
+Splits patients into train/eval (stratified by mono/poly complexity).
+Runs batches through: Predictor → Inspector → Architect → Eval.
+Tracks progression on held-out eval set after each round.
 
 Usage:
-    uv run python self_learning/run_loop.py --train 30 --eval 20 --batch-size 5 --visit 1 --cohort csv
+    uv run python self_learning/run_loop.py --batch-size 10
+    uv run python self_learning/run_loop.py --batch-size 10 --seed 123
 """
 
 import argparse
@@ -16,12 +14,11 @@ import asyncio
 import json
 import os
 import re
-import random
 from datetime import datetime
 
 from llm.client import LLMClient, DEFAULT_MODEL
-from scripts.loader import load_cases, load_ground_truth
 from core.regimen_parser import parse_regimen
+from self_learning.sampler import stratified_split
 from tqdm import tqdm
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -49,12 +46,18 @@ def drugs_from_regimen(regimen: dict, option_key: str = "option_1") -> set[str]:
     return {d for d, action in drugs.items() if action in ("continue", "start")}
 
 
+def get_visit_num(case) -> int:
+    return int(case.current_visit.split("_")[1])
+
+
+def get_gt_key(case) -> str:
+    return f"{case.patient_id}__v{get_visit_num(case)}"
+
+
 def parse_architect_learnings(architect_output: str) -> list[str]:
-    """Extract the UPDATED_LEARNINGS list from Architect output."""
     match = re.search(r'UPDATED_LEARNINGS\s*:', architect_output, re.IGNORECASE)
     if not match:
         return []
-
     text = architect_output[match.end():]
     learnings = []
     for line in text.split('\n'):
@@ -64,7 +67,6 @@ def parse_architect_learnings(architect_output: str) -> list[str]:
             learning = m.group(1).strip().strip('"').strip("'")
             if learning and len(learning) > 10:
                 learnings.append(learning)
-
     return learnings
 
 
@@ -73,26 +75,22 @@ async def run_eval(
     predictor_prompt: str,
     eval_cases: list,
     gt_data: dict,
-    visit_num: int,
 ) -> dict:
-    """Run predictor on eval set (no Inspector, no learning — just measure accuracy)."""
+    """Run predictor on eval set — no Inspector, no learning."""
     correct_top1 = 0
     correct_top3 = 0
     total = 0
     per_case = []
 
     for case in eval_cases:
-        gt_key = f"{case.patient_id}__v{visit_num}"
-        gt_entry = gt_data.get(gt_key)
-        if not gt_entry:
-            continue
-        gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
-        if not gt_drugs:
+        gt_entry = gt_data.get(get_gt_key(case))
+        if not gt_entry or not gt_entry["prescribed"]:
             continue
 
+        gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
         total += 1
-        patient_input = case.build_input_text()
-        _, pred_raw = await client.call(predictor_prompt, patient_input)
+
+        _, pred_raw = await client.call(predictor_prompt, case.build_input_text())
         pred_regimen = parse_regimen(pred_raw)
         pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
 
@@ -109,11 +107,17 @@ async def run_eval(
 
         per_case.append({
             "patient_id": case.patient_id,
+            "visit": get_visit_num(case),
             "gt": sorted(gt_drugs),
             "pred": sorted(pred_drugs),
+            "is_poly": len(gt_drugs) > 1,
             "top1_match": top1_match,
             "top3_match": top3_match,
         })
+
+    # Mono/poly breakdown
+    mono_cases = [c for c in per_case if not c["is_poly"]]
+    poly_cases = [c for c in per_case if c["is_poly"]]
 
     return {
         "total": total,
@@ -121,16 +125,16 @@ async def run_eval(
         "top3_correct": correct_top3,
         "top1_rate": correct_top1 / total if total else 0,
         "top3_rate": correct_top3 / total if total else 0,
+        "mono_top3": sum(1 for c in mono_cases if c["top3_match"]),
+        "mono_total": len(mono_cases),
+        "poly_top3": sum(1 for c in poly_cases if c["top3_match"]),
+        "poly_total": len(poly_cases),
         "per_case": per_case,
     }
 
 
 async def run_loop(
-    n_train: int = 30,
-    n_eval: int = 20,
-    batch_size: int = 5,
-    visit_num: int = 1,
-    cohort: str | None = None,
+    batch_size: int = 10,
     model: str = DEFAULT_MODEL,
     seed: int = 42,
 ):
@@ -140,20 +144,12 @@ async def run_loop(
 
     client = LLMClient(model=model)
 
-    # Load all data
-    all_cases = load_cases(visit_num=visit_num, cohort=cohort, limit=n_train + n_eval)
-    gt_data = load_ground_truth(visit_num=visit_num, cohort=cohort, limit=n_train + n_eval)
-
-    # Split into train and eval
-    random.seed(seed)
-    indices = list(range(len(all_cases)))
-    random.shuffle(indices)
-
-    eval_indices = set(indices[:n_eval])
-    train_indices = [i for i in indices if i not in eval_indices][:n_train]
-
-    train_cases = [all_cases[i] for i in train_indices]
-    eval_cases = [all_cases[i] for i in eval_indices]
+    # Stratified split
+    split = stratified_split(cohort="csv", seed=seed)
+    train_cases = split["train_cases"]
+    eval_cases = split["eval_cases"]
+    gt_data = split["gt_data"]
+    stats = split["stats"]
 
     # Load prompt templates
     predictor_template = load_prompt("predictor_v0.txt")
@@ -168,34 +164,28 @@ async def run_loop(
     n_batches = (len(train_cases) + batch_size - 1) // batch_size
 
     print(f"\n{'='*60}")
-    print(f"SELF-LEARNING LOOP WITH EVAL")
+    print(f"SELF-LEARNING LOOP (STRATIFIED)")
     print(f"{'='*60}")
     print(f"Model:      {model}")
-    print(f"Visit:      {visit_num}")
-    print(f"Cohort:     {cohort or 'all'}")
-    print(f"Train:      {len(train_cases)} patients ({n_batches} batches of {batch_size})")
-    print(f"Eval:       {len(eval_cases)} patients (held-out, never trained on)")
+    print(f"Train:      {stats['train_patients']} patients, {stats['train_cases']} cases ({stats['train_poly']} poly)")
+    print(f"Eval:       {stats['eval_patients']} patients, {stats['eval_cases']} cases ({stats['eval_poly']} poly)")
+    print(f"Batches:    {n_batches} × {batch_size}")
     print(f"Output:     {output_dir}")
     print(f"{'='*60}")
 
-    # ── BASELINE EVAL (before any learning) ──
+    # ── BASELINE EVAL ──
     print(f"\n  [Eval] Baseline (0 learnings)...")
     baseline_prompt = build_predictor_prompt(predictor_template, [])
-    baseline_eval = await run_eval(client, baseline_prompt, eval_cases, gt_data, visit_num)
+    baseline_eval = await run_eval(client, baseline_prompt, eval_cases, gt_data)
     eval_progression.append({
         "round": "baseline",
         "learnings": 0,
-        "top1": baseline_eval["top1_rate"],
-        "top3": baseline_eval["top3_rate"],
-        "top1_n": baseline_eval["top1_correct"],
-        "top3_n": baseline_eval["top3_correct"],
-        "total": baseline_eval["total"],
+        **{k: v for k, v in baseline_eval.items() if k != "per_case"},
         "per_case": baseline_eval["per_case"],
     })
-    print(f"  [Eval] Baseline: top1={baseline_eval['top1_correct']}/{baseline_eval['total']} ({baseline_eval['top1_rate']:.0%})  top3={baseline_eval['top3_correct']}/{baseline_eval['total']} ({baseline_eval['top3_rate']:.0%})")
-
-    cumulative_correct = 0
-    cumulative_total = 0
+    mono_str = f"{baseline_eval['mono_top3']}/{baseline_eval['mono_total']}" if baseline_eval['mono_total'] else "n/a"
+    poly_str = f"{baseline_eval['poly_top3']}/{baseline_eval['poly_total']}" if baseline_eval['poly_total'] else "n/a"
+    print(f"  [Eval] top1={baseline_eval['top1_correct']}/{baseline_eval['total']} ({baseline_eval['top1_rate']:.0%})  top3={baseline_eval['top3_correct']}/{baseline_eval['total']} ({baseline_eval['top3_rate']:.0%})  mono={mono_str}  poly={poly_str}")
 
     for batch_idx in range(n_batches):
         start = batch_idx * batch_size
@@ -204,13 +194,13 @@ async def run_loop(
 
         round_data = {
             "round": batch_idx,
-            "patients": [c.patient_id for c in batch_cases],
+            "n_cases": len(batch_cases),
             "shared_learnings_before": list(shared_learnings),
             "results": [],
         }
 
         print(f"\n{'─'*60}")
-        print(f"ROUND {batch_idx} — {len(batch_cases)} train patients — {len(shared_learnings)} learnings")
+        print(f"ROUND {batch_idx} — {len(batch_cases)} cases — {len(shared_learnings)} learnings")
         print(f"{'─'*60}")
 
         predictor_prompt = build_predictor_prompt(predictor_template, shared_learnings)
@@ -219,20 +209,16 @@ async def run_loop(
         batch_correct = 0
         batch_total = 0
 
-        for case in tqdm(batch_cases, desc=f"R{batch_idx} train", unit="pt"):
-            gt_key = f"{case.patient_id}__v{visit_num}"
-            gt_entry = gt_data.get(gt_key)
-            if not gt_entry:
-                continue
-            gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
-            if not gt_drugs:
+        for case in tqdm(batch_cases, desc=f"R{batch_idx} train", unit="case"):
+            gt_entry = gt_data.get(get_gt_key(case))
+            if not gt_entry or not gt_entry["prescribed"]:
                 continue
 
+            gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
             batch_total += 1
-            patient_input = case.build_input_text()
 
             # Predictor
-            pred_thinking, pred_raw = await client.call(predictor_prompt, patient_input)
+            pred_thinking, pred_raw = await client.call(predictor_prompt, case.build_input_text())
             pred_regimen = parse_regimen(pred_raw)
             pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
 
@@ -249,7 +235,7 @@ async def run_loop(
 
             # Inspector
             inspector_input = f"""PATIENT CLINICAL NOTES:
-{patient_input}
+{case.build_input_text()}
 
 SYSTEM PREDICTION:
 {pred_raw}
@@ -264,8 +250,10 @@ MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options
 
             batch_results.append({
                 "patient_id": case.patient_id,
+                "visit": get_visit_num(case),
                 "gt_drugs": sorted(gt_drugs),
                 "pred_option1_drugs": sorted(pred_drugs),
+                "is_poly": len(gt_drugs) > 1,
                 "any_match": any_match,
                 "best_option": best_option,
                 "predictor_thinking": pred_thinking,
@@ -276,16 +264,14 @@ MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options
             })
 
         round_data["results"] = batch_results
-        cumulative_correct += batch_correct
-        cumulative_total += batch_total
-
-        print(f"  Train: {batch_correct}/{batch_total} ({batch_correct/batch_total:.0%})" if batch_total else "")
+        bc_pct = f"{batch_correct}/{batch_total} ({batch_correct/batch_total:.0%})" if batch_total else "n/a"
+        print(f"  Train: {bc_pct}")
 
         # Architect
         print(f"  Running Architect...")
         architect_input = "INSPECTOR REPORTS FROM THIS BATCH:\n\n"
         for r in batch_results:
-            architect_input += f"--- Patient: {r['patient_id']} ---\n"
+            architect_input += f"--- Patient: {r['patient_id']} V{r['visit']} (poly={r['is_poly']}) ---\n"
             architect_input += f"GT: {r['gt_drugs']} | Pred: {r['pred_option1_drugs']} | Match: {r['any_match']}\n"
             architect_input += r["inspector_report"]
             architect_input += "\n\n"
@@ -297,9 +283,9 @@ MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options
         else:
             architect_input += "  (none — this is the first batch)\n"
 
-        if batch_idx > 0 and eval_progression:
-            prev_eval = eval_progression[-1]
-            architect_input += f"\nPREVIOUS EVAL (held-out set): top3={prev_eval['top3_n']}/{prev_eval['total']} ({prev_eval['top3']:.0%})\n"
+        if eval_progression:
+            prev = eval_progression[-1]
+            architect_input += f"\nLAST EVAL: top3={prev['top3_correct']}/{prev['total']} ({prev['top3_rate']:.0%})  mono={prev['mono_top3']}/{prev['mono_total']}  poly={prev['poly_top3']}/{prev['poly_total']}\n"
 
         architect_thinking, architect_output = await client.call(architect_prompt, architect_input)
 
@@ -315,109 +301,99 @@ MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options
         for i, l in enumerate(shared_learnings, 1):
             print(f"    {i}. {l[:90]}{'...' if len(l) > 90 else ''}")
 
-        # ── EVAL after this round ──
+        # Eval
         print(f"  [Eval] Running on held-out set...")
         eval_prompt = build_predictor_prompt(predictor_template, shared_learnings)
-        round_eval = await run_eval(client, eval_prompt, eval_cases, gt_data, visit_num)
-        eval_progression.append({
+        round_eval = await run_eval(client, eval_prompt, eval_cases, gt_data)
+        eval_entry = {
             "round": batch_idx,
             "learnings": len(shared_learnings),
-            "top1": round_eval["top1_rate"],
-            "top3": round_eval["top3_rate"],
-            "top1_n": round_eval["top1_correct"],
-            "top3_n": round_eval["top3_correct"],
-            "total": round_eval["total"],
+            **{k: v for k, v in round_eval.items() if k != "per_case"},
             "per_case": round_eval["per_case"],
-        })
-        print(f"  [Eval] top1={round_eval['top1_correct']}/{round_eval['total']} ({round_eval['top1_rate']:.0%})  top3={round_eval['top3_correct']}/{round_eval['total']} ({round_eval['top3_rate']:.0%})")
+        }
+        eval_progression.append(eval_entry)
+
+        mono_str = f"{round_eval['mono_top3']}/{round_eval['mono_total']}" if round_eval['mono_total'] else "n/a"
+        poly_str = f"{round_eval['poly_top3']}/{round_eval['poly_total']}" if round_eval['poly_total'] else "n/a"
+        print(f"  [Eval] top1={round_eval['top1_correct']}/{round_eval['total']} ({round_eval['top1_rate']:.0%})  top3={round_eval['top3_correct']}/{round_eval['total']} ({round_eval['top3_rate']:.0%})  mono={mono_str}  poly={poly_str}")
 
         all_rounds.append(round_data)
 
-        # Save round snapshot
-        round_path = os.path.join(output_dir, f"round_{batch_idx}.json")
-        with open(round_path, "w", encoding="utf-8") as f:
+        # Save round
+        with open(os.path.join(output_dir, f"round_{batch_idx}.json"), "w", encoding="utf-8") as f:
             json.dump(round_data, f, indent=2, ensure_ascii=False)
 
     await client.close()
 
-    # ── Save everything ──
-    full_path = os.path.join(output_dir, "full_run.json")
-    with open(full_path, "w", encoding="utf-8") as f:
+    # Save everything
+    with open(os.path.join(output_dir, "full_run.json"), "w", encoding="utf-8") as f:
         json.dump(all_rounds, f, indent=2, ensure_ascii=False)
-
-    eval_path = os.path.join(output_dir, "eval_progression.json")
-    with open(eval_path, "w", encoding="utf-8") as f:
+    with open(os.path.join(output_dir, "eval_progression.json"), "w", encoding="utf-8") as f:
         json.dump(eval_progression, f, indent=2, ensure_ascii=False)
 
-    # ── Save progression summary ──
-    summary_path = os.path.join(output_dir, "progression.txt")
-    with open(summary_path, "w", encoding="utf-8") as f:
-        f.write(f"SELF-LEARNING LOOP — {run_id}\n")
-        f.write(f"Model: {model} | Visit: {visit_num} | Cohort: {cohort}\n")
-        f.write(f"Train: {len(train_cases)} | Eval: {len(eval_cases)} | Batch: {batch_size}\n")
+    # Progression summary
+    with open(os.path.join(output_dir, "progression.txt"), "w", encoding="utf-8") as f:
+        f.write(f"SELF-LEARNING LOOP (STRATIFIED) — {run_id}\n")
+        f.write(f"Model: {model} | Seed: {seed}\n")
+        f.write(f"Train: {stats['train_patients']} patients, {stats['train_cases']} cases ({stats['train_poly']} poly)\n")
+        f.write(f"Eval:  {stats['eval_patients']} patients, {stats['eval_cases']} cases ({stats['eval_poly']} poly)\n")
         f.write(f"{'='*70}\n\n")
 
-        f.write("EVAL PROGRESSION:\n")
-        f.write(f"{'Round':<10} {'Learnings':<10} {'Top-1':>10} {'Top-3':>10}\n")
-        f.write(f"{'-'*40}\n")
+        f.write(f"{'Round':<10} {'Learn':<6} {'Top-1':>12} {'Top-3':>12} {'Mono':>10} {'Poly':>10}\n")
+        f.write(f"{'-'*62}\n")
         for ep in eval_progression:
             rnd = ep["round"] if isinstance(ep["round"], str) else f"R{ep['round']}"
-            f.write(f"{rnd:<10} {ep['learnings']:<10} {ep['top1_n']}/{ep['total']} ({ep['top1']:.0%}){'':<3} {ep['top3_n']}/{ep['total']} ({ep['top3']:.0%})\n")
+            mono = f"{ep['mono_top3']}/{ep['mono_total']}" if ep['mono_total'] else "n/a"
+            poly = f"{ep['poly_top3']}/{ep['poly_total']}" if ep['poly_total'] else "n/a"
+            f.write(f"{rnd:<10} {ep['learnings']:<6} {ep['top1_correct']}/{ep['total']} ({ep['top1_rate']:.0%}){'':<3} {ep['top3_correct']}/{ep['total']} ({ep['top3_rate']:.0%}){'':<3} {mono:<10} {poly:<10}\n")
+
         f.write(f"\n{'='*70}\n\n")
 
         for rd in all_rounds:
             bc = sum(1 for r in rd["results"] if r["any_match"])
             bt = len(rd["results"])
             f.write(f"{'─'*70}\n")
-            f.write(f"ROUND {rd['round']} — Train: {bc}/{bt}\n")
-            f.write(f"{'─'*70}\n")
+            f.write(f"ROUND {rd['round']} — Train: {bc}/{bt}\n{'─'*70}\n")
             for r in rd["results"]:
                 s = "OK" if r["any_match"] else "MISS"
-                f.write(f"  [{s}] {r['patient_id']}: GT={r['gt_drugs']} Pred={r['pred_option1_drugs']}\n")
+                poly = "P" if r["is_poly"] else "M"
+                f.write(f"  [{s}] {r['patient_id']} V{r['visit']} [{poly}]: GT={r['gt_drugs']} Pred={r['pred_option1_drugs']}\n")
             f.write(f"\n  ARCHITECT:\n")
             for line in (rd.get("architect_output") or "").split('\n'):
                 f.write(f"    {line}\n")
-            f.write(f"\n  LEARNINGS AFTER:\n")
+            f.write(f"\n  LEARNINGS AFTER ({len(rd.get('shared_learnings_after', []))}):\n")
             for i, l in enumerate(rd.get("shared_learnings_after", []), 1):
                 f.write(f"    {i}. {l}\n")
             f.write(f"\n\n")
 
-    # ── Final summary ──
+    # Final summary
     print(f"\n{'='*60}")
     print(f"FINAL SUMMARY")
     print(f"{'='*60}")
-    print(f"\nEval progression (held-out {len(eval_cases)} patients):")
-    print(f"{'Round':<12} {'Learnings':<10} {'Top-1':>12} {'Top-3':>12}")
-    print(f"{'-'*48}")
+    print(f"\n{'Round':<10} {'Learn':<6} {'Top-1':>12} {'Top-3':>12} {'Mono':>10} {'Poly':>10}")
+    print(f"{'-'*62}")
     for ep in eval_progression:
         rnd = ep["round"] if isinstance(ep["round"], str) else f"Round {ep['round']}"
-        print(f"{rnd:<12} {ep['learnings']:<10} {ep['top1_n']}/{ep['total']} ({ep['top1']:.0%}){'':<4} {ep['top3_n']}/{ep['total']} ({ep['top3']:.0%})")
+        mono = f"{ep['mono_top3']}/{ep['mono_total']}" if ep['mono_total'] else "n/a"
+        poly = f"{ep['poly_top3']}/{ep['poly_total']}" if ep['poly_total'] else "n/a"
+        print(f"{rnd:<10} {ep['learnings']:<6} {ep['top1_correct']}/{ep['total']} ({ep['top1_rate']:.0%}){'':<3} {ep['top3_correct']}/{ep['total']} ({ep['top3_rate']:.0%}){'':<3} {mono:<10} {poly:<10}")
 
     print(f"\nFinal learnings ({len(shared_learnings)}):")
     for i, l in enumerate(shared_learnings, 1):
         print(f"  {i}. {l}")
-
     print(f"\nOutput: {output_dir}/")
     print(f"{'='*60}\n")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Self-Learning Loop with Eval")
-    parser.add_argument("--train", type=int, default=30, help="Number of training patients")
-    parser.add_argument("--eval", type=int, default=20, help="Number of held-out eval patients")
-    parser.add_argument("--batch-size", type=int, default=5)
-    parser.add_argument("--visit", type=int, default=1, choices=[1, 2, 3, 4, 5, 6])
-    parser.add_argument("--cohort", type=str, default=None, choices=["csv", "pdf"])
+    parser = argparse.ArgumentParser(description="Self-Learning Loop (Stratified)")
+    parser.add_argument("--batch-size", type=int, default=10)
     parser.add_argument("--model", type=str, default=DEFAULT_MODEL)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
     asyncio.run(run_loop(
-        n_train=args.train,
-        n_eval=args.eval,
         batch_size=args.batch_size,
-        visit_num=args.visit,
-        cohort=args.cohort,
         model=args.model,
         seed=args.seed,
     ))
