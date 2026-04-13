@@ -342,11 +342,23 @@ async def run_eval(
     }
 
 
+FEEDBACK_PIDS = [
+    "262_Mutyaba Derrick", "64_Owinyi Golden", "10_Muduku Matthew",
+    "288_Agonzibwa Trevor", "95_Lomakol Ives Zane", "90_Odongo Moses",
+    "85_Mirembe Mercy", "67_Ssenyonjo Waswa", "320_Nakibirango Calvin",
+    "58_Sekyeru Jeremiah", "317_Nantume Shabila", "39_Najjemba Christine",
+    "260_Mukisa Elizabeth", "9_Nalukwaago Patience", "8_Tisma Natabi",
+    "74_Mukisa Shalom", "131_Muwanguzi Blessed Serugga", "100_Otim Fortunate",
+    "227_Muluwaya Arnold", "272_Ogol Jerry",
+]
+
+
 async def run_loop(
     batch_size: int = 10,
     max_rounds: int | None = None,
     model: str = DEFAULT_MODEL,
     seed: int = 42,
+    feedback: bool = False,
 ):
     model_folder = sanitize_model_name(model)
     run_id = f"loop_{datetime.now().strftime('%Y%m%d_%H%M')}"
@@ -356,10 +368,22 @@ async def run_loop(
     client = LLMClient(model=model)
 
     split = stratified_split(cohort="csv", seed=seed)
-    train_cases = split["train_cases"]
     eval_cases = split["eval_cases"]
     gt_data = split["gt_data"]
-    stats = split["stats"]
+
+    if feedback:
+        # Use the 20 neurologist-reviewed patients as train, keep same eval set
+        feedback_pid_set = set(FEEDBACK_PIDS)
+        all_cases = split["train_cases"] + split["eval_cases"]  # eval_cases excluded below
+        from scripts.loader import load_cases as _load_cases
+        all_cohort_cases = _load_cases(cohort="csv")
+        train_cases = [c for c in all_cohort_cases if c.patient_id in feedback_pid_set]
+        import random as _random
+        _random.Random(seed).shuffle(train_cases)
+        train_label = f"feedback patients ({len(set(c.patient_id for c in train_cases))} patients, {len(train_cases)} cases)"
+    else:
+        train_cases = split["train_cases"]
+        train_label = f"{split['stats']['train_patients']} patients, {split['stats']['train_cases']} cases"
 
     predictor_template = load_prompt("predictor.txt")
     inspector_prompt = load_prompt("inspector.txt")
@@ -376,11 +400,11 @@ async def run_loop(
         n_batches = min(n_batches, max_rounds)
 
     print(f"\n{'='*60}")
-    print(f"MULTI-AGENT SELF-LEARNING LOOP")
+    print(f"MULTI-AGENT SELF-LEARNING LOOP{'  [FEEDBACK MODE]' if feedback else ''}")
     print(f"{'='*60}")
     print(f"Model:      {model}")
-    print(f"Train:      {stats['train_patients']} patients, {stats['train_cases']} cases")
-    print(f"Eval:       {stats['eval_patients']} patients, {stats['eval_cases']} cases")
+    print(f"Train:      {train_label}")
+    print(f"Eval:       {split['stats']['eval_patients']} patients, {split['stats']['eval_cases']} cases")
     print(f"Batches:    {n_batches} × {batch_size}")
     print(f"Output:     {output_dir}")
     print(f"{'='*60}")
@@ -518,6 +542,7 @@ if __name__ == "__main__":
     parser.add_argument("--rounds", type=int, default=None, help="Max rounds (default: all)")
     parser.add_argument("--model", type=str, default=DEFAULT_MODEL)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--feedback", action="store_true", help="Use neurologist-reviewed patients as train set")
     args = parser.parse_args()
 
     asyncio.run(run_loop(
@@ -525,4 +550,5 @@ if __name__ == "__main__":
         max_rounds=args.rounds,
         model=args.model,
         seed=args.seed,
+        feedback=args.feedback,
     ))
