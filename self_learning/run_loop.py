@@ -309,9 +309,6 @@ async def run_loop(
         else:
             architect_input += "  (none — this is the first batch)\n"
 
-        if eval_progression:
-            prev = eval_progression[-1]
-            architect_input += f"\nLAST EVAL: top3={prev['top3_correct']}/{prev['total']} ({prev['top3_rate']:.0%})  mono={prev['mono_top3']}/{prev['mono_total']}  poly={prev['poly_top3']}/{prev['poly_total']}\n"
 
         architect_thinking, architect_output = await client.call(architect_prompt, architect_input)
 

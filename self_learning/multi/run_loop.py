@@ -440,15 +440,7 @@ async def run_loop(
         architect_input += "CURRENT ACTIVE AGENTS:\n"
         if agents:
             for name, prompt in agents.items():
-                birth = agent_birth_round.get(name)
-                if birth is not None and (birth + 1) < len(eval_progression):
-                    before = eval_progression[birth]["top3_rate"]
-                    after = eval_progression[birth + 1]["top3_rate"]
-                    delta = after - before
-                    delta_str = f"+{delta:.0%}" if delta >= 0 else f"{delta:.0%}"
-                    architect_input += f"\n[{name}] — added R{birth}, eval {delta_str} that round\n{prompt}\n"
-                else:
-                    architect_input += f"\n[{name}]\n{prompt}\n"
+                architect_input += f"\n[{name}]\n{prompt}\n"
             cap_note = "  AT CAP — prune before spawning." if len(agents) >= 5 else ""
             architect_input += f"\nCurrently active: {len(agents)} agents.{cap_note}\n"
         else:
