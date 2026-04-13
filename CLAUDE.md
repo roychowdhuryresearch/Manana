@@ -12,21 +12,25 @@ Multi-agent LLM system for epilepsy drug prediction targeting NeurIPS. 7 special
 - `scripts/` — Entry points: run_pipeline.py, run_baseline.py, run_ablation.py, evaluate.py, loader.py
 
 ## Dependencies
-Run with `conda run -n global_llm python ...`
+Managed with [uv](https://docs.astral.sh/uv/). ALWAYS use uv, never pip.
+- `uv add <package>` — add a dependency (updates pyproject.toml + uv.lock)
+- `uv sync` — install all dependencies from lock file
+- `uv run python <script>` — run a script in the project environment
+- NEVER use `pip install`, `pip list`, or bare `python`. Always `uv add`, `uv run`.
 
 ## Key Commands
 ```bash
 # Run multi-agent pipeline
-conda run -n global_llm python scripts/run_pipeline.py --visit 1 --limit 5
+uv run python scripts/run_pipeline.py --visit 1 --limit 5
 
 # Run single-agent baseline
-conda run -n global_llm python scripts/run_baseline.py --visit 1 --limit 5
+uv run python scripts/run_baseline.py --visit 1 --limit 5
 
 # Run evaluation
-conda run -n global_llm python scripts/evaluate.py --predictions outputs/predictions/consilium_*.json
+uv run python scripts/evaluate.py --predictions outputs/predictions/consilium_*.json
 
 # Run ablations
-conda run -n global_llm python scripts/run_ablation.py --visit 1 --limit 5
+uv run python scripts/run_ablation.py --visit 1 --limit 5
 ```
 
 ## Data
