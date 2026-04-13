@@ -7,6 +7,7 @@ Tracks progression on held-out eval set after each round.
 Usage:
     uv run python self_learning/run_loop.py --batch-size 10
     uv run python self_learning/run_loop.py --batch-size 10 --seed 123
+    uv run python self_learning/run_loop.py --model qwen3-32b
 """
 
 import argparse
@@ -19,7 +20,6 @@ from datetime import datetime
 from llm.client import LLMClient, DEFAULT_MODEL
 from core.regimen_parser import parse_regimen
 from self_learning.sampler import stratified_split
-from tqdm import tqdm
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 PROMPTS_DIR = os.path.join(_HERE, "prompts")
@@ -54,6 +54,12 @@ def get_gt_key(case) -> str:
     return f"{case.patient_id}__v{get_visit_num(case)}"
 
 
+def sanitize_model_name(model: str) -> str:
+    name = re.sub(r'[^a-zA-Z0-9-]', '_', model)
+    name = re.sub(r'_+', '_', name).strip('_')
+    return name.lower()
+
+
 def parse_architect_learnings(architect_output: str) -> list[str]:
     match = re.search(r'UPDATED_LEARNINGS\s*:', architect_output, re.IGNORECASE)
     if not match:
@@ -70,52 +76,117 @@ def parse_architect_learnings(architect_output: str) -> list[str]:
     return learnings
 
 
+async def run_train_case(
+    client: LLMClient,
+    predictor_prompt: str,
+    inspector_prompt: str,
+    case,
+    gt_data: dict,
+) -> dict | None:
+    """Run predictor + inspector for a single training case."""
+    gt_entry = gt_data.get(get_gt_key(case))
+    if not gt_entry or not gt_entry["prescribed"]:
+        return None
+
+    gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
+
+    pred_thinking, pred_raw = await client.call(predictor_prompt, case.build_input_text())
+    if not pred_raw:
+        print(f"  [WARN] Predictor API failure for {case.patient_id} — skipping case")
+        return None
+    pred_regimen = parse_regimen(pred_raw)
+    pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
+
+    any_match = False
+    best_option = None
+    for opt_key in ["option_1", "option_2", "option_3"]:
+        if drugs_from_regimen(pred_regimen, opt_key) == gt_drugs:
+            any_match = True
+            best_option = opt_key
+            break
+
+    inspector_input = f"""PATIENT CLINICAL NOTES:
+{case.build_input_text()}
+
+SYSTEM PREDICTION:
+{pred_raw}
+
+GROUND TRUTH (what the doctor prescribed): {sorted(gt_drugs)}
+
+MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options matched'}
+"""
+    inspector_thinking, inspector_report = await client.call(inspector_prompt, inspector_input)
+    if not inspector_report:
+        print(f"  [WARN] Inspector API failure for {case.patient_id} — skipping case")
+        return None
+
+    return {
+        "patient_id": case.patient_id,
+        "visit": get_visit_num(case),
+        "gt_drugs": sorted(gt_drugs),
+        "pred_option1_drugs": sorted(pred_drugs),
+        "is_poly": len(gt_drugs) > 1,
+        "any_match": any_match,
+        "best_option": best_option,
+        "predictor_thinking": pred_thinking,
+        "predictor_raw": pred_raw,
+        "pred_regimen": pred_regimen,
+        "inspector_thinking": inspector_thinking,
+        "inspector_report": inspector_report,
+    }
+
+
+async def run_eval_case(
+    client: LLMClient,
+    predictor_prompt: str,
+    case,
+    gt_data: dict,
+) -> dict | None:
+    """Run predictor for a single eval case."""
+    gt_entry = gt_data.get(get_gt_key(case))
+    if not gt_entry or not gt_entry["prescribed"]:
+        return None
+
+    gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
+
+    _, pred_raw = await client.call(predictor_prompt, case.build_input_text())
+    if not pred_raw:
+        print(f"  [WARN] Predictor API failure for {case.patient_id} (eval) — skipping case")
+        return None
+    pred_regimen = parse_regimen(pred_raw)
+    pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
+
+    top1_match = pred_drugs == gt_drugs
+    top3_match = any(
+        drugs_from_regimen(pred_regimen, f"option_{n}") == gt_drugs
+        for n in [1, 2, 3]
+    )
+
+    return {
+        "patient_id": case.patient_id,
+        "visit": get_visit_num(case),
+        "gt": sorted(gt_drugs),
+        "pred": sorted(pred_drugs),
+        "is_poly": len(gt_drugs) > 1,
+        "top1_match": top1_match,
+        "top3_match": top3_match,
+    }
+
+
 async def run_eval(
     client: LLMClient,
     predictor_prompt: str,
     eval_cases: list,
     gt_data: dict,
 ) -> dict:
-    """Run predictor on eval set — no Inspector, no learning."""
-    correct_top1 = 0
-    correct_top3 = 0
-    total = 0
-    per_case = []
+    """Run predictor on all eval cases in parallel — no Inspector, no learning."""
+    tasks = [run_eval_case(client, predictor_prompt, case, gt_data) for case in eval_cases]
+    results = await asyncio.gather(*tasks)
+    per_case = [r for r in results if r is not None]
 
-    for case in eval_cases:
-        gt_entry = gt_data.get(get_gt_key(case))
-        if not gt_entry or not gt_entry["prescribed"]:
-            continue
-
-        gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
-        total += 1
-
-        _, pred_raw = await client.call(predictor_prompt, case.build_input_text())
-        pred_regimen = parse_regimen(pred_raw)
-        pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
-
-        top1_match = pred_drugs == gt_drugs
-        top3_match = any(
-            drugs_from_regimen(pred_regimen, f"option_{n}") == gt_drugs
-            for n in [1, 2, 3]
-        )
-
-        if top1_match:
-            correct_top1 += 1
-        if top3_match:
-            correct_top3 += 1
-
-        per_case.append({
-            "patient_id": case.patient_id,
-            "visit": get_visit_num(case),
-            "gt": sorted(gt_drugs),
-            "pred": sorted(pred_drugs),
-            "is_poly": len(gt_drugs) > 1,
-            "top1_match": top1_match,
-            "top3_match": top3_match,
-        })
-
-    # Mono/poly breakdown
+    total = len(per_case)
+    correct_top1 = sum(1 for c in per_case if c["top1_match"])
+    correct_top3 = sum(1 for c in per_case if c["top3_match"])
     mono_cases = [c for c in per_case if not c["is_poly"]]
     poly_cases = [c for c in per_case if c["is_poly"]]
 
@@ -138,8 +209,9 @@ async def run_loop(
     model: str = DEFAULT_MODEL,
     seed: int = 42,
 ):
+    model_folder = sanitize_model_name(model)
     run_id = f"loop_{datetime.now().strftime('%Y%m%d_%H%M')}"
-    output_dir = os.path.join(_HERE, "outputs", run_id)
+    output_dir = os.path.join(_HERE, "outputs", model_folder, run_id)
     os.makedirs(output_dir, exist_ok=True)
 
     client = LLMClient(model=model)
@@ -205,74 +277,28 @@ async def run_loop(
 
         predictor_prompt = build_predictor_prompt(predictor_template, shared_learnings)
 
-        batch_results = []
-        batch_correct = 0
-        batch_total = 0
+        # Run all train cases in parallel (predictor → inspector per case, cases parallel)
+        print(f"  Running batch (parallel)...")
+        tasks = [
+            run_train_case(client, predictor_prompt, inspector_prompt, case, gt_data)
+            for case in batch_cases
+        ]
+        results = await asyncio.gather(*tasks)
+        batch_results = [r for r in results if r is not None]
 
-        for case in tqdm(batch_cases, desc=f"R{batch_idx} train", unit="case"):
-            gt_entry = gt_data.get(get_gt_key(case))
-            if not gt_entry or not gt_entry["prescribed"]:
-                continue
-
-            gt_drugs = set(d.lower() for d in gt_entry["prescribed"])
-            batch_total += 1
-
-            # Predictor
-            pred_thinking, pred_raw = await client.call(predictor_prompt, case.build_input_text())
-            pred_regimen = parse_regimen(pred_raw)
-            pred_drugs = drugs_from_regimen(pred_regimen, "option_1")
-
-            any_match = False
-            best_option = None
-            for opt_key in ["option_1", "option_2", "option_3"]:
-                if drugs_from_regimen(pred_regimen, opt_key) == gt_drugs:
-                    any_match = True
-                    best_option = opt_key
-                    break
-
-            if any_match:
-                batch_correct += 1
-
-            # Inspector
-            inspector_input = f"""PATIENT CLINICAL NOTES:
-{case.build_input_text()}
-
-SYSTEM PREDICTION:
-{pred_raw}
-
-PARSED PREDICTION (Option 1 drugs): {sorted(pred_drugs) if pred_drugs else '(parse failed)'}
-
-GROUND TRUTH (what the doctor prescribed): {sorted(gt_drugs)}
-
-MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options matched'}
-"""
-            inspector_thinking, inspector_report = await client.call(inspector_prompt, inspector_input)
-
-            batch_results.append({
-                "patient_id": case.patient_id,
-                "visit": get_visit_num(case),
-                "gt_drugs": sorted(gt_drugs),
-                "pred_option1_drugs": sorted(pred_drugs),
-                "is_poly": len(gt_drugs) > 1,
-                "any_match": any_match,
-                "best_option": best_option,
-                "predictor_thinking": pred_thinking,
-                "predictor_raw": pred_raw,
-                "pred_regimen": pred_regimen,
-                "inspector_thinking": inspector_thinking,
-                "inspector_report": inspector_report,
-            })
-
+        batch_correct = sum(1 for r in batch_results if r["any_match"])
+        batch_total = len(batch_results)
         round_data["results"] = batch_results
+
         bc_pct = f"{batch_correct}/{batch_total} ({batch_correct/batch_total:.0%})" if batch_total else "n/a"
         print(f"  Train: {bc_pct}")
 
-        # Architect
+        # Architect — serial, runs after all batch results
         print(f"  Running Architect...")
         architect_input = "INSPECTOR REPORTS FROM THIS BATCH:\n\n"
         for r in batch_results:
             architect_input += f"--- Patient: {r['patient_id']} V{r['visit']} (poly={r['is_poly']}) ---\n"
-            architect_input += f"GT: {r['gt_drugs']} | Pred: {r['pred_option1_drugs']} | Match: {r['any_match']}\n"
+            architect_input += f"GT: {r['gt_drugs']} | Match: {r['any_match']}\n"
             architect_input += r["inspector_report"]
             architect_input += "\n\n"
 
@@ -301,10 +327,11 @@ MATCH: {'Yes — ' + best_option if any_match else 'No — none of the 3 options
         for i, l in enumerate(shared_learnings, 1):
             print(f"    {i}. {l[:90]}{'...' if len(l) > 90 else ''}")
 
-        # Eval
+        # Eval — serial after Architect, but all 60 cases run in parallel
         print(f"  [Eval] Running on held-out set...")
         eval_prompt = build_predictor_prompt(predictor_template, shared_learnings)
         round_eval = await run_eval(client, eval_prompt, eval_cases, gt_data)
+
         eval_entry = {
             "round": batch_idx,
             "learnings": len(shared_learnings),

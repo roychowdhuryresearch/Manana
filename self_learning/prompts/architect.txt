@@ -15,7 +15,7 @@ Analyze the Inspector reports and produce a structured update. You have these ac
 
 2. EDIT_LEARNING: Modify an existing shared learning that is partially wrong or needs refinement. State what changed and why.
 
-3. REMOVE_LEARNING: Remove a shared learning that correlated with errors or is no longer supported.
+3. REMOVE_LEARNING: Remove a shared learning that correlated with errors, is no longer supported, or is being merged into another rule.
 
 RULES
 - Only add learnings supported by evidence from 2+ patients in the batch (quorum rule)
