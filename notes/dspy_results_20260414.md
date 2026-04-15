@@ -82,7 +82,59 @@ DSPy's demos are bootstrapped from model successes — cases where the model alr
 
 NPCL's learning is bootstrapped from model failures — the Inspector diagnoses why the model got it wrong, and the Architect writes rules to prevent recurrence. NPCL surfaces latent knowledge the model has but wasn't applying. This is fundamentally different from selecting good examples.
 
+## Additional Runs — 2026-04-14
+
+### DSPy BootstrapFewShot (50 stratified patients)
+
+| | Top-3 Exact | Mean Score |
+|---|---|---|
+| Unoptimized | 31/60 (52%) | 0.716 |
+| Optimized | 32/60 (53%) | 0.728 |
+
+Barely moved. Bootstrap found 4 easy cases quickly and stopped. 3 of 4 demos recommended levetiracetam — inheriting the Western bias.
+
+### DSPy MIPROv2 (50 stratified patients)
+
+| | Top-3 Exact | Mean Score |
+|---|---|---|
+| Unoptimized | 31/60 (52%) | 0.716 |
+| Optimized | 38/60 (63%) | 0.760 |
+
+MIPRO generated 3 candidate instructions. The winning instruction (82.65% on internal eval) was a **copy-previous-regimen heuristic**: "Identify the most recent prescription block... Extract every drug name... Assign the action `continue` to each extracted drug... Produce three identical prescription options." It discovered the shortcut that ~80% of cases are continuations, but failed on the hard cases (63% on held-out eval).
+
+### DSPy GEPA (50 stratified patients)
+
+| | Top-3 Exact | Mean Score |
+|---|---|---|
+| Unoptimized | 31/60 (52%) | 0.716 |
+| Optimized | 31/60 (52%) | 0.716 |
+
+920 rollouts over 30 iterations. Best internal validation score: 76%. Held-out eval: 52% — identical to baseline. Massively overfit to its validation subset despite reflection-based optimization.
+
+### Full Comparison Table (same eval set, same 50-patient training split)
+
+| Method | Approach | Top-3 Exact | Key finding |
+|--------|----------|-------------|-------------|
+| Unoptimized baseline | Zero-shot CoT | 31/60 (52%) | — |
+| DSPy Bootstrap | Few-shot selection | 32/60 (53%) | Selects demos with Western bias |
+| DSPy MIPROv2 | Instruction rewriting | 38/60 (63%) | Discovers "copy last prescription" shortcut |
+| DSPy GEPA | Reflective evolution | 31/60 (52%) | 920 rollouts, overfit, no improvement |
+| **NPCL text learnings** | **Error-driven rules** | **~48/60 (80%)** | **15 interpretable clinical rules** |
+| **NPCL agent spawning** | **Error-driven agents** | **~48/60 (80%)** | **5 spawned specialist agents** |
+
+### Why DSPy fails where NPCL succeeds
+
+1. **DSPy optimizes for the metric. NPCL optimizes for understanding.** DSPy's strongest result (MIPRO) discovered a shortcut — "copy the last prescription." This scores well on average but fails on every case where drugs change. NPCL discovers clinical rules that handle both easy and hard cases.
+
+2. **DSPy bootstraps from successes. NPCL bootstraps from failures.** DSPy selects examples where the model already got it right, inheriting whatever reasoning (and biases) led to those successes. NPCL's Inspector diagnoses why the model got cases wrong, and the Architect writes rules to prevent recurrence. NPCL surfaces latent knowledge the model has but wasn't applying.
+
+3. **DSPy's learned knowledge is implicit. NPCL's is explicit.** DSPy produces few-shot examples or rewritten instructions that a doctor cannot easily audit. NPCL produces "1. Prioritize formulary drugs. 2. Continue working regimens. 3. Classify seizure type." A doctor can read, validate, and edit these.
+
+4. **DSPy overfits. NPCL generalizes.** Both MIPRO (82.65% internal → 63% held-out) and GEPA (76% internal → 52% held-out) show significant overfitting. NPCL's 80% is measured on a truly held-out eval set that the learning loop never touches.
+
 ## Output Files
 
-- `self_learning/outputs/dspy/dspy_feedback_20260413_1504/results.json` — per-case results
-- Full prompt captured in notes (not saved to file by DSPy's optimizer)
+- `self_learning/outputs/dspy/dspy_feedback_20260413_1504/` — Bootstrap, 20 feedback patients
+- `self_learning/outputs/dspy/dspy_bootstrap_20260414_1706/` — Bootstrap, 50 stratified patients
+- `self_learning/outputs/dspy/dspy_mipro_20260414_1722/` — MIPROv2, 50 stratified patients
+- `self_learning/outputs/dspy/dspy_gepa_20260414_1747/` — GEPA, 50 stratified patients

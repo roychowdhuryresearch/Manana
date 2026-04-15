@@ -207,6 +207,35 @@ def run_dspy(
             metric=drug_match_metric,
             auto="light",
         )
+    elif optimizer_name == "gepa":
+        def gepa_metric(gold, pred, trace=None, pred_name=None, pred_trace=None):
+            """GEPA-compatible metric that returns score + feedback."""
+            score = drug_match_metric(gold, pred)
+            gt_drugs = set(gold.gt_drugs)
+            # Build feedback for GEPA's reflector
+            if score == 1.0:
+                feedback = "Correct prediction."
+            else:
+                pred_drugs = set()
+                for opt_field in ["option_1", "option_2", "option_3"]:
+                    opt_str = getattr(pred, opt_field, "")
+                    pred_drugs.update(parse_dspy_option(opt_str))
+                missed = gt_drugs - pred_drugs
+                extra = pred_drugs - gt_drugs
+                parts = []
+                if missed:
+                    parts.append(f"Missed drugs: {', '.join(sorted(missed))}")
+                if extra:
+                    parts.append(f"Extra drugs predicted: {', '.join(sorted(extra))}")
+                feedback = ". ".join(parts) if parts else "Partial match but not exact."
+            return dspy.Prediction(score=score, feedback=feedback)
+
+        reflection_lm = dspy.LM(model, region_name="us-east-1", max_tokens=4096, temperature=1.0)
+        optimizer = dspy.GEPA(
+            metric=gepa_metric,
+            auto="light",
+            reflection_lm=reflection_lm,
+        )
     else:
         raise ValueError(f"Unknown optimizer: {optimizer_name}")
 
@@ -274,7 +303,7 @@ def run_dspy(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DSPy Baseline")
-    parser.add_argument("--optimizer", type=str, default="bootstrap", choices=["bootstrap", "mipro"])
+    parser.add_argument("--optimizer", type=str, default="bootstrap", choices=["bootstrap", "mipro", "gepa"])
     parser.add_argument("--model", type=str, default="bedrock/openai.gpt-oss-120b-1:0")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-bootstrapped", type=int, default=4)
