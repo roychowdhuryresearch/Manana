@@ -104,21 +104,48 @@ in a structured way.
 
 ## 3. GEPA — Final Prompt
 
-(GEPA re-running to capture — prompt to be added)
+GEPA used 920 rollouts over 30 iterations with reflection. The optimized instruction is more sophisticated than both Bootstrap and MIPRO — it actually understands the task structure:
 
-**Known from logs:** GEPA generated a more sophisticated prompt than MIPRO — it attempted to determine start/continue/stop from visit history rather than blindly copying. However, it scored 52% on held-out eval (no improvement), suggesting the generated logic was fragile.
-
-From GEPA iteration logs, the prompt included rules like:
 ```
-- If the drug is **present** in that visit and its first appearance was **earlier**,
-  output `continue`.
-- If the drug is **present** in that visit and its first appearance is **the most
-  recent visit**, output `start`.
-- If the drug is **not present** in that visit but appeared in any earlier visit,
-  output `stop`.
+**Task Overview**
+
+You will receive one block of clinical notes from a Ugandan neurology/paediatric clinic.
+The notes may describe several visits and will contain, for the same patient:
+
+* Demographics (age, sex)
+* Seizure type(s) and description (focal, generalized, absence, myoclonic, infantile
+  spasms, etc.)
+* Frequency / recent change of seizures
+* Physical-exam findings, comorbidities, infections, laboratory results, or documented
+  drug-related adverse events
+* Current anti-seizure medication (ASM) list with dosing (you may ignore the dose)
+
+Your job is to propose **one to three** realistic prescription **options** for this patient.
+Each option must be expressed only as actions on the **ten allowed ASMs**:
+
+carbamazepine, clobazam, clonazepam, ethosuximide,
+lamotrigine, levetiracetam, phenobarbital, phenytoin,
+topiramate, valproate
+
+For every drug that appears in an option you must assign **exactly one** of:
+* `continue` – the drug is already being taken and should be kept unchanged.
+* `start`    – the drug is not in the current regimen and should be initiated.
+* `stop`     – the drug is currently being taken and should be discontinued.
+
+**Only list drugs that you are acting on** (i.e., drugs that are being continued,
+started, or stopped). Do not list a drug that is absent from the current regimen
+unless you are planning to start it.
 ```
 
-This is more clinically reasonable than MIPRO's "always continue" but still lacks the domain knowledge NPCL discovers (seizure type classification, formulary awareness, treatment continuity rules).
+**Observation:** GEPA produced the most reasonable prompt of the three — it correctly understands the task structure (multi-visit notes, extract current meds, assign actions). But it contains zero clinical knowledge:
+- No seizure type → drug mapping
+- No LMIC/formulary awareness
+- No treatment continuity preference
+- No polytherapy logic
+
+It tells the model *what format to output* but not *what clinical reasoning to apply*. The model defaults to its training prior (Western guidelines), which is wrong for this setting. Result: 52% — no improvement over baseline despite a well-structured prompt.
+
+This is the core distinction: GEPA optimized the **task interface** (how to read notes, how to format output). NPCL discovered the **domain knowledge** (which drugs this clinic uses, when to continue vs switch, how to classify seizure types). Interface optimization ≠ knowledge discovery.
 
 ---
 
