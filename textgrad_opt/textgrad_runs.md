@@ -167,3 +167,21 @@ The citation names for Uganda-specific documents are largely invented — the mo
 
 8. **No self-correction across distributions.** The buffer loop processes patients from whatever cohort it runs on and builds rules from those errors — it adapts to the data in front of it. TextGrad has no such mechanism: once training ends, the prompt is frozen and cannot respond to new error patterns from a different patient population.
 
+---
+
+## How We Are Different From TextGrad
+
+**1. What type of knowledge gets extracted from errors**
+
+TextGrad asks "how should the output have been different?" → extracts *content knowledge* (facts about what to prescribe for specific patient types). Content is distribution-specific — tuned to training data, actively wrong when distribution shifts.
+
+Our Inspector asks "what capability was missing?" → extracts *process knowledge* (functional reasoning steps: check seizure burden, identify seizure type, detect clinician intent). Process is distribution-invariant — valid for any patient regardless of cohort.
+
+The question you ask of your errors determines the type of knowledge you extract. This is the mechanistic reason TG falls below baseline on Cohort B (62.8% vs 65.9%) while our system gains 10pp on the same cohort.
+
+**2. Fixed topology vs evolvable topology**
+
+TextGrad's computation graph is fixed at construction time. It can only optimize the content of existing nodes — it cannot add or remove them. The pipeline structure must be decided by a human before optimization begins.
+
+Our Architect incrementally evolves the topology: spawning a new agent when quorum evidence across a batch demands a missing capability, pruning when a node consistently hurts. The set of active agents — their number, roles, and prompts — changes across rounds driven entirely by error signals. This is not search (we don't enumerate candidate architectures); it is guided evolution of the graph structure itself.
+
