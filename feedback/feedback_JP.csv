@@ -1,0 +1,61 @@
+pid,visit,judgment,comment
+262_Mutyaba Derrick,1,Agreed with both LLM and physician,
+262_Mutyaba Derrick,2,Agreed with both LLM and physician,"Not sure why LLM thinks phenobarbital is still on in reference to its reasoning, it was advised to taper in the last plan till off."
+262_Mutyaba Derrick,3,Agreed with both LLM and physician,"Not mentioned by provider, but if diagnosis was really LGS would probably be unsafe to taper off medications, maybe the provider has access to information that us and the LLM don't have access to, normally I would not taper the patient in this scenario otherwise even with good seizure control"
+64_Owinyi Golden,1,Agreed with physician only,"Sounds like West Syndrome, based on semiology and EEG, wouldn't assume focal epilepsy related to hypoxic injury at birth as the LLM is doing"
+64_Owinyi Golden,2,Agreed with physician only,"PHB likely already optimized in an 1.5 year old of average weight. Think given possibility of  West syndrome, would be unusual to go from 3 ASMs to 2 ASMs. Agree with practitioner on broad spectrum drug choices. Wouldn't choose lamictal since I would be worried about West syndrome not garden variety focal seizures."
+64_Owinyi Golden,3,Agreed with physician only,Looks like LLM doesn't update age.  Wouldn;t deescalate like LLM says given continued seizures. ALso would keep topiramate on since that one seems to work the best (even if I wanted to deescalate medications).   LLM seems to have failed to consider West Syndrome.
+10_Muduku Matthew,1,Agreed with both LLM and physician,
+10_Muduku Matthew,2,Agreed with both LLM and physician,
+10_Muduku Matthew,3,Agreed with both LLM and physician,Probably need weight dosing adjustment. Unclear if patient could be controlled on one weight dosed med.  LLM didn't mention that as consideration though for why there were more breakthroughs between now and last appointment.
+288_Agonzibwa Trevor,1,Agreed with both LLM and physician,
+288_Agonzibwa Trevor,2,Agreed with both LLM and physician,
+288_Agonzibwa Trevor,3,Agreed with physician only,"Looks like carbamazepine was taken off in-between visit 2 and 3 which the LLM missed. Looks like PHB was started during that time as well in between visits, likely a different practitioner changed medications.  I think LLM would have reasoned differently if it processed this info."
+95_Lomakol Ives Zane,1,Agreed with both LLM and physician,
+95_Lomakol Ives Zane,2,Agreed with both LLM and physician,"Looks like clobazam was taken off at an outside clinic or hospital between visit 1-2, but the LLM did not detect that, still agree with reasoning because unclear if patient would be well controlled on monotherapy or not given history"
+95_Lomakol Ives Zane,3,Agreed with LLM only,"No third entry. Is this a mistake. LLM thinks the original three medications are still ongoing, maybe we need to force LLM to deliniate timeline better between each visit and remind itself."
+90_Odongo Moses,1,Agreed with both LLM and physician,
+90_Odongo Moses,2,Agreed with both LLM and physician,"agree with option 3 only, doesn;t seem that seizures are controlled with optimized CBZ for weight.  In reality would increase Depakote based on weight."
+90_Odongo Moses,3,Agreed with both LLM and physician,"agree with option three only, LLM should detect that CBZ monotherapy optimized for weight isn't working, agree could consider replacing keppra with depakote.  Since no dose change between visit 2-3 of standing medications I would have double checked that both meds are at the weight based max dosing since children tend to gain weight every 6 months.  Slightly disagree with physician since dosages weren't changed despite having seizures still, but since patient has DRE decision might have been made that increased or optimized dose is futile which is statistically likely."
+85_Mirembe Mercy,1,Agreed with both LLM and physician,"Looks like 2 notes, initial and follow up are stacked together in visit 1.  First age is 4 months, second is 1 year. Looks like PHB was added in interim . Would not do option 2, could cause excessive sedation.  Could theoretically try Keppra/PHB monotherapy,  assuming depakote failure, but probably does need 2 ASM given history.  Looks like weight is provided in that second follow up part when patient is 1 year old, which could help LLM decide if doses are optimized."
+85_Mirembe Mercy,2,Agreed with neither,"Looks like dose adjustments haven't been made since last visit, with expected weght gain. Usually 2ml depakote is 80 mg, which was last dose as well. Would optimize both meds for weight and consider adding third agent "
+85_Mirembe Mercy,3,Agreed with neither,"Patient not on PHB any longer, looks like Carbamazepine was added in between visit 2 to 3.  LLM still thinks patient is on PHB. Again likely need a third agent since 2 ASMs not working. Again would optimize max dosing based on weight then add a third agent, Keppra if available or clobazam if carbamazepine was indeed added before this visit. "
+67_Ssenyonjo Waswa,1,Agreed with both LLM and physician,
+67_Ssenyonjo Waswa,2,Agreed with both LLM and physician,
+67_Ssenyonjo Waswa,3,Agreed with both LLM and physician,
+320_Nakibirango Calvin,1,Agreed with both LLM and physician,
+320_Nakibirango Calvin,2,Agreed with both LLM and physician,"Would also consider PHB monotherapy since that seemed to start seizures, in case epilepsy is generalized. We also need to tell LLM to never mix PHB and clobazam, "
+320_Nakibirango Calvin,3,Agreed with both LLM and physician,"Seems like patient was taken off phb and cbz in the interim, unclear, LLM should comment on patient being acutely ill with infection in terms of consideration. Likely need more information before making an accurate decision. Suspect increased seizures in the setting of acute infection, so technically I agree with LLM that the monotherapy plan later on is possible, given CBZ was likely an ineffective drug based on historical data and semiology (appearing generalized)."
+58_Sekyeru Jeremiah,1,Agreed with physician only,Looks like patient was already on medications before the 01/19/2023 visit.  This visit 1 is 2 notes from two different time points merged into 1.  Patient likely wouldn't do well if converted to monottherapy currently since already having seizures on 3 ASMs.
+58_Sekyeru Jeremiah,2,Agreed with LLM only,"Disagree with physician to rx Clobazam + PHB. Agree with option 2 of LLM  that VPA + LEV is a reasonable alternative, though since patient is on three medications should consider that when recommending going from 3 ASMs to 2 ASMs"
+58_Sekyeru Jeremiah,3,Agreed with both LLM and physician,"Last visit, as predicted looks like Clobazam + PHB did not work,  again agree with option 2 of LLM.  Physicans choice of Carbamazepine is reasonable but this did not work out in the past between visit 1-2 since  Carbamazepine was switched with Clobazam"
+317_Nantume Shabila,1,Agreed with both LLM and physician,Another example where 2 notes from 2 different dates are stacked together. Unclear if truly focal seizures given note also mentions atonic myoclonic seizures.  Might make carbamazepine a risky option.
+317_Nantume Shabila,2,Agreed with both LLM and physician,patient seizure free 11 months 
+317_Nantume Shabila,3,Agreed with both LLM and physician,
+39_Najjemba Christine,1,Agreed with both LLM and physician,"limited information at intake, was there a mistake in terms of pasting in clinical history? we don't know patients age, or presenting history based on this, hard to make decision  with limited info. Also how does LLM know that patient is 3 when its not in the intake history provided?"
+39_Najjemba Christine,2,Agreed with both LLM and physician,Now its saying patient is age 6 and its not updating the age in the reasoning section
+39_Najjemba Christine,3,Agreed with both LLM and physician,In interim patient was switched from Depakote to Carbamazepine between visit 2-3 but LLM doesn't pick up on this. This skews recommendations by LLM. 
+260_Mukisa Elizabeth,1,Agreed with both LLM and physician,Looks like LLM didn't pick up that the patient has focal epilepsy and therefore recomended broad spectrum drugs only instead. Agree with physican more but its recommendations are acceptable.
+260_Mukisa Elizabeth,2,Agreed with both LLM and physician,
+260_Mukisa Elizabeth,3,Agreed with both LLM and physician,
+9_Nalukwaago Patience,1,Agreed with both LLM and physician,
+9_Nalukwaago Patience,2,Agreed with both LLM and physician,"Epilepsy is likely multifocal not generalized given history, seems like carbamazpine is working which LLM didn't pick up on to give its recs"
+9_Nalukwaago Patience,3,Agreed with both LLM and physician,"non is probably. a typo, they probably meant now controlled. "
+8_Tisma Natabi,1,Agreed with both LLM and physician,"LLM keeps harping on GTCs needing broad spectrum, however focal epilepsy can manifest as GTCs or convert into GTCs from focal features, what the LLM should be picking up is focal versus generalized, rather than the semiology, since in this case the EEG showed focal epilepsy"
+8_Tisma Natabi,2,Agreed with both LLM and physician,
+8_Tisma Natabi,3,Agreed with both LLM and physician,
+74_Mukisa Shalom,1,Agreed with both LLM and physician,Another example of two combined notes with 2 different dates on visit 1.
+74_Mukisa Shalom,2,Agreed with both LLM and physician,
+74_Mukisa Shalom,3,Agreed with both LLM and physician,"LLM didn't register that PHB was already weaned off, that likely would have changed its recommendations."
+131_Muwanguzi Blessed Serugga,1,Agreed with both LLM and physician,
+131_Muwanguzi Blessed Serugga,2,Agreed with both LLM and physician,
+131_Muwanguzi Blessed Serugga,3,Agreed with both LLM and physician,
+100_Otim Fortunate,3,Agreed with physician only,If patient does have landau kleffner needs to be on clobazam or a benzodiazepine which was not picked up on or recommended by the LLM
+100_Otim Fortunate,1,Agreed with both LLM and physician,"Landau Kleffner requires benzo treatment, would keep clobazam on"
+100_Otim Fortunate,2,Agreed with physician only,
+227_Muluwaya Arnold,1,Agreed with both LLM and physician,
+227_Muluwaya Arnold,2,Agreed with both LLM and physician,
+227_Muluwaya Arnold,3,Agreed with both LLM and physician,
+272_Ogol Jerry,1,Agreed with both LLM and physician,Possibly rolandic epilepsy
+272_Ogol Jerry,2,Agreed with both LLM and physician,
+272_Ogol Jerry,3,Agreed with both LLM and physician,

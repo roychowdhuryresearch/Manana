@@ -1,0 +1,61 @@
+pid,visit,judgment,comment
+262_Mutyaba Derrick,1,Yes,
+262_Mutyaba Derrick,2,Yes,Input Phenobarbital is not currently on. It was stopped last visit. 
+262_Mutyaba Derrick,3,Yes,Monotherapy optimization plan is appropriate.Why is the model thinking that the Phenobarbital was continued. The input is incorrect. 
+64_Owinyi Golden,1,Yes,
+64_Owinyi Golden,2,No,agree with the reasoning but not the prediction. I will continue the neurologists prediction.
+64_Owinyi Golden,3,No,age is correct. It's not identifying that the age has increased now. It is not recognizing that polytherapy is needed. 
+10_Muduku Matthew,1,Yes,agree with the model. Would have done what is recommended by the model and not the neurologist.
+10_Muduku Matthew,2,Yes,
+10_Muduku Matthew,3,Yes,
+288_Agonzibwa Trevor,1,Yes,"it is unclear why the model sees that the pt was on carbamezapine. Pt was started during visit 1. information leakage is occurring,"
+288_Agonzibwa Trevor,2,Yes,agree with model that first monotherapy needs to be considered. valproate was added in another visit and now pt is on 2 drugs. this was done in a visit between 1 and 2.  
+288_Agonzibwa Trevor,3,Yes," drugs were added that the model doses not recognize in the input.  PHB and valproate are the two drugs pt is on.  This is not being recognized.it still thinks that it's on vpa, cbz. "
+95_Lomakol Ives Zane,1,Yes,continuation of carbamazepine mono therapy with increase of dose is valid.
+95_Lomakol Ives Zane,2,Yes,Agree with the LLM plans
+95_Lomakol Ives Zane,3,Yes,"unclear from the note, If the patient continues to have seizures or remain seizure free."
+90_Odongo Moses,1,Yes,
+90_Odongo Moses,2,Yes,"Unclear from the note, when valproate was added. Monotherapy (even it means stopping the first drug and then starting a second one should be always considered first.  Given our boundary of limiting treatment to mono therapy, option 1 and 2 chosen by the LLM is appropriate. Instead of option 3, I would prefer neurologist option. "
+90_Odongo Moses,3,Yes,"Agree with LLM reasoning, but also appreciate the neurologist's plan to continue drugs that is working.  VPA is more commonly available than LEV and provided by the national formulary,  and as such more frequently prescribed. One option could be adding a prompt-- where drug availability (which drugs are available in the clinic or affordable by the patient)  input is provided by the provider before the visit. "
+85_Mirembe Mercy,1,Yes,"unclear from the HPI noted, when Phenobarbital was started. Again, adding a second drug before maximizing is not warranted."
+85_Mirembe Mercy,2,Yes,"transition to vpa mono therapy, rather than continuing both simultaneously. "
+85_Mirembe Mercy,3,No,"Now that pt is continuing to have seizures on 2 medications, agree with neurologist plan that a new combo of dual ASM is needed."
+67_Ssenyonjo Waswa,1,Yes,optimizing mono therapy. 
+67_Ssenyonjo Waswa,2,Yes,"Option 2, polytherapy is more appropriate. Reasoning of the model is appropriate and ideal in the context. CBZ, VPA combination is more likely to cause side effects. "
+67_Ssenyonjo Waswa,3,Yes,Option 2 again is ideal. here the prediction in the second visit to stop CBZ was appropriate. CBZ was worsening drop attack seizures. During 3rd visit the neurologist recognized this as well and continuing with option 2. 
+320_Nakibirango Calvin,1,Yes,"again monotherapy is preferred. the LLM suggestions are appropriate, even though they do not reflect,the neurologist decision.  "
+320_Nakibirango Calvin,2,Yes,"Agree with starting VPA given pt's history as suggested by LLM. However, neurologist's decision to continue CBZ and PHB, as it appeared to work is also appropriate."
+320_Nakibirango Calvin,3,Yes,The LLMs prediction or drug choice was finally adopted by the neurologist as well in the last visit.  Reasoning is appropriate. 
+58_Sekyeru Jeremiah,1,Yes,"unclear if pt was on any medication prior to first visit. 4 ASM were given  at the same time, which suggests that pt might have been on few before arriving. However, LLM's reasoning given the clinical input is correct. "
+58_Sekyeru Jeremiah,2,Yes,"Agree with option 2. However, these are drug refractory patients and likely difficulty to treat and most drugs will fail. "
+58_Sekyeru Jeremiah,3,Yes,drug resistant. could continue the neurologist suggestion or also option 2 suggested by LLM.
+317_Nantume Shabila,1,Yes,agree with the both the LLM and neurologist plans.
+317_Nantume Shabila,2,Yes,"now that LLM sees that with VPA, pt is seizure free its recommending continuation."
+317_Nantume Shabila,3,Yes,would switch to another mono therapy as the LLM suggested. 
+39_Najjemba Christine,1,No,"the girl child is 3 yrs of age and VPA could be considered. Also, given seizure type is unknown, broad spectrum is needed. The LLM recognizes it but still prescribesCBZ, as VPA is penalized. LEV is appropriate"
+39_Najjemba Christine,2,Yes,
+39_Najjemba Christine,3,Yes,Agree there is no reason to change from VPA to CBZ
+260_Mukisa Elizabeth,3,Yes,
+260_Mukisa Elizabeth,1,Yes,"from the chart it Is not possible to know if pt has focal epilepsy. Given global delay since birth, focal epilepsy could be assumed. So, VPA is an appropriate choice as suggested by LLM.  BUT also CBZ is appropriate when taken into account birth related issue and dev delay. a this time./"
+260_Mukisa Elizabeth,2,Yes,
+9_Nalukwaago Patience,1,Yes,"again seizure in cerebral palsy, suggest focal onset. CBZ could be continued. The LLM is identifying the seizures as generalized (which is not completely incorrect in this setting). Also, CBZ is in the plan and pt was not on it. "
+9_Nalukwaago Patience,2,Yes,Choices provided by LLM is all valid. Reasoning is appropriate. 
+9_Nalukwaago Patience,3,Yes,agree with LLM choices. 
+8_Tisma Natabi,1,Yes,
+8_Tisma Natabi,2,Yes,"agree with the reasoning of continuing meds with increase in CBZ. Also, agree with 3rd option"
+8_Tisma Natabi,3,Yes,"given the information from the chart, the LLM plan is appropriate. "
+74_Mukisa Shalom,1,Yes,agree with the dual treatment continuation. If pt is seizure free on dual treatment that should be continued. 
+74_Mukisa Shalom,2,Yes,"agree with option 3, the LLM is optimizing mono therapy before polytherapy,. But if pt is seizure on polytherapy, that should be continued. "
+74_Mukisa Shalom,3,Yes,"predicting the appropriate course of action, 6 months prior it is done. "
+131_Muwanguzi Blessed Serugga,1,No,"If pt is seizure free on 2 drugs, that needs to be continued. "
+131_Muwanguzi Blessed Serugga,2,Yes,
+131_Muwanguzi Blessed Serugga,3,Yes,option 3 (polytherapy needs to be considered) as pt is seizure free. 
+100_Otim Fortunate,1,Yes,if pt is on 2 drugs ; so continue-- option 2 and 3 is appropriate 
+100_Otim Fortunate,2,No,medically refractory on 3 drugs.  so there are several optimal choices including option 2
+100_Otim Fortunate,3,No,Agree with neurologist. Option 2 suggested by LLM is appropriate. 
+227_Muluwaya Arnold,1,Yes,
+227_Muluwaya Arnold,2,Yes,"if pt is seizure free, no need to change or provide addition options. "
+227_Muluwaya Arnold,3,Yes,
+272_Ogol Jerry,1,Yes,
+272_Ogol Jerry,2,Yes,"Again, if pt is seizure free on current regimen, no need to change"
+272_Ogol Jerry,3,Yes,
