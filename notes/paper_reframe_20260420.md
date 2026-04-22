@@ -88,6 +88,49 @@ Cohort B = older, GTC-dominant, LEV-heavy (closer to Western prescribing)
 
 **Appendix (if results are clean)**: Formal A→B CL experiment — train on A, continue on B, measure forgetting on A. If A rules get appropriately pruned/edited for B without degrading A performance, include as supplementary CL evidence. If messy, omit — main paper doesn't depend on it.
 
+## Regularization Framing (from advisor meeting 2026-04-20)
+
+### Core Insight
+
+TextGrad/DSPy perform **unregularized** text-space optimization — they minimize training loss without structural constraints, producing specific decision rules that overfit. Our method introduces **implicit regularization** through its architecture, biasing toward general reasoning dimensions that transfer.
+
+### The Regularizers
+
+1. **Quorum rule (minimum support)**: Architect needs 2+ patients showing the same pattern before acting. Prevents overfitting to single-case outliers.
+
+2. **Inspector-Architect decomposition (abstraction bottleneck)**: Inspector diagnoses per-case errors. Architect sees batch-level summaries, never raw patient notes. Information bottleneck forces abstraction from cases to patterns.
+
+3. **Append vs. rewrite (small learning rate)**: TextGrad rewrites the whole prompt each round (full gradient step). Our method appends/edits/prunes incrementally. Prevents catastrophic swings.
+
+4. **Error-grounding (not parametric recall)**: Rules describe observed error patterns, not model-recalled "knowledge." Prevents confabulation of false-precision thresholds and fabricated citations.
+
+5. **Agent specialization (structural bottleneck, multi-agent only)**: Each spawned agent covers exactly one clinical dimension. Factored representation prevents any single component from becoming a kitchen-sink memorizer.
+
+### Evidence
+
+- TextGrad R11 rules: mostly specific decision rules with fabricated thresholds ("≥4 seizures in 30 days", "≤18 mg/kg/day")
+- Our rules: mostly reasoning dimensions ("classify seizure type", "prioritize formulary drugs", "continue working regimens")
+- TextGrad on Cohort B V1: 62.8% (worse than no-learning baseline 65.9%)
+- Ours on Cohort B V1: 76.2% (beats expert-designed Consilium 71.5%)
+- Generalization gap: +13.4pp — explained by regularization bias
+
+### Why Convergence With Experts Is a Consequence of Regularization
+
+Doctors don't memorize lookup tables. They think in reasoning dimensions: "classify the seizure type, check what's available locally, continue what's working." The implicit regularizers in our method bias the system toward the same level of abstraction that clinical reasoning naturally operates at. Convergence isn't a coincidence — it's a consequence of the regularization pushing toward general dimensions, which is the same level experts operate at.
+
+### Possible Ablations (if time allows)
+
+| Ablation | Remove | Prediction |
+|---|---|---|
+| No quorum | Single-patient rules allowed | More specific, worse transfer |
+| Per-case architect | Skip batch synthesis | More case-specific, worse transfer |
+| Full rewrite | Replace append with rewrite | More like TextGrad, more oscillation |
+
+### Paper Positioning
+
+**Old:** "We have a different loop than TextGrad"
+**New:** "The design of the learning process implicitly regularizes what can be learned, biasing toward general reasoning dimensions over specific decision rules — explaining both the generalization advantage and the convergence with expert knowledge"
+
 ## What Still Needs To Happen
 
 ### Must-have
