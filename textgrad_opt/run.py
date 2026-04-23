@@ -8,12 +8,13 @@ Usage:
     uv run python textgrad_opt/run.py
     uv run python textgrad_opt/run.py --batch-size 10
     uv run python textgrad_opt/run.py --model openai.gpt-oss-120b-1:0
+    uv run python textgrad_opt/run.py --mimic
 """
 
 import argparse
 import json
 import os
-import uuid
+import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 
@@ -31,8 +32,9 @@ from core.regimen_parser import parse_regimen
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-def load_predictor_template() -> str:
-    with open(os.path.join(_HERE, "prompts", "predictor.txt"), encoding="utf-8") as f:
+def load_predictor_template(mimic: bool = False) -> str:
+    fname = "predictor_mimic.txt" if mimic else "predictor.txt"
+    with open(os.path.join(_HERE, "prompts", fname), encoding="utf-8") as f:
         return f.read()
 
 
@@ -52,7 +54,7 @@ def build_user_message(template: str, case) -> str:
 # ── Parallel IO ──────────────────────────────────────────────────────────────
 
 def _forward_and_loss_one(engine: BedrockEngine, learnings_value: str, template: str,
-                          case, gt_data: dict) -> dict | None:
+                          case, gt_data: dict, dataset: str = "uganda") -> dict | None:
     """Predictor call + loss eval call in one thread. Pure IO, no TextGrad graph."""
     gt_entry = gt_data.get(get_gt_key(case))
     if not gt_entry or not gt_entry["prescribed"]:
@@ -64,13 +66,18 @@ def _forward_and_loss_one(engine: BedrockEngine, learnings_value: str, template:
     if not pred_raw:
         return None
 
+    if dataset == "mimic":
+        patient_desc = "a US hospital patient"
+    else:
+        patient_desc = "a Uganda patient"
     loss_instruction = (
-        f"Evaluate this epilepsy drug prediction for a Uganda patient. "
+        f"Evaluate this epilepsy drug prediction for {patient_desc}. "
         f"The doctor's ground truth prescription was: {sorted(gt_drugs)}. "
         f"Is the prediction correct? If not, explain specifically what clinical knowledge "
         f"was missing or incorrectly applied that caused the error."
     )
-    loss_text = engine.generate(pred_raw, system_prompt=loss_instruction)
+    loss_input = f"PATIENT INPUT:\n{user_msg}\n\nPREDICTION:\n{pred_raw}"
+    loss_text = engine.generate(loss_input, system_prompt=loss_instruction)
 
     return {
         "case": case,
@@ -141,44 +148,69 @@ def run_eval(engine: BedrockEngine, learnings_value: str, template: str,
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 
-def run(batch_size: int = 10, model: str = None, seed: int = 42, temperature: float | None = None):
+def _sanitize(model: str) -> str:
+    name = re.sub(r'[^a-zA-Z0-9-]', '_', model)
+    return re.sub(r'_+', '_', name).strip('_').lower()
+
+
+def run(batch_size: int = 10, model: str = None, seed: int = 42, temperature: float | None = None, mimic: bool = False):
     model = model or DEFAULT_MODEL
-    run_id = f"tg_{datetime.now().strftime('%Y%m%d_%H%M')}_{uuid.uuid4().hex[:6]}"
-    output_dir = os.path.join(_HERE, "outputs", run_id)
+    dataset_tag = "mimic" if mimic else "uganda"
+    run_id = f"tg_{dataset_tag}_s{seed}_{datetime.now().strftime('%Y%m%d_%H%M')}"
+    output_dir = os.path.join(_HERE, "runs", _sanitize(model), run_id)
     os.makedirs(output_dir, exist_ok=True)
 
     engine = BedrockEngine(model=model, temperature=temperature)
     tg.set_backward_engine(engine)
 
-    template = load_predictor_template()
-    split = stratified_split(cohort="csv", seed=seed)
-    train_cases = split["train_cases"]
-    eval_cases  = split["eval_cases"]
-    gt_data     = split["gt_data"]
-    stats       = split["stats"]
-    n_batches   = (len(train_cases) + batch_size - 1) // batch_size
+    template = load_predictor_template(mimic=mimic)
+
+    if mimic:
+        split = mimic_split(shuffle_seed=seed)
+        train_cases = split["train_cases"]
+        eval_cases  = split["eval_cases"]
+        gt_data     = split["gt_data"]
+        stats       = split["stats"]
+        train_label = f"{stats['train_patients']} patients ({stats['train_poly']} poly)"
+        eval_label  = f"{stats['eval_patients']} patients ({stats['eval_poly']} poly)"
+    else:
+        split = stratified_split(cohort="csv", shuffle_seed=seed)
+        train_cases = split["train_cases"]
+        eval_cases  = split["eval_cases"]
+        gt_data     = split["gt_data"]
+        stats       = split["stats"]
+        train_label = f"{stats['train_patients']} patients, {stats['train_cases']} cases"
+        eval_label  = f"{stats['eval_patients']} patients, {stats['eval_cases']} cases"
+
+    n_batches = (len(train_cases) + batch_size - 1) // batch_size
 
     print(f"\n{'='*60}")
     print(f"TEXTGRAD PROMPT OPTIMIZATION")
     print(f"{'='*60}")
     print(f"Model:   {model}")
-    print(f"Train:   {stats['train_patients']} patients, {stats['train_cases']} cases")
-    print(f"Eval:    {stats['eval_patients']} patients, {stats['eval_cases']} cases")
+    print(f"Dataset: {dataset_tag}")
+    print(f"Train:   {train_label}")
+    print(f"Eval:    {eval_label}")
     print(f"Batches: {n_batches} × {batch_size}")
     print(f"Output:  {output_dir}")
     print(f"{'='*60}")
 
+    if mimic:
+        patient_context = "US hospital epilepsy patients"
+    else:
+        patient_context = "Uganda epilepsy patients"
+
     shared_learnings = Variable(
         "",
         requires_grad=True,
-        role_description="clinical learnings about Uganda epilepsy patients — bullet-pointed observations to guide drug prediction",
+        role_description=f"clinical learnings about {patient_context} — bullet-pointed observations to guide drug prediction",
     )
 
     optimizer = TextualGradientDescent(
         parameters=[shared_learnings],
         engine=engine,
         constraints=[
-            "Write only bullet-pointed clinical observations about Uganda epilepsy patients.",
+            f"Write clinical observations about {patient_context}.",
             "Do not write any format instructions, output format specifications, role descriptions, or drug lists.",
             "Each bullet point should be a concrete clinical pattern (e.g. drug preferences, comorbidities, resistance patterns).",
         ],
@@ -193,6 +225,10 @@ def run(batch_size: int = 10, model: str = None, seed: int = 42, temperature: fl
                               "per_case": baseline["per_case"]})
     print(f"  [Eval] top1={baseline['top1_correct']}/{baseline['total']} ({baseline['top1_rate']:.0%})  "
           f"top3={baseline['top3_correct']}/{baseline['total']} ({baseline['top3_rate']:.0%})")
+
+    best_top3 = baseline["top3_rate"]
+    best_learnings = ""
+    best_eval = baseline
 
     all_rounds = []
 
@@ -210,7 +246,7 @@ def run(batch_size: int = 10, model: str = None, seed: int = 42, temperature: fl
         # Use indexed futures to keep deterministic order (as_completed is arrival-order).
         with ThreadPoolExecutor(max_workers=8) as pool:
             indexed_futures = [(i, pool.submit(_forward_and_loss_one, engine, shared_learnings.value,
-                                               template, case, gt_data))
+                                               template, case, gt_data, dataset_tag))
                                for i, case in enumerate(batch_cases)]
         results_by_idx = {}
         for i, f in indexed_futures:
@@ -296,49 +332,100 @@ def run(batch_size: int = 10, model: str = None, seed: int = 42, temperature: fl
 
         # ── Step 4: eval (parallel) ───────────────────────────────────────────
         print(f"  [Eval] Running...")
-        round_eval = run_eval(engine, shared_learnings.value, template, eval_cases, gt_data)
+        candidate_learnings = shared_learnings.value
+        round_eval = run_eval(engine, candidate_learnings, template, eval_cases, gt_data)
         mono_str = f"{round_eval['mono_top3']}/{round_eval['mono_total']}"
         poly_str = f"{round_eval['poly_top3']}/{round_eval['poly_total']}"
         print(f"  [Eval] top1={round_eval['top1_correct']}/{round_eval['total']} ({round_eval['top1_rate']:.0%})  "
               f"top3={round_eval['top3_correct']}/{round_eval['total']} ({round_eval['top3_rate']:.0%})  "
               f"mono={mono_str}  poly={poly_str}")
 
+        accepted = round_eval["top3_rate"] > best_top3
+        if accepted:
+            best_top3 = round_eval["top3_rate"]
+            best_learnings = candidate_learnings
+            best_eval = round_eval
+            print(f"  [Gating] Improved to {best_top3:.0%} — keeping update.")
+            selected_learnings = candidate_learnings
+            selected_eval = round_eval
+        else:
+            shared_learnings.value = best_learnings
+            print(f"  [Gating] No improvement ({round_eval['top3_rate']:.0%} <= {best_top3:.0%}) — rolled back.")
+            selected_learnings = best_learnings
+            selected_eval = best_eval
+
         round_data = {
             "round": batch_idx,
+            "accepted": accepted,
             "learnings_before": eval_progression[-1]["learnings"],
-            "learnings_after": shared_learnings.value,
+            "candidate_learnings": candidate_learnings,
+            "rejected_learnings": candidate_learnings if not accepted else "",
+            "learnings_after": selected_learnings,
             "train_correct": batch_correct,
             "train_total": len(batch_results),
             "train_results": batch_results,
-            **{k: v for k, v in round_eval.items() if k != "per_case"},
-            "per_case": round_eval["per_case"],
+            **{k: v for k, v in selected_eval.items() if k != "per_case"},
+            "per_case": selected_eval["per_case"],
+            "candidate_eval": round_eval,
         }
         all_rounds.append(round_data)
-        eval_progression.append({"round": batch_idx, "learnings": shared_learnings.value,
-                                  **{k: v for k, v in round_eval.items() if k != "per_case"},
-                                  "per_case": round_eval["per_case"]})
+        eval_progression.append({"round": batch_idx, "learnings": selected_learnings,
+                                  "accepted": accepted,
+                                  "candidate_top3_rate": round_eval["top3_rate"],
+                                  "best_top3_rate": best_top3,
+                                  **{k: v for k, v in selected_eval.items() if k != "per_case"},
+                                  "per_case": selected_eval["per_case"]})
 
         with open(os.path.join(output_dir, f"round_{batch_idx}.json"), "w") as f:
             json.dump(round_data, f, indent=2, ensure_ascii=False)
 
+    with open(os.path.join(output_dir, "full_run.json"), "w") as f:
+        json.dump(all_rounds, f, indent=2, ensure_ascii=False)
     with open(os.path.join(output_dir, "eval_progression.json"), "w") as f:
         json.dump(eval_progression, f, indent=2, ensure_ascii=False)
 
     print(f"\n{'='*60}")
     print(f"FINAL SUMMARY")
     print(f"{'='*60}")
-    print(f"{'Round':<10} {'Top-1':>12} {'Top-3':>12} {'Mono':>10} {'Poly':>10}")
-    print(f"{'-'*56}")
+    print(f"{'Round':<10} {'Acc':>4} {'Top-1':>10} {'Candidate':>12} {'Best':>8} {'Mono':>8} {'Poly':>8}")
+    print(f"{'-'*66}")
     for ep in eval_progression:
         rnd  = ep["round"] if isinstance(ep["round"], str) else f"R{ep['round']}"
+        acc  = "—" if "accepted" not in ep else ("Y" if ep["accepted"] else "N")
         mono = f"{ep['mono_top3']}/{ep['mono_total']}" if ep.get("mono_total") else "n/a"
         poly = f"{ep['poly_top3']}/{ep['poly_total']}" if ep.get("poly_total") else "n/a"
-        print(f"{rnd:<10} {ep['top1_correct']}/{ep['total']} ({ep['top1_rate']:.0%})   "
-              f"{ep['top3_correct']}/{ep['total']} ({ep['top3_rate']:.0%})   {mono:<10} {poly:<10}")
+        candidate = f"({ep['candidate_top3_rate']:.0%})" if "candidate_top3_rate" in ep else "—"
+        best = f"({ep['best_top3_rate']:.0%})" if "best_top3_rate" in ep else "—"
+        print(f"{rnd:<10} {acc:>4} {ep['top1_correct']}/{ep['total']} ({ep['top1_rate']:.0%})   "
+              f"{candidate:>12} {best:>8} {mono:<8} {poly:<8}")
 
     print(f"\nFinal learnings:\n{shared_learnings.value}")
     print(f"\nOutput: {output_dir}/")
     print(f"{'='*60}\n")
+
+    lines = []
+    lines.append(f"# Run Summary\n")
+    lines.append(f"**Model:** {model}  ")
+    lines.append(f"**Dataset:** {dataset_tag}  ")
+    lines.append(f"**Seed:** {seed}  ")
+    lines.append(f"**Batch size:** {batch_size}  ")
+    lines.append(f"**Rounds:** {n_batches}\n")
+    lines.append(f"## Eval Progression\n")
+    lines.append(f"| Round | Acc | Top-1 | Candidate | Best | Mono | Poly |")
+    lines.append(f"|-------|-----|-------|-----------|------|------|------|")
+    for ep in eval_progression:
+        rnd = ep["round"] if isinstance(ep["round"], str) else f"R{ep['round']}"
+        acc = "—" if "accepted" not in ep else ("Y" if ep["accepted"] else "N")
+        top1 = f"{ep['top1_correct']}/{ep['total']} ({ep['top1_rate']:.0%})"
+        candidate = f"({ep['candidate_top3_rate']:.0%})" if "candidate_top3_rate" in ep else "—"
+        best = f"({ep['best_top3_rate']:.0%})" if "best_top3_rate" in ep else "—"
+        mono = f"{ep['mono_top3']}/{ep['mono_total']}" if ep.get("mono_total") else "n/a"
+        poly = f"{ep['poly_top3']}/{ep['poly_total']}" if ep.get("poly_total") else "n/a"
+        lines.append(f"| {rnd} | {acc} | {top1} | {candidate} | {best} | {mono} | {poly} |")
+    lines.append(f"\n## Final Learnings\n")
+    lines.append(shared_learnings.value or "(empty)")
+    with open(os.path.join(output_dir, "summary.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":
@@ -347,5 +434,6 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default=None)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--temp", type=float, default=None)
+    parser.add_argument("--mimic", action="store_true")
     args = parser.parse_args()
-    run(batch_size=args.batch_size, model=args.model, seed=args.seed, temperature=args.temp)
+    run(batch_size=args.batch_size, model=args.model, seed=args.seed, temperature=args.temp, mimic=args.mimic)
