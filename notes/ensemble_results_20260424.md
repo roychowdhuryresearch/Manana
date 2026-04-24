@@ -135,6 +135,63 @@ The correct answer is almost always among the 15 candidates. The ceiling for a p
 
 ---
 
+## Final Results — No Dedup (100 CSV + 100 PDF)
+
+After discussion, removed deduplication. If the model puts the same regimen in multiple option slots, that's the model doubling down — it should count.
+
+### CSV — 100 cases (69 mono, 31 poly)
+
+| Method | Top-1 | Top-3 |
+|--------|-------|-------|
+| Best single round (R13) | — | 78/100 (78%) |
+| **Ensemble** | 78/100 (78%) | **89/100 (89%)** |
+| Ensemble (any voted) | — | 93/100 (93%) |
+
+### PDF — 100 cases (58 mono, 42 poly)
+
+| Method | Top-1 | Top-3 |
+|--------|-------|-------|
+| Best single round (R13) | — | 79/100 (79%) |
+| **Ensemble** | 71/100 (71%) | **89/100 (89%)** |
+| Ensemble (any voted) | — | 93/100 (93%) |
+
+**Ensemble top-3 beats best single round by +10-11pp on both cohorts.**
+
+### Calibration (no dedup)
+
+| Threshold | CSV Precision (coverage) | PDF Precision (coverage) |
+|-----------|------------------------|------------------------|
+| >= 0.95 | 100% (2%) | 100% (1%) |
+| >= 0.90 | 100% (18%) | 91% (11%) |
+| >= 0.85 | 85% (67%) | 81% (52%) |
+
+### Selective prediction (no dedup)
+
+| Coverage | CSV | PDF |
+|----------|-----|-----|
+| 25% | 88% | 92% |
+| 50% | 82% | 82% |
+| 75% | 83% | 76% |
+| 100% | 78% | 71% |
+
+### Confidence separation (no dedup)
+
+| | CSV | PDF |
+|---|---|---|
+| Correct mean | 0.813 | 0.757 |
+| Wrong mean | 0.706 | 0.639 |
+| Gap | 0.107 | **0.118** |
+
+---
+
+## Design Decision: No Deduplication
+
+If a round produces the same regimen as Option 1 and Option 2, it receives both the Option 1 prior (0.85) and Option 2 prior (0.11) = 0.96 of the round's weight. This means confidence can exceed the rank prior max of 0.85.
+
+This is correct behavior: the model expressing the same answer in multiple slots is a signal of high conviction, not a parsing artifact. A round that can't think of alternatives is genuinely more certain.
+
+---
+
 ## Known Issue (noted, to fix before paper)
 
 **Duplicate regimen inflation (partially fixed):** When a round produces the same regimen in multiple option slots, the current dedup redistributes the prior mass. This is correct but the edge case of all 3 options being identical gives that regimen 100% of the round's weight, which may slightly overstate confidence. In practice this affects <5% of cases and doesn't change the accuracy numbers — only shifts a few cases between confidence bins.

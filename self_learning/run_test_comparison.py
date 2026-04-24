@@ -61,6 +61,9 @@ async def run_comparison(
     model: str = DEFAULT_MODEL,
     seed: int = 42,
 ):
+    from self_learning.registry import Registry
+    reg = Registry()
+
     if loop_dir is None:
         loop_dirs = sorted(
             [d for d in os.listdir(os.path.join(_HERE, "outputs")) if d.startswith("loop_")],
@@ -71,6 +74,21 @@ async def run_comparison(
     output_dir = os.path.join(_HERE, "outputs", "test_comparison",
                               f"test_{datetime.now().strftime('%Y%m%d_%H%M')}")
     os.makedirs(output_dir, exist_ok=True)
+
+    run_id = reg.start_run(
+        script="run_test_comparison.py",
+        config={
+            "n_test": n_test,
+            "top_k": top_k,
+            "cohort": cohort,
+            "loop_dir": loop_dir,
+            "model": model,
+            "seed": seed,
+            "rank_prior": RANK_PRIOR,
+            "dedup": False,
+        },
+        description=f"Bayesian ensemble on {n_test} {cohort.upper()} test cases, top-{top_k} rounds, rank prior, no dedup",
+    )
 
     # Load round data
     with open(os.path.join(loop_dir, "eval_progression.json")) as f:
@@ -159,30 +177,21 @@ async def run_comparison(
             for n in [1, 2, 3]
         )
 
-        # --- Ensemble with rank prior (deduplicated within round) ---
+        # --- Ensemble with rank prior ---
+        # Each option is a ballot. Duplicates count — if the model puts the
+        # same regimen in Option 1 and Option 2, that's the model doubling
+        # down and should receive both weights.
         ballots = []
         for i, (_, raw) in enumerate(responses):
             if not raw:
                 continue
             regimen = parse_regimen(raw)
             round_weight = selected[i]["weight"]
-
-            # Deduplicate: each unique regimen from this round gets credited
-            # once, at its highest rank prior
-            seen_in_round = {}  # regimen -> best rank prior
             for opt_key in ["option_1", "option_2", "option_3"]:
                 drug_set = drugs_from_regimen(regimen, opt_key)
                 if drug_set:
-                    rank_p = RANK_PRIOR[opt_key]
-                    if drug_set not in seen_in_round or rank_p > seen_in_round[drug_set]:
-                        seen_in_round[drug_set] = rank_p
-
-            # Redistribute: unique regimens share the round's weight
-            # proportional to their rank priors
-            total_rank = sum(seen_in_round.values())
-            for drug_set, rank_p in seen_in_round.items():
-                ballot_weight = round_weight * (rank_p / total_rank)
-                ballots.append((drug_set, ballot_weight))
+                    ballot_weight = round_weight * RANK_PRIOR[opt_key]
+                    ballots.append((drug_set, ballot_weight))
 
         regimen_votes = Counter()
         for drug_set, weight in ballots:
@@ -289,6 +298,21 @@ async def run_comparison(
 
     print(f"\nOutput: {output_dir}/")
     print(f"{'='*60}\n")
+
+    # Register completion
+    reg.finish_run(run_id, metrics={
+        "total": n,
+        "best_round_top3": f"{best_top3_n}/{n} ({best_top3_n/n:.0%})",
+        "ensemble_top1": f"{ens_top1_n}/{n} ({ens_top1_n/n:.0%})",
+        "ensemble_top3": f"{ens_top3_n}/{n} ({ens_top3_n/n:.0%})",
+        "ensemble_any": f"{ens_any_n}/{n} ({ens_any_n/n:.0%})",
+        "mono_best": f"{sum(1 for r in mono if r['best_round_top3'])}/{len(mono)}",
+        "poly_best": f"{sum(1 for r in poly if r['best_round_top3'])}/{len(poly)}",
+        "mono_ens": f"{sum(1 for r in mono if r['ens_match'])}/{len(mono)}",
+        "poly_ens": f"{sum(1 for r in poly if r['ens_match'])}/{len(poly)}",
+        "correct_conf_mean": round(sum(correct_confs)/len(correct_confs), 3) if correct_confs else None,
+        "wrong_conf_mean": round(sum(wrong_confs)/len(wrong_confs), 3) if wrong_confs else None,
+    }, output_dir=output_dir)
 
 
 if __name__ == "__main__":
