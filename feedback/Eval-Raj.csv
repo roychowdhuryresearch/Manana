@@ -1,0 +1,121 @@
+pid,visit,system,cohort,comment,seizure_type,seizure_activity,medications,circumstances,usefulness
+39_Najjemba Christine,1,consilium,csv,,Yes,Yes,Yes,Yes,Very useful
+39_Najjemba Christine,2,consilium,csv,,Yes,Yes,Yes,Yes,Very useful
+39_Najjemba Christine,3,consilium,csv,"respiradone and methylphenidate are not AED, so there is no reason to recommend. ",Yes,Yes,Yes,Yes,Very useful
+47_Mugisha Silver,1,consilium,csv,,Yes,Yes,Yes,Yes,Very useful
+47_Mugisha Silver,2,consilium,csv,,Yes,Yes,Yes,Yes,Very useful
+47_Mugisha Silver,3,consilium,csv,,Yes,Yes,Yes,Yes,Very useful
+110_Manozi Angella,1,consilium,csv,,Yes,Yes,Yes,,
+110_Manozi Angella,2,consilium,csv,,Yes,Yes,Yes,,
+110_Manozi Angella,3,consilium,csv,,Yes,Yes,Yes,,
+135_Best Betina,1,consilium,csv,"Baseline seizure frequency is not available. unclear from the chart note, how the patient is doing- but could be assumed that the seizures are uncontrolled. Thus, optimization of VPA is ideal. ",Yes,Yes,Yes,,
+135_Best Betina,2,consilium,csv,,Yes,Yes,Yes,,
+135_Best Betina,3,consilium,csv,,Yes,Yes,Yes,,
+266_Ssebunya Hashim,1,consilium,csv,,Yes,Yes,Yes,,
+266_Ssebunya Hashim,2,consilium,csv,,Yes,Yes,Yes,,
+266_Ssebunya Hashim,3,consilium,csv,,Yes,Yes,Yes,,
+153_Kakande Huzaifa,1,consilium,csv,,Yes,Yes,Yes,,
+153_Kakande Huzaifa,2,consilium,csv,,Yes,Yes,Yes,,
+153_Kakande Huzaifa,3,consilium,csv,,Yes,Yes,Yes,,
+202_Kasule Amil,1,consilium,csv,,Yes,Yes,Yes,,
+202_Kasule Amil,2,consilium,csv,,Yes,Yes,Yes,,
+202_Kasule Amil,3,consilium,csv,,Yes,Yes,Yes,,
+333_Murungi Isaac,1,consilium,csv,,Yes,Yes,Yes,,
+333_Murungi Isaac,2,consilium,csv,"option 2 might be better. it is unclear from the history if the combination treatment would be better than monotherapy of VPA. given pt is stable on current regimen, it should not be changed. This could be in the prompt.",Yes,Yes,Yes,,
+333_Murungi Isaac,3,consilium,csv,,Yes,Yes,Yes,,
+10_Muduku Matthew,1,consilium,csv,,Yes,Yes,Yes,,
+10_Muduku Matthew,2,consilium,csv,"given the prior regimen was effective, this should be prioritize. Again, the seizure occurred as the medication was unavailable. the other options might be useful, incase drug remains unavailable in stock. There is a utility of the recommendations. ",Yes,Yes,Yes,,
+10_Muduku Matthew,3,consilium,csv,"optimizing current treatment should be prioritized, if it is working. ",Yes,Yes,Yes,,
+157_Odong Raphael,1,consilium,csv,,Yes,Yes,Yes,,
+157_Odong Raphael,2,consilium,csv,,Yes,Yes,Yes,,
+157_Odong Raphael,3,consilium,csv,"In the output, the dosing should be very clear based on the weight and the titration schedule (step wise weight based escalation) should be clearly stated. ",Yes,Yes,Yes,,
+39_Najjemba Christine,1,self,csv,,Yes,Yes,Yes,,
+39_Najjemba Christine,2,self,csv,patient presented after 6 years.,Partially,Yes,Yes,,
+39_Najjemba Christine,3,self,csv,,Yes,Yes,Yes,,
+47_Mugisha Silver,1,self,csv,System B reasoning is easier to follow. ,Yes,Yes,Yes,,
+47_Mugisha Silver,2,self,csv,"All three options are carbamazepine, which is appropriate as pt responded. ",Yes,Yes,Yes,,
+47_Mugisha Silver,3,self,csv,,Yes,Yes,Yes,,
+110_Manozi Angella,1,self,csv,,Yes,Yes,Yes,,
+110_Manozi Angella,2,self,csv,patient has been seizure free only for 5 months and dose reduction should not be recommended.,Yes,Yes,Yes,,
+110_Manozi Angella,3,self,csv,,Yes,Yes,Yes,,
+135_Best Betina,1,self,csv,,Yes,Yes,Yes,,
+135_Best Betina,2,self,csv,,Yes,Yes,Yes,,
+135_Best Betina,3,self,csv,,Yes,Yes,Yes,,
+266_Ssebunya Hashim,1,self,csv,option 1 through 3 are related and are different scenarios that are considered with the same regimen.,Yes,Yes,Yes,,
+266_Ssebunya Hashim,2,self,csv,reasoning is coherent and all the options are related. ,Yes,Yes,Yes,,
+266_Ssebunya Hashim,3,self,csv,,Yes,Yes,Yes,,
+153_Kakande Huzaifa,1,self,csv,,Yes,Yes,Yes,Yes,Very useful
+153_Kakande Huzaifa,2,self,csv,"The LLM identified that the CBZ was discontinued in the interim.  Given seizure control is not achieved on the current regimen, would optimize the current meds as in option 1. Option 2, while is a correct choice, it is higher risk, given seizure freedom is not achieved yet",Yes,Yes,Yes,Yes,Somewhat useful
+153_Kakande Huzaifa,3,self,csv,LLM recognizes the seizure type as it becomes clearer in third visit. New semiology is recognized and appropriately seizure type is recognized. ,Yes,Yes,Yes,Yes,Very useful
+202_Kasule Amil,1,self,csv,,Yes,Yes,Yes,Yes,Very useful
+202_Kasule Amil,2,self,csv,identifies drug regimen discrepancies in what was prescribed and what patient is currently taking.,Yes,Yes,Yes,Yes,Very useful
+202_Kasule Amil,3,self,csv,"all three recommendations are concordant. This is better than system A, which provides- appropriate but different choices. ",Yes,Yes,Yes,Yes,Very useful
+333_Murungi Isaac,1,self,csv,,Yes,Yes,Yes,Yes,Very useful
+333_Murungi Isaac,2,self,csv,,Yes,Yes,Yes,Yes,Very useful
+333_Murungi Isaac,3,self,csv,,Yes,Yes,Yes,Yes,Very useful
+10_Muduku Matthew,1,self,csv,,Yes,Yes,Yes,Yes,Very useful
+10_Muduku Matthew,2,self,csv,,Yes,Yes,Yes,Yes,Very useful
+10_Muduku Matthew,3,self,csv,,Yes,Yes,Yes,Yes,Very useful
+157_Odong Raphael,1,self,csv,"the HPI note already has the plan, LLM recognizes and recommends the same. Provides appropriate alternatives. ",Yes,Yes,Yes,Yes,Very useful
+157_Odong Raphael,2,self,csv,,Yes,Yes,Yes,Yes,Very useful
+157_Odong Raphael,3,self,csv,,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,3,consilium,pdf,"severe cases of drug-refractory epilepsy- on 3 AEDs, usually, pt will likely continue to have seizures and difficult to control.",Yes,Yes,Yes,Yes,Very useful
+SHALOM_KEEZA,1,consilium,pdf,the clinical note already has the plan. so should be taken out.,Yes,Yes,Yes,Yes,Very useful
+SHALOM_KEEZA,2,consilium,pdf,up titration is appropriate. ,Yes,Yes,Yes,Yes,Very useful
+SHALOM_KEEZA,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+ATWONGYEIRE_ISRAEL_2,1,consilium,pdf,"will not recommend stopping AEDs, given the duration of the seizure freedom is not known. so option 1 is not appropriate.",Yes,Yes,Yes,Yes,Not useful
+ATWONGYEIRE_ISRAEL_2,2,consilium,pdf,recommending stopping keppra due to side effects. ,Yes,Yes,Yes,Yes,Very useful
+ATWONGYEIRE_ISRAEL_2,3,consilium,pdf,"when patient is seizure free, should continue with the current AED, unless side effects are present.",Yes,Yes,Yes,Yes,Somewhat useful
+ABONGA_MATTHEW,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+ABONGA_MATTHEW,2,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+ABONGA_MATTHEW,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,1,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,2,consilium,pdf,"the LLM identifies, adherence issue.",Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,3,consilium,pdf,,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,2,self,pdf,All three options are inter-related.,Yes,Yes,Yes,Yes,Very useful
+LINDA ROSEMARY,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BULUMA_JONATHAN,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+LUBOWA_JEREMIAH,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+MUKISA_ADRIAN,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+BUZIBA ARNOLD,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,1,self,pdf,"the plan is mentioned in HPI note, so this visit needs to be censored. ",Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+JANELLE_ELIZABETH_2,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+SHALOM_KEEZA,1,self,pdf,HPI contains the plan. visit 1 might need to be censored. Additional appropriate alternatives are provided.,Yes,Yes,Yes,Yes,Very useful
+SHALOM_KEEZA,2,self,pdf,one option to increase dose is not provided.,Yes,Yes,Yes,Yes,Somewhat useful
+SHALOM_KEEZA,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ATWONGYEIRE_ISRAEL_2,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ATWONGYEIRE_ISRAEL_2,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ATWONGYEIRE_ISRAEL_2,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ABONGA_MATTHEW,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ABONGA_MATTHEW,2,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+ABONGA_MATTHEW,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,1,self,pdf,,Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,2,self,pdf,option 1 is appropriate and has least risk with highest benefit,Yes,Yes,Yes,Yes,Very useful
+NAKISEKA_SHALOM,3,self,pdf,,Yes,Yes,Yes,Yes,Very useful
