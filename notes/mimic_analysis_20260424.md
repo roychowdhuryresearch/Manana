@@ -1,4 +1,85 @@
+# MIMIC Analysis — 2026-04-24
+
+---
+
+## Results Table (New Clean Dataset)
+
+**Dataset:** 1977 cases / 1257 patients | 15 drugs (≥4% gate, phenobarbital cutoff) | PRN filter | ≤4 drug cap  
+**Test set:** 1767 cases (557 mono, 1210 poly) | split_seed=42 (150 train / 60 eval)  
+**Metric:** Top-3 EM — GT matches any of 3 predicted regimens. EpiPick: first 3 tracked drugs collected across groups in order.
+
+
+| Method                | Mono Top-3 (n=557) | Poly Top-3 (n=1210) |
+| --------------------- | ------------------ | ------------------- |
+| EpiPick               | 48.3%              | —                   |
+| Naive Bayes (trigram) | 50.9%              | 13.8%               |
+| Buffer multi          | 54.5%              | 40.1%               |
+| Buffer single         | 53.7%              | 35.0%               |
+| TextGrad              | 48.5%              | 37.4%               |
+
+
+*All runs: seed 1, 120B model*
+
+---
+
 # MIMIC Learning Analysis — Buffer Single (120B, Seed 1)
+
+---
+
+## Dataset & Pipeline Decisions
+
+### Drug List (15 drugs, ≥4% frequency gate)
+
+Full MIMIC GT had 22 drugs. Filtered to drugs appearing in ≥4% of 2045 admissions:
+
+
+| Drug              | Count | %          |
+| ----------------- | ----- | ---------- |
+| levetiracetam     | 975   | 47.7%      |
+| lamotrigine       | 547   | 26.7%      |
+| zonisamide        | 442   | 21.6%      |
+| lacosamide        | 442   | 21.6%      |
+| lorazepam         | 370   | 18.1%      |
+| valproate         | 299   | 14.6%      |
+| phenytoin         | 297   | 14.5%      |
+| oxcarbazepine     | 242   | 11.8%      |
+| gabapentin        | 199   | 9.7%       |
+| clobazam          | 174   | 8.5%       |
+| clonazepam        | 159   | 7.8%       |
+| topiramate        | 152   | 7.4%       |
+| carbamazepine     | 110   | 5.4%       |
+| pregabalin        | 96    | 4.7%       |
+| phenobarbital     | 89    | 4.4%       |
+| ~~rufinamide~~    | 79    | 3.9% ← cut |
+| ~~diazepam~~      | 59    | 2.9% ← cut |
+| ~~felbamate~~     | 49    | 2.4% ← cut |
+| ~~brivaracetam~~  | 28    | 1.4% ← cut |
+| ~~acetazolamide~~ | 19    | 0.9% ← cut |
+| ~~perampanel~~    | 16    | 0.8% ← cut |
+| ~~primidone~~     | 16    | 0.8% ← cut |
+
+
+**Rationale:** Rare drugs (<4%) appear in too few training cases for the model to learn reliable patterns. Including them adds noise and inflates the task difficulty without adding learnable signal. Cases where the only GT drug was one of the 7 cut drugs are excluded from the cohort (lost 4 cases: 2045 → 2041).
+
+### Cohort After Filtering
+
+- **2041 admissions**, 1276 unique patients, 369 with 2+ admissions
+- Mono: 573 (28%) | Poly: 1468 (72%)
+- Split: 150 train / 60 eval / 1831 test (patient-level, split_seed=42)
+
+### Note Cleaning Pipeline
+
+1. Raw MIMIC discharge notes → LLM cleaning (`mimic_data/clean.py`) — removes in-admission treatment sentences from HPI/BHC
+2. Post-hoc regex (`_clean_note()`) — strips discharge section headers (Discharge Diagnosis/Condition/Disposition/Instructions/Medications) + "discharged on AED" lines
+3. Result → `clinical_context` in PatientCase
+
+### GT Extraction
+
+- GT drugs extracted from discharge medication lists at parse time (`mimic_data/gt.py`)
+- Filtered to MIMIC_DRUGS (15 drugs) at load time in `_load_usable()`
+- Cases with zero qualifying GT drugs excluded
+
+---
 
 Date: 2026-04-24
 Run: `self_learning/buffer/runs/openai_gpt-oss-120b-1_0/buffer_mimic_s1_20260424_1704/`
@@ -83,7 +164,9 @@ Dataset: MIMIC-IV epilepsy cohort (US hospital), 10-drug filter (pre-fix — see
 ## Theme Breakdown
 
 ### Theme 1 — Stability / Continuation (rules 1, 6, 9, 13) ✓ GOOD
+
 Same universal rule that buffer single learned for Uganda. Four rules all saying the same thing from slightly different angles:
+
 - General stability → continue (1)
 - Explicit "no changes" documentation → continue (6)
 - No explicit change + stable → continue (9)
@@ -94,7 +177,9 @@ Same universal rule that buffer single learned for Uganda. Four rules all saying
 ---
 
 ### Theme 2 — Discharge Documentation Parsing (rules 3, 10, 14, 17) ✓ GOOD (MIMIC-specific)
+
 MIMIC notes have richer structured discharge sections than Uganda notes. The model learned to treat explicit discharge documentation as ground truth:
+
 - Explicitly documented list → follow exactly, don't infer (3)
 - Drug on admission but absent at discharge → discontinued (10)
 - Taper planned but no stop order → still continuing (14)
@@ -107,7 +192,9 @@ MIMIC notes have richer structured discharge sections than Uganda notes. The mod
 ---
 
 ### Theme 3 — Rescue Benzodiazepine Logic (rules 5, 7, 15) ~ MIXED
+
 Three rules all about when to include a PRN benzo:
+
 - If documented → include it (5)
 - If not documented + breakthrough → add one (7)
 - If scheduled benzo already present → don't add PRN (15)
@@ -119,7 +206,9 @@ Three rules all about when to include a PRN benzo:
 ---
 
 ### Theme 4 — Escalation Logic (rules 4, 11, 12, 16) ✓ GOOD
+
 When and how to add adjunctive medications:
+
 - Stable but breaking through → add different MOA (4) ✓
 - Non-adherence is cause → don't escalate, simplify (11) ✓
 - Focal + structural lesion → sodium-channel blocker (oxcarbazepine/lacosamide/CBZ) (12) ✓
@@ -130,6 +219,7 @@ When and how to add adjunctive medications:
 ---
 
 ### Theme 5 — First-Line Mapping (rule 8) ✓ GOOD (MIMIC-specific)
+
 First unprovoked generalized seizure → LEV monotherapy.
 
 **Assessment:** Correct for US hospital practice. Notably different from Uganda where valproate/CBZ would be first-line. The model correctly learned the US-specific first-line without being told to.
@@ -138,28 +228,32 @@ First unprovoked generalized seizure → LEV monotherapy.
 
 ## Quality Metrics
 
-| Metric | Buffer MIMIC s1 | Buffer Uganda 120B (ref) |
-|--------|----------------|--------------------------|
-| Rules total | 17 | 9.0 (mean) |
-| Rules with numeric claims | 0 (0%) | 9% |
-| Rules with actionable drug decisions | ~14 (82%) | 78% |
-| Fabricated numbers | None | None |
-| Internal contradictions | 1 (benzo theme) | 0 |
-| MIMIC-specific rules | ~6 | N/A |
-| Universal rules (also valid for Uganda) | ~8 | ~9 |
+
+| Metric                                  | Buffer MIMIC s1 | Buffer Uganda 120B (ref) |
+| --------------------------------------- | --------------- | ------------------------ |
+| Rules total                             | 17              | 9.0 (mean)               |
+| Rules with numeric claims               | 0 (0%)          | 9%                       |
+| Rules with actionable drug decisions    | ~14 (82%)       | 78%                      |
+| Fabricated numbers                      | None            | None                     |
+| Internal contradictions                 | 1 (benzo theme) | 0                        |
+| MIMIC-specific rules                    | ~6              | N/A                      |
+| Universal rules (also valid for Uganda) | ~8              | ~9                       |
+
 
 ---
 
 ## What's New vs Uganda
 
-| Signal | Uganda Buffer | MIMIC Buffer |
-|--------|--------------|--------------|
-| First-line drug | Valproate (generalized), CBZ (focal) | LEV (first unprovoked) |
-| Documentation parsing | Not present | Explicit (4 rules) |
-| Rescue benzo | Not present | Present (3 rules, 1 contradictory) |
-| Non-enzyme-inducing preference | Not present | Present (rules 2, 4, 12) |
-| Structural epilepsy rule | Not present | Present (rule 12) |
-| Core continuation logic | ✓ | ✓ (same) |
+
+| Signal                         | Uganda Buffer                        | MIMIC Buffer                       |
+| ------------------------------ | ------------------------------------ | ---------------------------------- |
+| First-line drug                | Valproate (generalized), CBZ (focal) | LEV (first unprovoked)             |
+| Documentation parsing          | Not present                          | Explicit (4 rules)                 |
+| Rescue benzo                   | Not present                          | Present (3 rules, 1 contradictory) |
+| Non-enzyme-inducing preference | Not present                          | Present (rules 2, 4, 12)           |
+| Structural epilepsy rule       | Not present                          | Present (rule 12)                  |
+| Core continuation logic        | ✓                                    | ✓ (same)                           |
+
 
 The MIMIC model correctly learned US-specific patterns: LEV as first-line, non-enzyme-inducing preference (avoids CBZ/PHT interactions), structured documentation as ground truth, and benzo rescue patterns. These are all valid US hospital clinical norms not present in Uganda.
 
@@ -168,11 +262,8 @@ The MIMIC model correctly learned US-specific patterns: LEV as first-line, non-e
 ## Issues to Watch
 
 1. **Benzo contradiction** (rules 5 vs 7): Will produce inconsistent predictions on cases where breakthrough seizures occur without documented rescue benzo. Need to see if multi-seed runs resolve this or all converge on the same contradiction.
-
 2. **Rule 3 phrasing**: "discharge medication list is explicitly documented" — fine clinically, but sounds like leakage if anyone reads it without context. The rule is referencing Medications on Admission / BHC mentions, not the actual removed Discharge Medications section.
-
 3. **17 rules is high** for a single seed: Uganda buffer converged at 8–11 rules per seed. MIMIC's richer note structure (more signal, more edge cases) is producing more rules. Watch if multi-seed runs stay high or converge down.
-
 4. **10-drug filter caveat**: This run was trained with the old 10-drug Uganda filter, so zonisamide, lacosamide, oxcarbazepine, gabapentin were in the GT but the model was told it could only predict 10 drugs. Despite this, rules 2, 4, 12 mention lacosamide and oxcarbazepine — the model learned they matter even though they were filtered from predictions. New runs with 22-drug filter will be the proper baseline.
 
 ---
@@ -185,13 +276,15 @@ Run: `self_learning/buffer/multi/runs/openai_gpt-oss-120b-1_0/bufmulti_mimic_s1_
 
 ### Agents Discovered (5)
 
-| Agent | Role | Assessment |
-|-------|------|------------|
-| MedListIntentAgent | Parses discharge medication reconciliation — explicit continue/stop/add directives | ✓ GOOD — MIMIC-specific, high-signal |
-| LevelSeizureMismatchAgent | Detects serum level vs breakthrough seizure mismatch | ✓ GOOD — clean clinical signal, no drug recs |
-| FirstSeizureInitiationAgent | Flags first unprovoked seizure + structural lesion risk | ✓ GOOD — actionable trigger for LEV initiation |
-| RescueBenzodiazepineAgent | Identifies PRN benzo documented in discharge | ~ OK — useful but overlaps with single-buffer benzo rules |
-| RescueNeedAgent | Flags refractory generalized epilepsy as needing 2+ adjunctive drugs | ✗ HARMFUL — caused catastrophic eval crash at R6 |
+
+| Agent                       | Role                                                                               | Assessment                                                |
+| --------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| MedListIntentAgent          | Parses discharge medication reconciliation — explicit continue/stop/add directives | ✓ GOOD — MIMIC-specific, high-signal                      |
+| LevelSeizureMismatchAgent   | Detects serum level vs breakthrough seizure mismatch                               | ✓ GOOD — clean clinical signal, no drug recs              |
+| FirstSeizureInitiationAgent | Flags first unprovoked seizure + structural lesion risk                            | ✓ GOOD — actionable trigger for LEV initiation            |
+| RescueBenzodiazepineAgent   | Identifies PRN benzo documented in discharge                                       | ~ OK — useful but overlaps with single-buffer benzo rules |
+| RescueNeedAgent             | Flags refractory generalized epilepsy as needing 2+ adjunctive drugs               | ✗ HARMFUL — caused catastrophic eval crash at R6          |
+
 
 ### Eval Progression
 
@@ -238,6 +331,7 @@ R14:       23%
 ### MIMIC-Specific Agent Patterns
 
 The multi-buffer run discovered agents that are clearly MIMIC-driven:
+
 - Structured discharge medication tables → MedListIntentAgent
 - Serum level reporting (MIMIC notes have lab values) → LevelSeizureMismatchAgent
 - First unprovoked seizure documentation → FirstSeizureInitiationAgent
@@ -350,14 +444,16 @@ Classic TG over-engineering. A numeric scoring system (+1, +0.5, -0.5, -1) with 
 
 ### Quality Metrics
 
-| Metric | TG MIMIC s1 | Buffer MIMIC s1 | TG Uganda 120B (ref) |
-|--------|------------|-----------------|----------------------|
-| Rules total | 15 | 17 | 16.2 (mean) |
-| Rules with numeric claims | 2 (13%) | 0 | 43% |
-| Rules with fabricated numbers | 1 (scoring weights) | 0 | systematic |
-| Rules with actionable drug decisions | ~10 (67%) | ~14 (82%) | 38% |
-| Internal contradictions | 0 | 1 (benzo) | 0 |
-| MIMIC-specific rules | ~7 | ~6 | N/A |
+
+| Metric                               | TG MIMIC s1         | Buffer MIMIC s1 | TG Uganda 120B (ref) |
+| ------------------------------------ | ------------------- | --------------- | -------------------- |
+| Rules total                          | 15                  | 17              | 16.2 (mean)          |
+| Rules with numeric claims            | 2 (13%)             | 0               | 43%                  |
+| Rules with fabricated numbers        | 1 (scoring weights) | 0               | systematic           |
+| Rules with actionable drug decisions | ~10 (67%)           | ~14 (82%)       | 38%                  |
+| Internal contradictions              | 0                   | 1 (benzo)       | 0                    |
+| MIMIC-specific rules                 | ~7                  | ~6              | N/A                  |
+
 
 **Significantly less fabrication than Uganda TG** — no invented percentages, no availability figures, no citations. The numeric fabrication is limited to the confidence scoring weights (+1, +0.5 etc.) which are made up but not clinically harmful. This is a real improvement over Uganda TG behavior.
 
@@ -367,14 +463,16 @@ Uganda TG spent ~43% of rules on monitoring, dosing, and availability — textbo
 
 ### TG vs Buffer Single on MIMIC
 
-| | TG | Buffer Single |
-|---|---|---|
-| Peak eval | 37% | not yet (s1 still in 10-drug run) |
-| Baseline | 17% | 27% |
-| Accept rate | 7% (1/14) | N/A |
-| Core theme | Document parsing + verb hierarchy | Continuation + doc parsing + benzo |
-| Over-engineering | Confidence scoring rubric | None |
-| Fabrication | Minimal (scoring weights) | None |
+
+|                  | TG                                | Buffer Single                      |
+| ---------------- | --------------------------------- | ---------------------------------- |
+| Peak eval        | 37%                               | not yet (s1 still in 10-drug run)  |
+| Baseline         | 17%                               | 27%                                |
+| Accept rate      | 7% (1/14)                         | N/A                                |
+| Core theme       | Document parsing + verb hierarchy | Continuation + doc parsing + benzo |
+| Over-engineering | Confidence scoring rubric         | None                               |
+| Fabrication      | Minimal (scoring weights)         | None                               |
+
 
 TG's baseline was lower (17% vs 27%) likely because buffer's predictor gets warm-started differently. Both peaked around 33–37% but with 10-drug filter — new 22-drug runs needed for fair comparison.
 
@@ -384,19 +482,21 @@ TG's baseline was lower (17% vs 27%) likely because buffer's predictor gets warm
 
 ### Summary Table
 
-| Dimension | Buffer Single | Buffer Multi | TextGrad |
-|-----------|--------------|--------------|----------|
-| Peak eval | — (10-drug, stale) | 42% (R0) then unstable | 37% (R14) |
-| Baseline | 27% | 27% | 17% |
-| Optimization stability | Stable, monotone | Crashed at R6, never recovered | Flat 13 rounds then late jump |
-| Core learning style | Clinical decision rules | Specialized signal agents | Document parsing algorithm |
-| Grounding | High — rules tied to observed errors | High for good agents, low for RescueNeedAgent | Medium — verb hierarchy grounded, scoring rubric invented |
-| Fabricated numbers | None | None | Minimal (scoring weights only) |
-| Made-up claims | None | None (agents) | None |
-| Overfitting to note structure | Low | Medium (MedListIntentAgent very MIMIC-specific) | High (verb hierarchy, dose parity — only works on structured notes) |
-| Internal contradictions | 1 (benzo rules 5 vs 7) | 0 | 0 |
-| Rules outside task scope | 0 | 0 | 2 (interaction matrix, confidence scoring) |
-| MIMIC-specific insight | Medium | High | High |
+
+| Dimension                     | Buffer Single                        | Buffer Multi                                    | TextGrad                                                            |
+| ----------------------------- | ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------- |
+| Peak eval                     | — (10-drug, stale)                   | 42% (R0) then unstable                          | 37% (R14)                                                           |
+| Baseline                      | 27%                                  | 27%                                             | 17%                                                                 |
+| Optimization stability        | Stable, monotone                     | Crashed at R6, never recovered                  | Flat 13 rounds then late jump                                       |
+| Core learning style           | Clinical decision rules              | Specialized signal agents                       | Document parsing algorithm                                          |
+| Grounding                     | High — rules tied to observed errors | High for good agents, low for RescueNeedAgent   | Medium — verb hierarchy grounded, scoring rubric invented           |
+| Fabricated numbers            | None                                 | None                                            | Minimal (scoring weights only)                                      |
+| Made-up claims                | None                                 | None (agents)                                   | None                                                                |
+| Overfitting to note structure | Low                                  | Medium (MedListIntentAgent very MIMIC-specific) | High (verb hierarchy, dose parity — only works on structured notes) |
+| Internal contradictions       | 1 (benzo rules 5 vs 7)               | 0                                               | 0                                                                   |
+| Rules outside task scope      | 0                                    | 0                                               | 2 (interaction matrix, confidence scoring)                          |
+| MIMIC-specific insight        | Medium                               | High                                            | High                                                                |
+
 
 ---
 
@@ -439,6 +539,7 @@ Buffer Multi got stuck *after* the R6 crash — RescueNeedAgent poisoned the con
 Uganda TG invented availability percentages (">75% of district hospitals"), fabricated dose ceilings ("60 mg/kg/day valproate"), and in 20B runs invented citations ("Uganda MOH 2021"). None of that appears in MIMIC TG — the structured note format gives the optimizer real signal to latch onto instead of hallucinated clinical context.
 
 The only fabricated numbers in MIMIC runs:
+
 - TG: confidence scoring weights (+1, +0.5 etc.) — made up, but not clinically harmful
 - Buffer Single: zero fabricated numbers
 - Buffer Multi: zero fabricated numbers
@@ -459,11 +560,13 @@ Buffer Single has no irrelevant rules in this run — all 17 rules bear directly
 
 ### 6. Overall ranking for MIMIC
 
-| Rank | System | Reason |
-|------|--------|--------|
-| 1 | **Buffer Single** | Most grounded, no fabrication, no contradictions, stable optimization, rules abstract enough to transfer |
-| 2 | **TextGrad** | Good document-parsing rules, low fabrication vs Uganda baseline, but over-engineered scoring rubric and 13-round stagnation |
-| 3 | **Buffer Multi** | Best single-round gain (+15pp at R0) but catastrophic instability from one bad agent. Gating failure made it unrecoverable. High ceiling, high risk. |
+
+| Rank | System           | Reason                                                                                                                                               |
+| ---- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | **Buffer Single** | Most grounded, no fabrication, no contradictions, stable optimization, rules abstract enough to transfer                                             |
+| 2    | **TextGrad**      | Good document-parsing rules, low fabrication vs Uganda baseline, but over-engineered scoring rubric and 13-round stagnation                          |
+| 3    | **Buffer Multi**  | Best single-round gain (+15pp at R0) but catastrophic instability from one bad agent. Gating failure made it unrecoverable. High ceiling, high risk. |
+
 
 Buffer Multi's ceiling is higher than the others (42% at R0 with just one agent is the best single-round number in this analysis) but the floor is also lower (7% after RescueNeedAgent). The agent design quality determines everything — one bad agent can erase all gains.
 
