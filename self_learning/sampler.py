@@ -19,7 +19,8 @@ def stratified_split(
     cohort: str = "csv",
     n_train_patients: int = 50,
     n_eval_patients: int = 20,
-    seed: int = 42,
+    split_seed: int = 42,
+    shuffle_seed: int = 42,
     # Proportions within each set (simple, mixed, poly)
     train_mix: tuple[int, int, int] = (25, 15, 10),
     eval_mix: tuple[int, int, int] = (10, 6, 4),
@@ -67,11 +68,11 @@ def stratified_split(
         else:
             mixed.append(pid)
 
-    # Shuffle deterministically
-    rng = random.Random(seed)
-    rng.shuffle(simple)
-    rng.shuffle(mixed)
-    rng.shuffle(poly)
+    # split_seed: fixed — determines which patients go into train vs eval
+    split_rng = random.Random(split_seed)
+    split_rng.shuffle(simple)
+    split_rng.shuffle(mixed)
+    split_rng.shuffle(poly)
 
     # Split
     t_simple, t_mixed, t_poly = train_mix
@@ -84,16 +85,17 @@ def stratified_split(
         + poly[t_poly:t_poly + e_poly]
     )
 
-    # Shuffle the final lists so batches aren't grouped by type
-    rng.shuffle(train_pids)
-    rng.shuffle(eval_pids)
+    # shuffle_seed: variable — controls batch ordering only, not patient selection
+    shuffle_rng = random.Random(shuffle_seed)
+    shuffle_rng.shuffle(train_pids)
+    shuffle_rng.shuffle(eval_pids)
 
     train_cases = [v["case"] for pid in train_pids for v in patients[pid]]
     eval_cases = [v["case"] for pid in eval_pids for v in patients[pid]]
 
     # Shuffle cases so visits from the same patient are spread across batches
-    rng.shuffle(train_cases)
-    rng.shuffle(eval_cases)
+    shuffle_rng.shuffle(train_cases)
+    shuffle_rng.shuffle(eval_cases)
 
     # Stats
     train_poly_n = sum(1 for pid in train_pids for v in patients[pid] if v["is_poly"])
