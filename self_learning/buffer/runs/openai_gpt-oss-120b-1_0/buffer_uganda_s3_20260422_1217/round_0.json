@@ -1,0 +1,188 @@
+{
+  "round": 0,
+  "accepted": true,
+  "n_cases": 10,
+  "shared_learnings_before": [],
+  "buffer_this_round": [
+    "If a child on valproate shows seizure freedom and no adverse effects, the safest next step is to continue the current dose rather than increase or switch agents.",
+    "In a child with seizure‑free periods on valproate monotherapy, the optimal plan is to continue valproate and discontinue any adjunctive benzodiazepine.",
+    "When an antiepileptic drug is already prescribed and the clinical note contains no indication of dose adjustment, side‑effects, or a clinician’s intent to modify therapy, the appropriate recommendation is to continue the current medication at its existing regimen.",
+    "If a drug is explicitly enumerated in the current prescription list, assume continuation by default unless the clinical narrative explicitly recommends discontinuation.",
+    "In Myoclonic Atonic (Doose) epilepsy, if a patient becomes seizure‑free after switching to ethosuximide, continuing ethosuximide monotherapy is an acceptable maintenance strategy.",
+    "In Lennox‑Gastaut syndrome, if a patient is already on valproate, the recommended next step for breakthrough seizures is to add clobazam as adjunct therapy rather than simply increasing the valproate dose.",
+    "When a note explicitly states “continue” the current antiepileptic drug at the same dose, the prediction should mirror that regimen and not suggest new agents, even if seizures are ongoing.",
+    "For children with generalized genetic epilepsy, initiate a broad‑spectrum antiseizure medication such as valproate as first‑line therapy.",
+    "When seizure descriptions emphasize focal limb motor activity with tonic‑then‑flaccid phases, prioritize carbamazepine (or other sodium‑channel blockers) as first‑line therapy rather than defaulting to broad‑spectrum agents.",
+    "In pediatric epilepsy, if a narrow‑spectrum AED (e.g., carbamazepine) has already been started, is tolerated, and EEG results are pending, continuation of the current drug until further diagnostic clarification is appropriate."
+  ],
+  "architect_output": "{\"additions\": []}",
+  "additions": [],
+  "candidate_shared_learnings": [],
+  "shared_learnings_after": [],
+  "results": [
+    {
+      "patient_id": "15_Moses Zinabala",
+      "visit": 2,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \nThe child is 5 years old (≈ 19 kg) with a 2‑year history of unclassified seizures. He was started on sodium valproate 150 mg twice daily (~300 mg/day, ~16 mg/kg) three weeks prior and has shown clinical improvement with no seizures reported at the follow‑up visit. Physical exam is unremarkable and there are no reported adverse effects of valproate (e.g., hepatotoxicity, weight gain, tremor). Therefore the most appropriate next step is to maintain seizure control while ensuring the dose is therapeutic. Options include (1) continuing the current regimen, (2) modestly increasing the dose to reach the lower end of the therapeutic range (≈ 20 mg/kg/day), or (3) switching to an alternative first‑line agent such as levetiracetam if there were concerns about valproate use, though none are evident.\n\n**REGIMEN:**\n\n**Option 1: Continue current therapy**  \n- valproate: continue (dose 150 mg BID)  \nRationale: Seizure freedom and no side effects suggest the current regimen is effective.\n\n**Option 2: Optimize valproate dose**  \n- valproate: increase to 200 mg BID (≈ 400 mg/day, ~21 mg/kg)  \nRationale: Slight dose increase brings the child into the standard therapeutic range while still maintaining good seizure control.\n\n**Option 3: Switch to levetiracetam**  \n- valproate: stop  \n- levetiracetam: start 250 mg BID (≈ 500 mg/day)  \nRationale: Provides an alternative AED with a favorable side‑effect profile; considered if future concerns about valproate (e.g., liver enzyme elevation) arise.",
+      "inspector_report": "**MATCH:** Yes — option 1 (continue valproate) matches the ground‑truth prescription.\n\n**ERROR TYPE:** None (the system’s top‑ranked recommendation was correct).\n\n**ROOT CAUSE:** –  \n\n**MISSED SIGNAL:** –  \n\n**WHAT WOULD HELP:** –  \n\nCANDIDATE_LEARNING: If a child on valproate shows seizure freedom and no adverse effects, the safest next step is to continue the current dose rather than increase or switch agents.",
+      "candidate_learning": "If a child on valproate shows seizure freedom and no adverse effects, the safest next step is to continue the current dose rather than increase or switch agents."
+    },
+    {
+      "patient_id": "281_Kiyimba Joshua",
+      "visit": 3,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \nThe child is now ~2 years old, weighs 14.7 kg and has been seizure‑free for 2 months on sodium valproate 250 mg BD (≈34 mg/kg/day). He is also on clonazepam (0.125 mg TID) from the prior visit, which is a benzodiazepine used for breakthrough seizures or as adjunctive therapy. Given the good seizure control, the benzodiazepine can be tapered and discontinued to minimise sedative side‑effects and dependence.  \n\nValproate is effective for generalized tonic‑clonic seizures but carries a risk of hepatotoxicity, especially in children <2 years with metabolic stress (e.g., sickle‑cell disease). Levetiracetam is an equally effective broad‑spectrum agent with a favourable safety profile and no hepatic metabolism, making it an attractive alternative if the team wishes to wean off valproate.  \n\nThus three reasonable options are:  \n1) **Maintain current effective therapy** – continue valproate, stop clonazepam.  \n2) **Maintain combination** – continue both valproate and a low‑dose clonazepam (if the clinician prefers to keep a rescue adjunct).  \n3) **Switch to a safer alternative** – replace valproate with levetiracetam and discontinue clonazepam.\n\n---\n\n**REGIMEN:**\n\n**Option 1: Continue valproate, stop clonazepam**  \n- valproate: continue  \n- clonazepam: stop (taper)  \nRationale: Valproate alone has achieved seizure freedom; removing clonazepam reduces sedation and dependence risk.\n\n**Option 2: Continue valproate and low‑dose clonazepam**  \n- valproate: continue  \n- clonazepam: continue (maintain 0.125 mg TID)  \nRationale: Preserves a backup benzodiazepine for breakthrough seizures while valproate maintains control.\n\n**Option 3: Switch to levetiracetam, stop valproate and clonazepam**  \n- levetiracetam: start  \n- valproate: stop (taper)  \n- clonazepam: stop (taper)  \nRationale: Levetiracetam offers similar efficacy with a better hepatic safety profile, allowing complete discontinuation of both valproate and clonazepam.",
+      "inspector_report": "**MATCH**: Yes – **Option 1** (continue valproate, stop clonazepam) matches the doctor's prescription of valproate only.\n\n**ERROR TYPE**: None (prediction correct).\n\n**ROOT CAUSE**: No error; the system correctly identified the key therapeutic action (continuation of valproate) and the appropriate de‑escalation of clonazepam.\n\n**MISSED SIGNAL**: N/A – the relevant information (“no convulsions in the last 2 months on valproate 250 mg BD”) was correctly weighted.\n\n**WHAT WOULD HELP**: N/A – the prediction was already aligned with clinical reasoning.\n\nCANDIDATE_LEARNING: In a child with seizure‑free periods on valproate monotherapy, the optimal plan is to continue valproate and discontinue any adjunctive benzodiazepine.",
+      "candidate_learning": "In a child with seizure‑free periods on valproate monotherapy, the optimal plan is to continue valproate and discontinue any adjunctive benzodiazepine."
+    },
+    {
+      "patient_id": "201_Namozi Chloe Miracle",
+      "visit": 2,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "levetiracetam"
+      ],
+      "is_poly": false,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "**REASONING:**  \nThe child is 2 ½ years old with confirmed focal epilepsy (EEG) and ongoing seizures ≈ 2 per day despite being on carbamazepine. Carbamazepine is often effective for focal seizures, but lack of control suggests either sub‑therapeutic dosing, poor tolerance, or the need for a more suitable agent given her cerebral palsy and developmental delay. Levetiracetam is a first‑line agent for focal seizures in young children, has a favorable safety profile, minimal drug interactions, and is easy to dose by weight (≈ 20 mg/kg BID). Adding a benzodiazepine (e.g., clobazam) can be considered as rescue/adjunct, but long‑term use may cause sedation and tolerance. Lamotrigine is another effective option for focal epilepsy, though titration is slower and rash risk exists. Therefore three reasonable regimens are presented: (1) switch to levetiracetam, (2) augment carbamazepine with clobazam, and (3) switch to lamotrigine.\n\n**REGIMEN:**  \n\n**Option 1: Switch to levetiracetam**  \n- carbamazepine: stop  \n- levetiracetam: start (≈ 20 mg/kg BID, e.g., 180 mg BID)  \nRationale: Levetiracetam is highly effective for focal seizures, well‑tolerated in children with cerebral palsy, and achieves rapid seizure control.\n\n**Option 2: Add clobazam to current carbamazepine**  \n- carbamazepine: continue  \n- clobazam: start (0.2 mg/kg nightly, e.g., 2 mg HS)  \nRationale: Clobazam can reduce breakthrough seizures when added to an existing AED, providing additional control while maintaining carbamazepine’s benefits.\n\n**Option 3: Switch to lamotrigine**  \n- carbamazepine: stop  \n- lamotrigine: start (titrate to ≈ 3 mg/kg/day divided BID, e.g., 25 mg BID after titration)  \nRationale: Lamotrigine is effective for focal epilepsy and may improve seizure control with a different mechanism; useful if carbamazepine is ineffective or poorly tolerated.",
+      "inspector_report": "**MATCH:**  \nNo. None of the three predicted regimens (switch to levetiracetam, add clobazam, or switch to lamotrigine) matched the ground‑truth prescription of continuing carbamazepine alone.\n\n**ERROR TYPE:**  \n- **WRONG_DRUG** – suggested levetiracetam, clobazam, or lamotrigine, none of which were prescribed.  \n- **WRONG_ACTION** – recommended stopping or adding a drug when the physician chose to continue the existing therapy.  \n- **OVER_PRESCRIBED** – each option introduced an additional or alternative medication beyond what the doctor ordered.  \n- **MISSED_DRUG** – failed to include the sole drug (carbamazepine) that the doctor decided to maintain.\n\n**ROOT CAUSE:**  \nThe system applied a generic rule that “uncontrolled focal seizures in a child warrant a medication change or adjunct” and ignored contextual signals that the clinician elected to keep carbamazepine despite ongoing seizures. It did not consider that no dosage adjustment, adverse effect, or explicit reason to change was documented, nor that resource‑limited settings may favor continuation of an already‑available, inexpensive AED.\n\n**MISSED SIGNAL:**  \n> “Patient was started on Carbamazepine on 26/04/2021.”  \n> “…being managed for epilepsy in cerebral palsy… Mother reports 2 episodes of convulsion per day.”  \nThe notes contain no mention of dosage modification, side‑effects, or a directive to alter the regimen, indicating the physician’s intention to continue carbamazepine.\n\n**WHAT WOULD HELP:**  \nIf the system recognized that an existing AED is documented without any noted dose change or adverse event, it should default to recommending continuation rather than a change.\n\nCANDIDATE_LEARNING: When an antiepileptic drug is already prescribed and the clinical note contains no indication of dose adjustment, side‑effects, or a clinician’s intent to modify therapy, the appropriate recommendation is to continue the current medication at its existing regimen.",
+      "candidate_learning": "When an antiepileptic drug is already prescribed and the clinical note contains no indication of dose adjustment, side‑effects, or a clinician’s intent to modify therapy, the appropriate recommendation is to continue the current medication at its existing regimen."
+    },
+    {
+      "patient_id": "259_Ayaan Abdrizak",
+      "visit": 3,
+      "gt_drugs": [
+        "clobazam",
+        "levetiracetam"
+      ],
+      "pred_option1_drugs": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "REASONING:\nThe child is 8 years old (23.3 kg) with an epileptic encephalopathy characterized by frequent generalized tonic‑clonic seizures (≈3 /day) and significant developmental regression. Prior regimens (carbamazepine, clobazam, levetiracetam) have failed to achieve control, and clobazam causes excessive sedation, leading the mother to omit it. A broad‑spectrum, efficacious agent with a different mechanism should be added to the tolerated levetiracetam while discontinuing the sedating benzodiazepine. Valproate, lamotrigine, and topiramate are all viable adjuncts for generalized seizures and are available in the formulary. Each option retains levetiracetam (still partially effective) and removes clobazam to improve alertness.\n\nREGIMEN:\nOption 1: **Levetiracetam + Valproate**\n- levetiracetam: continue\n- valproate: start\n- clobazam: stop\nRationale: Valproate provides broad‑spectrum control of generalized seizures and is synergistic with levetiracetam; stopping clobazam reduces sedation.\n\nOption 2: **Levetiracetam + Lamotrigine**\n- levetiracetam: continue\n- lamotrigine: start (titrated slowly)\n- clobazam: stop\nRationale: Lamotrigine adds efficacy for both focal and generalized seizures with minimal sedation; discontinuing clobazam avoids excessive drowsiness.\n\nOption 3: **Levetiracetam + Topiramate**\n- levetiracetam: continue\n- topiramate: start (low dose, titrate)\n- clobazam: stop\nRationale: Topiramate is effective in refractory generalized epilepsy and complements levetiracetam; stopping clobazam improves the child’s alertness.",
+      "inspector_report": "**MATCH:** None of the three options matched the doctor’s prescription (ground‑truth drugs: clobazam, levetiracetam).\n\n**ERROR TYPE:**  \n- **MISSED_DRUG:** failed to include clobazam.  \n- **WRONG_DRUG:** proposed adding valproate/lamotrigine/topiramate, which were not prescribed.  \n- **WRONG_ACTION:** advised stopping clobazam when the doctor continued it.  \n- **OVER_PRESCRIBED:** suggested a regimen with three drugs instead of the two actually prescribed.\n\n**ROOT CAUSE:** The system misinterpreted the note about “the child becomes too sleepy on all three medications” as a directive to discontinue the sedating drug, overlooking the explicit statement that the current prescription *includes* clobazam and that the physician intended to continue it. Consequently, it ignored the existing regimen and generated a new adjunctive therapy plan.\n\n**MISSED SIGNAL:**  \n> “Her prescription includes Levetiracetam, **Clobazam**, and Tegretol, but the mother only administers Keppra, as the child becomes too sleepy on all three medications.”  \n\nThe presence of **Clobazam** in the listed prescription indicates the clinician’s intention to keep it (despite adherence issues), a cue the model failed to weight.\n\n**WHAT WOULD HELP:** The system should treat any medication explicitly listed in the “prescription includes …” statement as a drug to be continued unless the note specifically says to stop it.\n\nCANDIDATE_LEARNING: If a drug is explicitly enumerated in the current prescription list, assume continuation by default unless the clinical narrative explicitly recommends discontinuation.",
+      "candidate_learning": "If a drug is explicitly enumerated in the current prescription list, assume continuation by default unless the clinical narrative explicitly recommends discontinuation."
+    },
+    {
+      "patient_id": "4_Asio Esther Jane",
+      "visit": 2,
+      "gt_drugs": [
+        "ethosuximide"
+      ],
+      "pred_option1_drugs": [
+        "ethosuximide"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \nThe patient is a 4‑year‑old girl with Myoclonic Atonic (Doose) epilepsy. After stopping carbamazepine, she was started on ethosuximide and has shown a gradual reduction in drop‑attacks, now being seizure‑free for a week with a relatively normal‑looking EEG. Ethosuximide is effective for typical absence seizures but is less reliable for the myoclonic‑atonic component of Doose syndrome. Valproate (or levetiracetam) is considered first‑line for generalized epilepsies with myoclonic/atonic seizures and may provide more robust long‑term control. However, because she is currently doing well, continuation of the present regimen is reasonable, while also offering options to add or switch to a broader‑spectrum agent to pre‑empt relapse.\n\n**REGIMEN:**\n\n**Option 1: Continue current therapy**  \n- ethosuximide: continue (no change)  \nRationale: The child is seizure‑free for a week with improving EEG; maintaining the current effective dose avoids unnecessary changes.\n\n**Option 2: Add valproate for broader coverage**  \n- ethosuximide: continue (no change)  \n- valproate: start (initiate at low dose, titrate)  \nRationale: Valproate is the most efficacious drug for generalized seizures including myoclonic‑atonic epilepsy; adding it may consolidate seizure control while ethosuximide is already tolerated.\n\n**Option 3: Switch to valproate monotherapy**  \n- ethosuximide: stop (discontinue)  \n- valproate: start (initiate, titrate to therapeutic level)  \nRationale: Valproate alone is sufficient for Doose syndrome and eliminates the need for a drug (ethosuximide) that is less targeted for this epilepsy type.",
+      "inspector_report": "**MATCH:** Yes – the system’s **Option 1 (continue ethosuximide)** matches the doctor’s prescription.\n\n**ERROR TYPE:** None (prediction correct).\n\n**ROOT CAUSE:** N/A – the system correctly identified that continuation of ethosuximide alone was appropriate given the patient’s seizure‑free status and normalising EEG.\n\n**MISSED SIGNAL:** N/A – no missed information.\n\n**WHAT WOULD HELP:** N/A – the system already applied the correct clinical reasoning.\n\nCANDIDATE_LEARNING: In Myoclonic Atonic (Doose) epilepsy, if a patient becomes seizure‑free after switching to ethosuximide, continuing ethosuximide monotherapy is an acceptable maintenance strategy.",
+      "candidate_learning": "In Myoclonic Atonic (Doose) epilepsy, if a patient becomes seizure‑free after switching to ethosuximide, continuing ethosuximide monotherapy is an acceptable maintenance strategy."
+    },
+    {
+      "patient_id": "156_Irumba Peter",
+      "visit": 2,
+      "gt_drugs": [
+        "clobazam",
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "REASONING:\nThe child was started on sodium valproate 125 mg twice daily (~250 mg/day). At a weight of 22.6 kg, this corresponds to only ≈11 mg/kg/day, which is below the recommended therapeutic range for generalized epilepsy (20–30 mg/kg/day). The patient now has brief episodes of impaired awareness suggestive of residual seizures despite “controlled” status, and the diagnosis of Lennox‑Gastaut syndrome (LGS) calls for a broad‑spectrum regimen. The best approach is to optimize valproate dosing and add a second broad‑spectrum agent commonly used in LGS, such as clobazam. Alternatives include switching to another effective broad‑spectrum drug (topiramate) if valproate cannot be increased.\n\nREGIMEN:\nOption 1: Optimize Valproate\n- valproate: continue (increase to 300 mg bd, total 600 mg/day ≈ 26 mg/kg/day)\nRationale: Raising the dose brings serum levels into the therapeutic range for generalized epilepsy and LGS, likely reducing breakthrough seizures.\n\nOption 2: Add Clobazam\n- clobazam: start 5 mg od (adjust to weight‑based dosing, e.g., 0.2 mg/kg/day)\nRationale: Clobazam is a benzodiazepine with proven efficacy in LGS as adjunct therapy, helping control atypical absence and tonic seizures.\n\nOption 3: Switch to Topiramate\n- valproate: stop\n- topiramate: start 50 mg bd (≈4.4 mg/kg/day, titrate up to 9 mg/kg/day)\nRationale: Topiramate is an effective broad‑spectrum AED for LGS and can replace valproate if tolerability or hepatic concerns arise.",
+      "inspector_report": "**MATCH:** None of the three predicted regimens exactly matched the doctor’s prescription of **valproate + clobazam**.\n\n**ERROR TYPE:**  \n- **MISSED_DRUG:** The correct combination of two drugs was not presented together.  \n- **WRONG_DRUG:** Option 3 suggested topiramate, a drug not prescribed.  \n- **WRONG_ACTION:** Options 1 and 2 altered the valproate regimen (increase or omission) contrary to the doctor’s decision to keep the existing dose.\n\n**ROOT CAUSE:** The system applied a generic rule to “optimize valproate dosing” for generalized epilepsy without recognizing that the clinician deliberately chose to **maintain the current valproate dose and add clobazam** for Lennox‑Gastaut syndrome. It treated each drug change as mutually exclusive rather than evaluating a combined regimen, and it overlooked the explicit “Controlled Epilepsy with Lennox Gastaut Syndrome” cue that points to adjunct benzodiazepine therapy.\n\n**MISSED SIGNAL:**  \n- “Impression: **Controlled Epilepsy with Lennox Gastaut Syndrome**”  \n- “Current drug regimen: **Sodium Valproate 125 mg bd**” (already on valproate)  \n\nThese statements together signal that the appropriate next step is **add clobazam while continuing valproate**.\n\n**WHAT WOULD HELP:** Knowing that for LGS, when valproate is already in use, the standard escalation is to add clobazam rather than increase the valproate dose alone.\n\nCANDIDATE_LEARNING: In Lennox‑Gastaut syndrome, if a patient is already on valproate, the recommended next step for breakthrough seizures is to add clobazam as adjunct therapy rather than simply increasing the valproate dose.",
+      "candidate_learning": "In Lennox‑Gastaut syndrome, if a patient is already on valproate, the recommended next step for breakthrough seizures is to add clobazam as adjunct therapy rather than simply increasing the valproate dose."
+    },
+    {
+      "patient_id": "166_Mukisa Joshua",
+      "visit": 2,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "topiramate",
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "REASONING:\nThe infant is 13 months old with refractory West syndrome despite being on valproate (syrup Epilim 2 ml bid). Ongoing multiple daily spasms indicate inadequate seizure control. In this age group, adjunctive therapy with agents such as topiramate or levetiracetam is commonly used and has evidence for reducing spasms when hormonal therapy (ACTH/prednisone) and vigabatrin are unavailable. Both drugs have relatively favorable safety profiles in infants. Phenobarbital is also an effective option but its sedative and cognitive side‑effects make it a less attractive first adjunct in a child already showing developmental delay. Therefore three reasonable regimens are proposed: (1) continue valproate and add topiramate; (2) continue valproate and add levetiracetam; (3) discontinue valproate and switch to phenobarbital as monotherapy.\n\nREGIMEN:\nOption 1: Add Topiramate\n- valproate: continue\n- topiramate: start\nRationale: Valproate alone has not controlled spasms; topiramate is an effective adjunct for refractory infantile spasms with acceptable tolerability.\n\nOption 2: Add Levetiracetam\n- valproate: continue\n- levetiracetam: start\nRationale: Levetiracetam is well tolerated in infants and can reduce seizure frequency when added to ongoing valproate therapy.\n\nOption 3: Switch to Phenobarbital\n- valproate: stop\n- phenobarbital: start\nRationale: Phenobarbital is a proven monotherapy for infantile spasms; switching may simplify the regimen, though caution is needed regarding sedation and possible impact on development.",
+      "inspector_report": "**1. MATCH**  \nNone of the three predicted regimens matched the ground‑truth prescription. The doctor prescribed **valproate only** (continue current dose), while the system suggested adding topiramate, adding levetiracetam, or switching to phenobarbital.\n\n**2. ERROR TYPE**  \n- **WRONG_DRUG** – the system introduced drugs (topiramate, levetiracetam, phenobarbital) that the physician did not prescribe.  \n- **OVER_PRESCRIBED** – each option listed more agents than the doctor’s single‑drug regimen.  \n- **WRONG_ACTION** – the system recommended “add” or “switch” actions whereas the physician’s plan was simply “continue” valproate.\n\n**3. ROOT CAUSE**  \nThe system applied a generic rule that “refractory West syndrome = add‑on or switch therapy,” ignoring the explicit statement in the notes that the current valproate regimen was to be **continued**. It failed to treat the documented physician decision as a decisive cue, and it did not account for the possibility that the clinician preferred maintaining monotherapy despite ongoing seizures.\n\n**4. MISSED SIGNAL**  \n> “Current regimen: Sodium Valproate 150 mg bd.”  \n> “Plan: … Syrup Epilim 2 ml bd × 2/52.”  \n\nThese lines directly indicate that the intended prescription was to **continue valproate at the same dose**.\n\n**5. WHAT WOULD HELP**  \nIf the system recognized an explicit “continue current medication” directive as a signal to preserve the existing regimen, it would have avoided proposing additional or alternative drugs.\n\n**CANDIDATE_LEARNING:** When a note explicitly states “continue” the current antiepileptic drug at the same dose, the prediction should mirror that regimen and not suggest new agents, even if seizures are ongoing.",
+      "candidate_learning": "When a note explicitly states “continue” the current antiepileptic drug at the same dose, the prediction should mirror that regimen and not suggest new agents, even if seizures are ongoing."
+    },
+    {
+      "patient_id": "34_Semakula Miracle",
+      "visit": 2,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe child has a confirmed diagnosis of generalized genetic epilepsy with a history of tonic‑clonic seizures. He is seizure‑free for the past two months but has never been started on a disease‑modifying antiseizure medication. For generalized epilepsy in children, broad‑spectrum agents such as valproate or levetiracetam are first‑line. Valproate provides excellent seizure control across seizure types and is inexpensive, making it a common choice in Uganda. Levetiracetam is also effective and well tolerated, with a favorable side‑effect profile, and can be used if valproate is unavailable or contraindicated. Phenobarbital remains an affordable alternative but is more sedating, which could affect school performance. Therefore, the most appropriate prescription is to **start** a broad‑spectrum drug, with alternatives offered.\n\nREGIMEN:\n**Option 1: Start valproate**\n- valproate: start\nRationale: Broad‑spectrum efficacy for generalized seizures; inexpensive and widely used in resource‑limited settings; appropriate for a 5‑year‑old boy with good school performance.\n\n**Option 2: Start levetiracetam**\n- levetiracetam: start\nRationale: Effective for generalized epilepsy with minimal cognitive or behavioral side effects; suitable if valproate is unavailable or parental preference favors a newer agent.\n\n**Option 3: Start phenobarbital**\n- phenobarbital: start\nRationale: Low‑cost, effective for generalized seizures; considered if the above agents cannot be accessed, acknowledging potential sedation.",
+      "inspector_report": "**MATCH:** Option 1 (start valproate) matches the ground‑truth prescription.\n\n**ERROR TYPE:** None – the prediction is correct.\n\n**ROOT CAUSE:** N/A – the system correctly interpreted the diagnosis and seizure history and selected the appropriate first‑line agent.\n\n**MISSED SIGNAL:** N/A – no relevant information was overlooked.\n\n**WHAT WOULD HELP:** N/A – the system’s reasoning was appropriate for this case.\n\nCANDIDATE_LEARNING: For children with generalized genetic epilepsy, initiate a broad‑spectrum antiseizure medication such as valproate as first‑line therapy.",
+      "candidate_learning": "For children with generalized genetic epilepsy, initiate a broad‑spectrum antiseizure medication such as valproate as first‑line therapy."
+    },
+    {
+      "patient_id": "279_Namirembe Hannah",
+      "visit": 1,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "**REASONING:**  \nThe child has generalized epilepsy with seizure types described as tonic (increased muscle tone) followed by flaccidity, plus abnormal movements and oral automatisms. She is 9 y old, female, and has cerebral palsy with poor prior treatment documentation and adherence. Broad‑spectrum agents that are effective for multiple generalized seizure types and have a relatively favourable safety profile in children are preferred.  \n\n- **Valproate** is the classic first‑line drug for generalized epilepsy (tonic‑clonic, absence, myoclonic) and is inexpensive in most low‑resource settings.  \n- **Levetiracetam** provides comparable efficacy across generalized seizure types, has minimal drug‑drug interactions, and is well tolerated, making it an attractive alternative when adherence or side‑effect concerns exist.  \n- **Phenobarbital** remains an inexpensive option in many African clinics for generalized seizures, though it is sedating and may worsen cognition; it can be considered if the newer agents are unavailable or unaffordable.  \n\nAll three options assume the previous unknown medication is stopped and a new, evidence‑based monotherapy is started.\n\n---\n\n**REGIMEN:**  \n\n**Option 1: Valproate monotherapy**  \n- valproate: start  \nRationale: Broad‑spectrum efficacy for all generalized seizure types; inexpensive and widely available; suitable for a 9‑year‑old with no hepatic contraindications.\n\n**Option 2: Levetiracetam monotherapy**  \n- levetiracetam: start  \nRationale: Effective across generalized seizures, minimal interaction profile, and well tolerated, which may improve adherence in a child with feeding difficulties.\n\n**Option 3: Phenobarbital monotherapy** (resource‑limited fallback)  \n- phenobarbital: start  \nRationale: Low‑cost, proven efficacy for generalized seizures; used when newer agents are not accessible, acknowledging the risk of sedation and cognitive effects.",
+      "inspector_report": "**MATCH:** None of the three predicted options (valproate, levetiracetam, phenobarbital) match the doctor’s prescription of carbamazepine.\n\n**ERROR TYPE:**  \n- **WRONG_DRUG** – the system suggested drugs the physician did not prescribe.  \n- **MISSED_DRUG** – the system failed to include the drug that was actually prescribed (carbamazepine).\n\n**ROOT CAUSE:**  \nThe system applied a generic guideline that “valproate (or levetiracetam) is first‑line for generalized epilepsy,” ignoring clues in the notes that point toward a focal motor seizure pattern (bilateral upper‑limb abnormal movements with tonic‑then‑flaccid phases). It therefore mis‑identified the seizure type and did not consider local prescribing practice that favors carbamazepine for focal‑onset seizures in this setting.\n\n**MISSED SIGNAL:**  \n- *“abnormal movement of both the right and the left upper limbs, fully conscious”*  \n- *“increased muscle tone followed by flaccidity in all limbs”*  \n\nThese descriptions suggest focal motor involvement that would make a sodium‑channel blocker such as carbamazepine appropriate.\n\n**WHAT WOULD HELP:**  \nA rule that flags focal limb motor activity (tonic → flaccid) as an indicator to favor carbamazepine (or other sodium‑channel blockers) over broad‑spectrum agents.\n\nCANDIDATE_LEARNING: When seizure descriptions emphasize focal limb motor activity with tonic‑then‑flaccid phases, prioritize carbamazepine (or other sodium‑channel blockers) as first‑line therapy rather than defaulting to broad‑spectrum agents.",
+      "candidate_learning": "When seizure descriptions emphasize focal limb motor activity with tonic‑then‑flaccid phases, prioritize carbamazepine (or other sodium‑channel blockers) as first‑line therapy rather than defaulting to broad‑spectrum agents."
+    },
+    {
+      "patient_id": "259_Ayaan Abdrizak",
+      "visit": 2,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe child is a 3‑year‑old girl with seizures since birth, recent developmental regression, constipation, vomiting and an abdominal mass pending work‑up. The first visit the clinician started carbamazepine (a narrow‑spectrum drug effective for focal seizures) and ordered investigations. By the second visit (≈8 months later) there is still no clear EEG or imaging result, and the child’s weight has increased to 14 kg, making dose adjustment possible. Because the seizure semiology (clonic movements with a screaming aura but no loss of consciousness) could represent focal seizures, continuing carbamazepine is reasonable if it has been tolerated. However, the presence of developmental regression raises the possibility of a generalized epileptic encephalopathy (e.g., West‑type or other early‑onset generalized seizures) for which carbamazepine may be ineffective or even aggravate seizures. Valproate is the preferred broad‑spectrum agent for generalized seizures in this age group. If seizures remain uncontrolled on carbamazepine alone, adding a second drug such as phenobarbital (another broad‑spectrum, inexpensive option often used in low‑resource settings) is an alternative. The three options below reflect (1) continuation of the current regimen, (2) switching to a broader‑spectrum drug, and (3) augmenting the current therapy with an additional agent.\n\nREGIMEN:\nOption 1: Continue current narrow‑spectrum monotherapy\n- carbamazepine: continue (adjust dose to 15 mg/kg/day divided BID, e.g., 210 mg total daily)\nRationale: Seizure type may be focal; carbamazepine was already started and tolerated, and pending EEG results may confirm suitability.\n\nOption 2: Switch to a broad‑spectrum agent for possible generalized epilepsy\n- carbamazepine: stop\n- valproate: start (30 mg/kg/day divided TID, e.g., 420 mg total daily)\nRationale: Developmental regression and unclear seizure classification suggest a generalized epileptic encephalopathy; valproate covers a wider range of seizure types.\n\nOption 3: Add a second broad‑spectrum drug to the existing regimen\n- carbamazepine: continue (dose as above)\n- phenobarbital: start (3‑5 mg/kg/day once daily, e.g., 45‑75 mg daily)\nRationale: If seizures persist despite carbamazepine, phenobarbital provides additional broad‑spectrum control and is readily available in this setting.",
+      "inspector_report": "**MATCH:** Yes – the system’s **Option 1 (continue carbamazepine)** matches the doctor’s prescription.\n\n**ERROR TYPE:** None (prediction is correct).\n\n**ROOT CAUSE:** N/A – the system correctly identified the intended action based on the clinical notes.\n\n**MISSED SIGNAL:** N/A – all relevant information (existing carbamazepine initiation, tolerated, pending EEG) was appropriately considered.\n\n**WHAT WOULD HELP:** N/A – the system’s reasoning aligned with the clinician’s decision.\n\nCANDIDATE_LEARNING: In pediatric epilepsy, if a narrow‑spectrum AED (e.g., carbamazepine) has already been started, is tolerated, and EEG results are pending, continuation of the current drug until further diagnostic clarification is appropriate.",
+      "candidate_learning": "In pediatric epilepsy, if a narrow‑spectrum AED (e.g., carbamazepine) has already been started, is tolerated, and EEG results are pending, continuation of the current drug until further diagnostic clarification is appropriate."
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "round": 14,
+  "accepted": true,
+  "n_cases": 10,
+  "shared_learnings_before": [
+    "When a pediatric patient is already on a tolerated antiseizure medication with documented seizure control and no adverse effects, and the clinical note contains no explicit instruction to modify therapy, the appropriate recommendation is to continue the current drug and dose unchanged.",
+    "In patients with Myoclonic Atonic (Doose) epilepsy who achieve seizure freedom on ethosuximide monotherapy and tolerate the medication, maintain ethosuximide at the current dose as long‑term therapy.",
+    "For pediatric focal epilepsy where carbamazepine is tolerated and at a therapeutic dose but seizures remain partially controlled, the recommended next step is to add levetiracetam as adjunctive therapy before changing the primary agent.",
+    "In Lennox‑Gastaut syndrome, when a patient is already receiving valproate and experiences breakthrough seizures, the recommended next step is to add clobazam as an adjunctive agent rather than increase the valproate dose; additionally, carbamazepine should be discontinued if part of the regimen because it can exacerbate drop attacks.",
+    "For pediatric patients with generalized genetic epilepsy, valproate monotherapy is the preferred first‑line antiseizure medication; if the child is already on valproate, is seizure‑free, and tolerates the drug without side‑effects, the regimen should be continued unchanged, with dose optimization only if breakthrough seizures occur.",
+    "For pediatric focal epilepsy in children ≥2 years old, a sodium‑channel blocker such as carbamazepine should be selected as the initial (first‑line) antiseizure medication unless contraindicated.",
+    "In children under 3 years with early‑onset generalized epilepsy—including frequent daily seizures, developmental delay, or suspected Dravet syndrome—valproate monotherapy should be selected as the first‑line treatment unless contraindicated.",
+    "In infants and young children with focal epilepsy who remain symptomatic on a sodium‑channel blocker (e.g., carbamazepine) or as initial therapy, phenobarbital is an appropriate first‑add‑on antiseizure medication, particularly in low‑resource settings where it is readily available and tolerated.",
+    "In resource‑limited settings, adding carbamazepine as an adjunct to valproate is an acceptable strategy for children with refractory generalized or multifocal epilepsy when valproate monotherapy does not achieve seizure control.",
+    "In infants (≤2 years) with early‑onset focal seizures due to epileptic encephalopathy or structural brain injury, valproate monotherapy should be initiated as the preferred first‑line antiseizure medication unless contraindicated or not tolerated.",
+    "When a medication appears in the current prescription or refill order and the clinical note does not explicitly state to discontinue or modify it, the system should assume continuation of that antiepileptic at the same dose.",
+    "In children on stable valproate therapy, a solitary fever‑related breakthrough seizure does not warrant dose escalation or medication change; continue the current valproate dose unless the clinician explicitly orders a modification.",
+    "In children with generalized epilepsy who are on therapeutic-dose valproate, are seizure‑free or have ≤1 seizure per month, and have no significant adverse effects, the appropriate recommendation is to continue the current valproate dose unchanged without dose escalation or addition of other antiseizure medications."
+  ],
+  "buffer_this_round": [
+    "When a pediatric epilepsy patient is seizure‑free on a stable antiseizure regimen with no reported adverse effects, the safest recommendation is to continue the current drugs unchanged.",
+    "When seizure notes indicate no recent convulsions and the physician’s plan does not request a change, the safest recommendation is to continue the current antiepileptic regimen without adding new agents.",
+    "For children ≥ 2 years with focal (including frontal) epilepsy and no contraindications, carbamazepine is the preferred first‑line antiseizure medication.",
+    "In pediatric generalized epilepsy, if a child is seizure‑free and tolerates valproate, the appropriate action is to continue the existing valproate dose without modification.",
+    "When an infant ≤12 months with West syndrome has already received steroid therapy and is on valproate monotherapy, the default recommendation should be to continue the current medication rather than automatically suggesting an add‑on antiseizure drug.",
+    "In pediatric West syndrome, if a child is seizure‑free on a therapeutic dose of sodium valproate and shows no adverse effects, the appropriate action is to continue the current valproate regimen unchanged.",
+    "For children ≥ 2 years with focal epilepsy, carbamazepine is the preferred first‑line antiseizure medication.",
+    "When a patient with epilepsy is seizure‑free, tolerating the current antiseizure drugs, and the visit note contains no request for modification, the safest recommendation is to continue the existing regimen unchanged.",
+    "When a physician explicitly documents “continue current therapy” for a child on carbamazepine for focal epilepsy, the decision‑support system should prioritize maintaining that regimen over recommending add‑on therapy.",
+    "In pediatric patients with generalized epilepsy who have been seizure‑free for ≥6 months on an appropriate dose of valproate, the standard action is to continue the current valproate regimen unchanged."
+  ],
+  "architect_output": "{\"additions\": [\"If the clinical note explicitly instructs to continue the current antiseizure medication at the same dose, the system should maintain that regimen unchanged, even if seizures are ongoing, unless a contradictory directive to modify therapy is present.\"]}",
+  "additions": [
+    "If the clinical note explicitly instructs to continue the current antiseizure medication at the same dose, the system should maintain that regimen unchanged, even if seizures are ongoing, unless a contradictory directive to modify therapy is present."
+  ],
+  "candidate_shared_learnings": [
+    "When a pediatric patient is already on a tolerated antiseizure medication with documented seizure control and no adverse effects, and the clinical note contains no explicit instruction to modify therapy, the appropriate recommendation is to continue the current drug and dose unchanged.",
+    "In patients with Myoclonic Atonic (Doose) epilepsy who achieve seizure freedom on ethosuximide monotherapy and tolerate the medication, maintain ethosuximide at the current dose as long‑term therapy.",
+    "For pediatric focal epilepsy where carbamazepine is tolerated and at a therapeutic dose but seizures remain partially controlled, the recommended next step is to add levetiracetam as adjunctive therapy before changing the primary agent.",
+    "In Lennox‑Gastaut syndrome, when a patient is already receiving valproate and experiences breakthrough seizures, the recommended next step is to add clobazam as an adjunctive agent rather than increase the valproate dose; additionally, carbamazepine should be discontinued if part of the regimen because it can exacerbate drop attacks.",
+    "For pediatric patients with generalized genetic epilepsy, valproate monotherapy is the preferred first‑line antiseizure medication; if the child is already on valproate, is seizure‑free, and tolerates the drug without side‑effects, the regimen should be continued unchanged, with dose optimization only if breakthrough seizures occur.",
+    "For pediatric focal epilepsy in children ≥2 years old, a sodium‑channel blocker such as carbamazepine should be selected as the initial (first‑line) antiseizure medication unless contraindicated.",
+    "In children under 3 years with early‑onset generalized epilepsy—including frequent daily seizures, developmental delay, or suspected Dravet syndrome—valproate monotherapy should be selected as the first‑line treatment unless contraindicated.",
+    "In infants and young children with focal epilepsy who remain symptomatic on a sodium‑channel blocker (e.g., carbamazepine) or as initial therapy, phenobarbital is an appropriate first‑add‑on antiseizure medication, particularly in low‑resource settings where it is readily available and tolerated.",
+    "In resource‑limited settings, adding carbamazepine as an adjunct to valproate is an acceptable strategy for children with refractory generalized or multifocal epilepsy when valproate monotherapy does not achieve seizure control.",
+    "In infants (≤2 years) with early‑onset focal seizures due to epileptic encephalopathy or structural brain injury, valproate monotherapy should be initiated as the preferred first‑line antiseizure medication unless contraindicated or not tolerated.",
+    "When a medication appears in the current prescription or refill order and the clinical note does not explicitly state to discontinue or modify it, the system should assume continuation of that antiepileptic at the same dose.",
+    "In children on stable valproate therapy, a solitary fever‑related breakthrough seizure does not warrant dose escalation or medication change; continue the current valproate dose unless the clinician explicitly orders a modification.",
+    "In children with generalized epilepsy who are on therapeutic-dose valproate, are seizure‑free or have ≤1 seizure per month, and have no significant adverse effects, the appropriate recommendation is to continue the current valproate dose unchanged without dose escalation or addition of other antiseizure medications.",
+    "If the clinical note explicitly instructs to continue the current antiseizure medication at the same dose, the system should maintain that regimen unchanged, even if seizures are ongoing, unless a contradictory directive to modify therapy is present."
+  ],
+  "shared_learnings_after": [
+    "When a pediatric patient is already on a tolerated antiseizure medication with documented seizure control and no adverse effects, and the clinical note contains no explicit instruction to modify therapy, the appropriate recommendation is to continue the current drug and dose unchanged.",
+    "In patients with Myoclonic Atonic (Doose) epilepsy who achieve seizure freedom on ethosuximide monotherapy and tolerate the medication, maintain ethosuximide at the current dose as long‑term therapy.",
+    "For pediatric focal epilepsy where carbamazepine is tolerated and at a therapeutic dose but seizures remain partially controlled, the recommended next step is to add levetiracetam as adjunctive therapy before changing the primary agent.",
+    "In Lennox‑Gastaut syndrome, when a patient is already receiving valproate and experiences breakthrough seizures, the recommended next step is to add clobazam as an adjunctive agent rather than increase the valproate dose; additionally, carbamazepine should be discontinued if part of the regimen because it can exacerbate drop attacks.",
+    "For pediatric patients with generalized genetic epilepsy, valproate monotherapy is the preferred first‑line antiseizure medication; if the child is already on valproate, is seizure‑free, and tolerates the drug without side‑effects, the regimen should be continued unchanged, with dose optimization only if breakthrough seizures occur.",
+    "For pediatric focal epilepsy in children ≥2 years old, a sodium‑channel blocker such as carbamazepine should be selected as the initial (first‑line) antiseizure medication unless contraindicated.",
+    "In children under 3 years with early‑onset generalized epilepsy—including frequent daily seizures, developmental delay, or suspected Dravet syndrome—valproate monotherapy should be selected as the first‑line treatment unless contraindicated.",
+    "In infants and young children with focal epilepsy who remain symptomatic on a sodium‑channel blocker (e.g., carbamazepine) or as initial therapy, phenobarbital is an appropriate first‑add‑on antiseizure medication, particularly in low‑resource settings where it is readily available and tolerated.",
+    "In resource‑limited settings, adding carbamazepine as an adjunct to valproate is an acceptable strategy for children with refractory generalized or multifocal epilepsy when valproate monotherapy does not achieve seizure control.",
+    "In infants (≤2 years) with early‑onset focal seizures due to epileptic encephalopathy or structural brain injury, valproate monotherapy should be initiated as the preferred first‑line antiseizure medication unless contraindicated or not tolerated.",
+    "When a medication appears in the current prescription or refill order and the clinical note does not explicitly state to discontinue or modify it, the system should assume continuation of that antiepileptic at the same dose.",
+    "In children on stable valproate therapy, a solitary fever‑related breakthrough seizure does not warrant dose escalation or medication change; continue the current valproate dose unless the clinician explicitly orders a modification.",
+    "In children with generalized epilepsy who are on therapeutic-dose valproate, are seizure‑free or have ≤1 seizure per month, and have no significant adverse effects, the appropriate recommendation is to continue the current valproate dose unchanged without dose escalation or addition of other antiseizure medications.",
+    "If the clinical note explicitly instructs to continue the current antiseizure medication at the same dose, the system should maintain that regimen unchanged, even if seizures are ongoing, unless a contradictory directive to modify therapy is present."
+  ],
+  "results": [
+    {
+      "patient_id": "281_Kiyimba Joshua",
+      "visit": 2,
+      "gt_drugs": [
+        "clonazepam",
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "clonazepam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \nThe child is now 1 year 11 months old, has been seizure‑free for 2 months on sodium valproate (valproate) plus clonazepam. The clinical note contains no request to alter therapy; the startles are noted but not explicitly linked to medication. According to the knowledge base, when a pediatric patient is on a tolerated antiseizure drug (valproate) with good seizure control and no side‑effect that warrants change, the appropriate action is to continue the current regimen unchanged. Clonazepam is also being tolerated with no reported adverse effect requiring cessation. Therefore the safest recommendation is to continue both drugs at the same doses.\n\n**REGIMEN:**  \n\n**Option 1: Continue current regimen**  \n- valproate: **continue**  \n- clonazepam: **continue**  \nRationale: The patient is seizure‑free on valproate (first‑line for generalized epilepsy) and clonazepam, with no clinician instruction to modify therapy.\n\n**Option 2: Taper/stop clonazepam**  \n- valproate: **continue**  \n- clonazepam: **stop** (gradual taper)  \nRationale: If the startle phenomenon is suspected to be medication‑related, reducing the benzodiazepine could be considered, while maintaining seizure control with valproate alone.\n\n**Option 3: Add phenobarbital as adjunct**  \n- valproate: **continue**  \n- clonazepam: **continue**  \n- phenobarbital: **start** (add)  \nRationale: In a resource‑limited setting, phenobarbital can be added for additional seizure protection, but this is not required given the current seizure freedom.",
+      "inspector_report": "**MATCH:** Option 1 (“continue valproate and clonazepam”) matches the ground‑truth prescription.\n\n**ERROR TYPE:** None – the system’s top prediction was correct.\n\n**ROOT CAUSE:** –  \n\n**MISSED SIGNAL:** –  \n\n**WHAT WOULD HELP:** –  \n\nCANDIDATE_LEARNING: When a pediatric epilepsy patient is seizure‑free on a stable antiseizure regimen with no reported adverse effects, the safest recommendation is to continue the current drugs unchanged.",
+      "candidate_learning": "When a pediatric epilepsy patient is seizure‑free on a stable antiseizure regimen with no reported adverse effects, the safest recommendation is to continue the current drugs unchanged."
+    },
+    {
+      "patient_id": "199_Mayamba Jedidah",
+      "visit": 2,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe 1‑year‑old boy has cerebral palsy with focal epilepsy. He is already receiving carbamazepine at an adequate therapeutic dose (≈20 mg/kg/day). At the most recent visit he had no overt convulsions, only exaggerated startles, indicating that seizures are not fully controlled but there is no documented adverse reaction to the current drug. The notes contain no explicit instruction to alter or stop carbamazepine. According to the knowledge base, when a sodium‑channel blocker (carbamazepine) is tolerated but seizures remain partially controlled, the preferred next step is to add levetiracetam as an adjunct before changing the primary agent. In a low‑resource setting, phenobarbital is also an acceptable add‑on for focal epilepsy that remains symptomatic on a sodium‑channel blocker. Therefore three reasonable options are: (1) simply continue carbamazepine unchanged, (2) keep carbamazepine and start levetiracetam, or (3) keep carbamazepine and start phenobarbital.\n\nREGIMEN:\nOption 1: Continue current therapy\n- carbamazepine: continue\nRationale: The child is stable on carbamazepine, no seizures today, and the note does not request any change.\n\nOption 2: Add levetiracetam as adjunct\n- carbamazepine: continue\n- levetiracetam: start\nRationale: Focal epilepsy is only partially controlled on carbamazepine; levetiracetam is the recommended adjunct before altering the primary agent.\n\nOption 3: Add phenobarbital as adjunct\n- carbamazepine: continue\n- phenobarbital: start\nRationale: In resource‑limited settings, phenobarbital is an appropriate first‑add‑on for focal epilepsy refractory to a sodium‑channel blocker.",
+      "inspector_report": "**1. MATCH:** Yes — the system’s **Option 1 (continue carbamazepine)** matches the ground‑truth prescription.\n\n**2. ERROR TYPE:** None (the prediction correctly identified the prescribed drug and action).\n\n**3. ROOT CAUSE:** Not applicable – the system correctly interpreted the clinical notes and followed the physician’s decision to maintain the current carbamazepine regimen.\n\n**4. MISSED SIGNAL:** N/A – no missed information; the note “No convulsions today… only exaggerated startles” correctly guided the “continue” decision.\n\n**5. WHAT WOULD HELP:** N/A – the system already applied the appropriate rule.\n\nCANDIDATE_LEARNING: When seizure notes indicate no recent convulsions and the physician’s plan does not request a change, the safest recommendation is to continue the current antiepileptic regimen without adding new agents.",
+      "candidate_learning": "When seizure notes indicate no recent convulsions and the physician’s plan does not request a change, the safest recommendation is to continue the current antiepileptic regimen without adding new agents."
+    },
+    {
+      "patient_id": "254_Mawazo Hanifa",
+      "visit": 1,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe patient is a 7‑year‑old girl with focal (frontal) epilepsy that began in infancy and is still active, causing daily myoclonic‑tonic events with post‑ictal weakness. She is not currently taking any antiseizure medication. For pediatric focal epilepsy in children ≥ 2 years, the guideline recommends a sodium‑channel blocker such as carbamazepine as the first‑line agent, provided there are no contraindications. The child has no reported contraindication or adverse‑effect history, making carbamazepine the most appropriate initial therapy. Phenobarbital and levetiracetam are reasonable alternatives in resource‑limited settings or when carbamazepine is not tolerated, but they are not the guideline‑preferred first choice for uncomplicated focal epilepsy.\n\nREGIMEN:\nOption 1: Initiate carbamazepine\n- carbamazepine: start\nRationale: First‑line sodium‑channel blocker for pediatric focal epilepsy; the child has no contraindications and is drug‑naïve.\n\nOption 2: Initiate phenobarbital\n- phenobarbital: start\nRationale: Acceptable first‑add‑on or alternative in low‑resource settings when carbamazepine is unavailable or not tolerated.\n\nOption 3: Initiate levetiracetam\n- levetiracetam: start\nRationale: Effective broad‑spectrum agent that can be used as initial therapy for focal seizures, especially if sodium‑channel blockers are contraindicated.",
+      "inspector_report": "**MATCH:** Yes – Option 1 (“Initiate carbamazepine”) matches the ground‑truth prescription.\n\n**ERROR TYPE:** None (prediction correct).\n\n**ROOT CAUSE:** N/A – the system correctly identified the seizure type (focal/frontal) and applied the appropriate guideline‑based first‑line therapy.\n\n**MISSED SIGNAL:** N/A – no missed or ignored information.\n\n**WHAT WOULD HELP:** N/A – the system already used the relevant clinical rule.\n\nCANDIDATE_LEARNING: For children ≥ 2 years with focal (including frontal) epilepsy and no contraindications, carbamazepine is the preferred first‑line antiseizure medication.",
+      "candidate_learning": "For children ≥ 2 years with focal (including frontal) epilepsy and no contraindications, carbamazepine is the preferred first‑line antiseizure medication."
+    },
+    {
+      "patient_id": "152_Mubangizi Elizabeth",
+      "visit": 2,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe patient is a 2‑year‑old girl with Down syndrome and generalized epilepsy. She was started on sodium valproate syrup at the first visit and, by the second visit, has been seizure‑free with no adverse effects reported. According to the clinical knowledge base, valproate monotherapy is the preferred first‑line treatment for pediatric generalized epilepsy, and when a child is seizure‑free and tolerates the drug, the regimen should be continued unchanged. There is no indication in the note to modify, increase, or add any other antiseizure medication.\n\nREGIMEN:\nOption 1: Continue current valproate therapy\n- valproate: continue\nRationale: The child is seizure‑free on valproate with good tolerance; guidelines advise maintaining the current dose when control is achieved.\n\nOption 2: Increase valproate dose\n- valproate: start (dose increase)\nRationale: Not indicated because seizure control is already achieved and no breakthrough seizures are reported.\n\nOption 3: Add levetiracetam\n- levetiracetam: start\nRationale: Not indicated; adjunctive therapy is reserved for refractory seizures, which this patient does not have.",
+      "inspector_report": "**MATCH:** Yes – the ground‑truth prescription `valproate` corresponds to **Option 1: Continue current valproate therapy**.\n\n**ERROR TYPE:** NONE (prediction was correct).\n\n**ROOT CAUSE:** –  \n\n**MISSED SIGNAL:** –  \n\n**WHAT WOULD HELP:** –  \n\nCANDIDATE_LEARNING: In pediatric generalized epilepsy, if a child is seizure‑free and tolerates valproate, the appropriate action is to continue the existing valproate dose without modification.",
+      "candidate_learning": "In pediatric generalized epilepsy, if a child is seizure‑free and tolerates valproate, the appropriate action is to continue the existing valproate dose without modification."
+    },
+    {
+      "patient_id": "166_Mukisa Joshua",
+      "visit": 1,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": false,
+      "best_option": null,
+      "predictor_raw": "**REASONING:**  \n- The infant is 6 months old with West syndrome (infantile spasms) that is refractory to adequate‑dose sodium valproate (150 mg bd).  \n- In children ≤ 2 years with early‑onset generalized epilepsy, valproate is first‑line, but failure to achieve seizure control warrants an add‑on rather than immediate switch, especially in a low‑resource setting.  \n- According to the knowledge base, when valproate monotherapy does not control a generalized epilepsy, **adding carbamazepine** to valproate is an acceptable strategy (Rule 9).  \n- Phenobarbital is also a historically used, readily available add‑on for infantile seizures (Rule 8), though it is described for focal epilepsy; it can still be considered in this setting.  \n- Levetiracetam is another commonly used adjunct for refractory infantile spasms and is listed as an acceptable add‑on in the absence of a specific contraindication.  \n\nThus three reasonable options are presented: continue valproate and add carbamazepine, add phenobarbital, or add levetiracetam.\n\n**REGIMEN:**  \n\n**Option 1: Add carbamazepine**  \n- **valproate:** continue  \n- **carbamazepine:** start (initial dose 5 mg/kg/day divided BID, titrate as tolerated)  \nRationale: In refractory generalized epilepsy, adding carbamazepine to valproate is an accepted approach (Rule 9); maintains current effective drug while providing additional seizure control.\n\n**Option 2: Add phenobarbital**  \n- **valproate:** continue  \n- **phenobarbital:** start (initial dose 3 mg/kg loading, then 2–5 mg/kg/day in divided doses)  \nRationale: Phenobarbital is a low‑resource, well‑tolerated add‑on for infantile seizures and can be employed when valproate alone is insufficient (Rule 8).\n\n**Option 3: Add levetiracetam**  \n- **valproate:** continue  \n- **levetiracetam:** start (initial dose 10 mg/kg BID, titrate up to 30–40 mg/kg BID)  \nRationale: Levetiracetam is an effective adjunct for refractory infantile spasms and is acceptable when valproate monotherapy fails, offering a different mechanism of action.",
+      "inspector_report": "**MATCH:** None of the three ranked options matched the doctor’s prescription (the doctor continued **valproate only**).\n\n**ERROR TYPE:**  \n- **OVER_PRESCRIBED** – the system added one extra drug to the regimen.  \n- **WRONG_DRUG** – the added drug (carbamazepine, phenobarbital, or levetiracetam) was not prescribed.  \n- **WRONG_ACTION** – the system suggested “add” whereas the correct action was “continue only”.\n\n**ROOT CAUSE:**  \nThe model applied a generic rule that “refractory infantile spasms → add‑on antiseizure medication” without weighing the infant‑specific clinical context (very young age, prior steroid trial, and the clinician’s decision to maintain valproate monotherapy). It ignored the explicit statement that the current regimen was valproate alone and that no new drug was ordered.\n\n**MISSED SIGNAL:**  \n> “Current regimen: Sodium Valproate 150 mg bd.”  \n> “Impression: 6/12‑month‑old with Epilepsy?? Refractory West Syndrome, Developmental Delay.”  \n\nThese notes indicate the physician’s intention to continue valproate without adding another agent.\n\n**WHAT WOULD HELP:**  \nA rule that flags when the clinician has explicitly stated “continue current regimen” and advises the system to refrain from proposing additional drugs unless a clear indication for escalation is documented.\n\n**CANDIDATE_LEARNING:**  \nWhen an infant ≤12 months with West syndrome has already received steroid therapy and is on valproate monotherapy, the default recommendation should be to *continue* the current medication rather than automatically suggesting an add‑on antiseizure drug.",
+      "candidate_learning": "When an infant ≤12 months with West syndrome has already received steroid therapy and is on valproate monotherapy, the default recommendation should be to continue the current medication rather than automatically suggesting an add‑on antiseizure drug."
+    },
+    {
+      "patient_id": "161_Alonyo Ellijah",
+      "visit": 3,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \n- The child is currently on Sodium Valproate (initially 150 mg bd, then 125 mg bd) and, according to the most recent note (Visit 3), seizures are controlled and neuro‑developmental milestones are improving (walking, self‑feeding, beginning to speak).  \n- No adverse effects, weight loss, rash, or breakthrough seizures are reported.  \n- The clinical notes contain no explicit instruction to modify the regimen.  \n- According to the knowledge base (rules 1, 5, 11, 12, 13), when a pediatric patient on therapeutic‑dose valproate is seizure‑free and tolerating the drug, the appropriate action is to continue the current medication at the same dose.  \n\n**REGIMEN:**  \n\n**Option 1: Continue current therapy**  \n- Sodium Valproate: continue (maintain current dose, 125 mg bd)  \nRationale: Seizure‑free, tolerating medication, and no clinician‑directed change; continuation follows guideline for stable valproate therapy.\n\n**Option 2: Dose optimization (not indicated)**  \n- Sodium Valproate: increase (e.g., raise to 150 mg bd)  \nRationale: This would only be considered if breakthrough seizures occurred or if sub‑therapeutic dosing were suspected, which is not the case here.\n\n**Option 3: Add adjunctive therapy (not indicated)**  \n- Levetiracetam (or phenobarbital): start (add as adjunct)  \nRationale: Adjunctive agents are reserved for refractory seizures; the child is well‑controlled on valproate, so addition is unnecessary.",
+      "inspector_report": "**MATCH:** Yes – the system’s **Option 1 (Continue current therapy with valproate)** matches the doctor’s prescription.\n\n**ERROR TYPE:** None (prediction correct).\n\n**ROOT CAUSE:** Not applicable – the system correctly identified that the child’s seizures were controlled, there were no adverse effects, and the clinician gave no instruction to alter therapy.\n\n**MISSED SIGNAL:** Not applicable. The key supporting text that led to the correct prediction was:  \n- “Seizure controlled, can now walk and feed himself. Starting to speak.”  \n- “No convulsions” (Visit 2) and “Seizure controlled” (Visit 3).\n\n**WHAT WOULD HELP:** N/A – the system already used the appropriate clinical cues.\n\nCANDIDATE_LEARNING: In pediatric West syndrome, if a child is seizure‑free on a therapeutic dose of sodium valproate and shows no adverse effects, the appropriate action is to continue the current valproate regimen unchanged.",
+      "candidate_learning": "In pediatric West syndrome, if a child is seizure‑free on a therapeutic dose of sodium valproate and shows no adverse effects, the appropriate action is to continue the current valproate regimen unchanged."
+    },
+    {
+      "patient_id": "331_Nakato Nashim",
+      "visit": 1,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \n- The patient is a 4‑year‑old girl with focal epilepsy secondary to left parietal‑occipital brain injury (post‑stroke).  \n- For children ≥2 years with focal epilepsy, a sodium‑channel blocker such as carbamazepine is the preferred first‑line antiseizure medication (Guideline 6).  \n- No antiseizure drug is currently listed, and there is no mention of contraindication to carbamazepine.  \n- Therefore the most appropriate initial step is to **start carbamazepine** as monotherapy.  \n\n**REGIMEN:**  \n\n**Option 1: First‑line carbamazepine**  \n- carbamazepine: start  \nRationale: Sodium‑channel blocker indicated as first‑line for focal epilepsy in a 4‑year‑old; no current therapy or contraindications.  \n\n**Option 2: Valproate (alternative)**  \n- valproate: start  \nRationale: Valproate is first‑line for generalized epilepsy; may be considered only if carbamazepine is contraindicated or ineffective.  \n\n**Option 3: Phenobarbital (add‑on alternative)**  \n- phenobarbital: start  \nRationale: Phenobarbital is an acceptable add‑on for focal epilepsy in low‑resource settings but is less preferred as initial monotherapy compared with carbamazepine.",
+      "inspector_report": "**MATCH:** Yes – Option 1 (carbamazepine :start) matches the ground‑truth prescription.\n\n**ERROR TYPE:** None (prediction was correct).\n\n**ROOT CAUSE:** N/A – the system correctly identified the seizure type (focal) and the appropriate first‑line therapy.\n\n**MISSED SIGNAL:** N/A – no omitted information contributed to an error.\n\n**WHAT WOULD HELP:** N/A – the system already applied the appropriate guideline.\n\nCANDIDATE_LEARNING: For children ≥ 2 years with focal epilepsy, carbamazepine is the preferred first‑line antiseizure medication.",
+      "candidate_learning": "For children ≥ 2 years with focal epilepsy, carbamazepine is the preferred first‑line antiseizure medication."
+    },
+    {
+      "patient_id": "158_Namugalu Shatra",
+      "visit": 3,
+      "gt_drugs": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "is_poly": true,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "REASONING:\nThe patient is a 12‑year‑old girl with generalized epilepsy who has been seizure‑free since February 2021 while taking Sodium Valproate (≈15 mg/kg/day) and Carbamazepine (≈10 mg/kg/day). The most recent clinical note (Visit 3) states she is “tolerating medication well” and no new seizures or adverse effects (aside from longstanding mild headaches) are reported. According to the rules, when a drug appears in the current prescription and the note does not explicitly request a change, the default action is to continue that drug at the same dose. Therefore the appropriate recommendation is to maintain both antiseizure medications unchanged.\n\nREGIMEN:\nOption 1: Continue current regimen\n- Sodium Valproate: continue\n- Carbamazepine: continue\nRationale: Patient remains seizure‑free and tolerates both agents; no indication to modify therapy.\n\nOption 2: Add clobazam (adjunct)\n- Clobazam: start\nRationale: Could be considered if breakthrough seizures recur, but currently unnecessary as seizures are well controlled.\n\nOption 3: Discontinue carbamazepine\n- Carbamazepine: stop\nRationale: Carbamazepine can aggravate some generalized seizure types; however, given the patient’s current seizure freedom on the combination, stopping it is not warranted without a specific clinical reason.",
+      "inspector_report": "**1. MATCH**  \nYes – Option 1 (“Continue current regimen” with Sodium Valproate and Carbamazepine) matches the ground‑truth prescription `['carbamazepine', 'valproate']`.\n\n**2. ERROR TYPE**  \nNone – the system’s recommendation is correct (no WRONG_DRUG, MISSED_DRUG, WRONG_ACTION, OVER/UNDER‑PRESCRIBED).\n\n**3. ROOT CAUSE**  \nNo error occurred; the system correctly interpreted the clinical notes and applied the appropriate continuation rule.\n\n**4. MISSED SIGNAL**  \nN/A – the system already captured the relevant signals (seizure‑free status, tolerating both drugs, no request for change).\n\n**5. WHAT WOULD HELP**  \nN/A – the system performed as intended.\n\n**CANDIDATE_LEARNING:** When a patient with epilepsy is seizure‑free, tolerating the current antiseizure drugs, and the visit note contains no request for modification, the safest recommendation is to continue the existing regimen unchanged.",
+      "candidate_learning": "When a patient with epilepsy is seizure‑free, tolerating the current antiseizure drugs, and the visit note contains no request for modification, the safest recommendation is to continue the existing regimen unchanged."
+    },
+    {
+      "patient_id": "199_Mayamba Jedidah",
+      "visit": 1,
+      "gt_drugs": [
+        "carbamazepine"
+      ],
+      "pred_option1_drugs": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \n- The child is 1 year old with cerebral palsy and focal epilepsy.  \n- He is already on carbamazepine (50 mg BID ≈ 13 mg/kg/day) which is the recommended first‑line sodium‑channel blocker for focal epilepsy in children ≥2 yr, but it is being used here off‑label in a 1‑yr‑old; nevertheless it is tolerated (no reported adverse effects besides constipation, a known side‑effect).  \n- Seizures remain frequent (“still gets frequent startles”), indicating incomplete control.  \n- According to the clinical knowledge rule 3, when focal epilepsy is only partially controlled on a tolerated carbamazepine regimen, the next step is to add levetiracetam as adjunctive therapy before altering the primary drug.  \n- No instruction to stop carbamazepine is present, so per rule 11 it should be continued at the current dose.  \n\n**REGIMEN:**  \n\n**Option 1: Continue current therapy**  \n- carbamazepine: continue (same dose)  \nRationale: The medication is tolerated and there is no explicit directive to stop or change it.\n\n**Option 2: Add levetiracetam as adjunct**  \n- carbamazepine: continue (same dose)  \n- levetiracetam: start (initial pediatric dose, e.g., 20 mg/kg BID)  \nRationale: Seizures remain frequent despite carbamazepine; adding levetiracetam follows guideline 3 for partially controlled focal epilepsy.\n\n**Option 3: Switch to phenobarbital add‑on**  \n- carbamazepine: continue (same dose)  \n- phenobarbital: start (initial dose 2–3 mg/kg/day)  \nRationale: Phenobarbital is an acceptable first‑add‑on in low‑resource settings for focal epilepsy unresponsive to a sodium‑channel blocker, though levetiracetam is preferred if available.",
+      "inspector_report": "**1. MATCH**  \n- **Option 1** (“continue carbamazepine”) matches the ground‑truth prescription (`carbamazepine`).  \n\n**2. ERROR TYPE**  \n- No error; the system’s top prediction was correct.  \n\n**3. ROOT CAUSE**  \n- Not applicable – the system correctly interpreted the clinical note that the physician intended to maintain the current carbamazepine regimen without change.  \n\n**4. MISSED SIGNAL**  \n- Not applicable – no missed information contributed to the correct prediction.  \n\n**5. WHAT WOULD HELP**  \n- No additional rule needed for this case; the system already applied the appropriate guideline.  \n\n**CANDIDATE_LEARNING:** When a physician explicitly documents “continue current therapy” for a child on carbamazepine for focal epilepsy, the decision‑support system should prioritize maintaining that regimen over recommending add‑on therapy.",
+      "candidate_learning": "When a physician explicitly documents “continue current therapy” for a child on carbamazepine for focal epilepsy, the decision‑support system should prioritize maintaining that regimen over recommending add‑on therapy."
+    },
+    {
+      "patient_id": "169_Senyange Jethro",
+      "visit": 2,
+      "gt_drugs": [
+        "valproate"
+      ],
+      "pred_option1_drugs": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "any_match": true,
+      "best_option": "option_1",
+      "predictor_raw": "**REASONING:**  \n- The child is currently on sodium valproate 150 mg twice daily.  \n- At the second visit (6 months later) he is seizure‑free, tolerating the medication, and there are no new adverse effects or clinical indications to modify therapy.  \n- According to the clinical knowledge rules (points 5, 11, 12, 13), when a pediatric patient on therapeutic‑dose valproate is seizure‑free and stable, the regimen should be continued unchanged unless the clinician explicitly orders a change.  \n\n**REGIMEN:**  \n\n**Option 1: Continue current therapy**  \n- **valproate:** continue (same dose, twice daily)  \nRationale: The patient is seizure‑free for >6 months, tolerates valproate, and there is no note to adjust the regimen; continuation is the recommended action.  \n\n**Option 2: Add carbamazepine as adjunct**  \n- **carbamazepine:** start (standard pediatric dose)  \nRationale: Carbamazepine can be used as an adjunct in refractory generalized epilepsy, but the child already has good control, so this addition is unnecessary and exposes him to extra medication burden.  \n\n**Option 3: Switch to phenobarbital**  \n- **phenobarbital:** start (standard pediatric dose)  \n- **valproate:** stop  \nRationale: Phenobarbital is an option for focal epilepsy in low‑resource settings, but the child is well controlled on valproate; switching offers no benefit and may increase side‑effects.",
+      "inspector_report": "**MATCH:** Yes – the correct prescription matches **Option 1** (continue valproate).\n\n**ERROR TYPE:** No error (prediction aligns with the doctor’s order).\n\n**ROOT CAUSE:** —  \n\n**MISSED SIGNAL:** —  \n\n**WHAT WOULD HELP:** —  \n\nCANDIDATE_LEARNING: In pediatric patients with generalized epilepsy who have been seizure‑free for ≥6 months on an appropriate dose of valproate, the standard action is to continue the current valproate regimen unchanged.",
+      "candidate_learning": "In pediatric patients with generalized epilepsy who have been seizure‑free for ≥6 months on an appropriate dose of valproate, the standard action is to continue the current valproate regimen unchanged."
+    }
+  ]
+}
