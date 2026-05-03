@@ -1,0 +1,1623 @@
+{
+  "round": 2,
+  "accepted": false,
+  "learnings_before": "- Valproate syrup is stocked in >90 % of district‑level pharmacies in Uganda, is inexpensive (~$0.08 per dose), and is the preferred first‑line agent for early‑onset focal and generalized epilepsies per the Ugandan National Essential Medicines List and ILAE 2022 guidelines.\n- Carbamazepine, lamotrigine, and phenytoin are classified as aromatic AEDs; patients with a history of drug‑induced skin rash are advised to avoid these agents.\n- Levetiracetam is non‑aromatic and has a low rash risk, but its dispersible tablets are intermittently available and cost ~2–3 times more per mg than valproate, making it a secondary option when valproate is contraindicated or unavailable.\n- Phenobarbital tablets are widely available but are associated with a high sedation rate (~30 % of children) and are less favored for children with cerebral palsy or developmental delay; it is reserved for refractory cases after failure of two optimized first‑line AEDs.\n- In children weighing 8–12 kg, the recommended valproate starting dose is 10 mg/kg/day divided BID, titrated by 5–10 mg/kg every 1–2 weeks to a target of 20–30 mg/kg/day, with baseline and 1‑month LFT/CBC monitoring; this dosing schema yields seizure‑free rates >70 % in local cohorts.\n- adherence scores based on caregiver report and pharmacy refill data strongly predict seizure control; when adherence is low, the preferred strategy is to simplify regimens (single‑daily or twice‑daily dosing) rather than add additional agents.\n- Children with cerebral palsy and spastic tone benefit from AEDs with minimal sedation; valproate and levetiracetam are preferred over phenobarbital in this subgroup.\n- For infants with seizure onset <3 months and electrographic patterns of epileptic encephalopathy, early initiation of valproate (within the first month) is associated with improved developmental outcomes compared with delayed treatment.\n- Drug‑interaction profiles are critical: baclofen co‑administration does not significantly affect carbamazepine levels, whereas phenobarbital induces CYP enzymes and may reduce efficacy of concurrent antimalarials; valproate inhibition of CYP can increase plasma levels of co‑prescribed antiretrovirals.\n- Cost‑effectiveness analyses in Ugandan public health settings show that maintaining a child on valproate monotherapy (including monitoring) reduces total care costs by ~15 % relative to switching to phenobarbital or adding a second AED.",
+  "candidate_learnings": "- In infants younger than 2 years with early‑onset multifocal or generalized epilepsy, the default prescription is valproate monotherapy, provided there is no documented hepatic dysfunction, severe thrombocytopenia, or known valproate allergy.  \n- Valproate is preferred because it is stocked in >90 % of district pharmacies, inexpensive, and available as syrup suitable for infants.  \n- Levetiracetam is not a first‑line option for these infants; it may be considered only when valproate cannot be sourced or is contraindicated.  \n- Phenobarbital is reserved strictly for refractory cases after failure of optimized valproate (or levetiracetam) and should not be used as initial therapy in children <2 years.  \n- For children older than 2 years with focal seizures, carbamazepine is the first‑line agent unless a prior drug‑induced rash or hepatic intolerance is documented; it is widely available as tablets and has lower cost than valproate in this age group.  \n- Aromatic AEDs (carbamazepine, lamotrigine, phenytoin) should be discontinued only if the chart records a skin rash or a confirmed HLA‑B*1502‑related hypersensitivity; otherwise they remain appropriate first‑line for focal epilepsy.  \n- When a rash is present and an aromatic AED is currently prescribed, the drug must be stopped and an alternative non‑aromatic AED considered.  \n- Valproate dosing in children >12 kg follows 10 mg/kg/day divided BID, titrated by 5–10 % of the current total dose every 1–2 weeks up to a maximum of 30 mg/kg/day, with baseline and 1‑month LFT/CBC monitoring.  \n- Carbamazepine dosing starts at 5–10 mg/kg/day divided BID, with target 15–25 mg/kg/day; serum level monitoring (8–12 µg/mL) is advised after 2–3 weeks of steady dosing.  \n- Adherence is optimized by prescribing a regimen that can be given twice daily in a single formulation (syrup for valproate, tablets for carbamazepine); complex multi‑drug schedules should be avoided unless the patient has demonstrated failure of monotherapy.  \n- Cost‑effectiveness favors valproate for infants and carbamazepine for older children when seizure control is comparable, because monitoring requirements for valproate increase overall care costs.  \n- In children with cerebral palsy or spastic tone, avoid phenobarbital due to high sedation; prefer valproate or carbamazepine based on seizure type.  \n- Any prescription decision must result in exactly one AED for the current visit; alternative agents are only listed for future contingency planning.",
+  "rejected_learnings": "- In infants younger than 2 years with early‑onset multifocal or generalized epilepsy, the default prescription is valproate monotherapy, provided there is no documented hepatic dysfunction, severe thrombocytopenia, or known valproate allergy.  \n- Valproate is preferred because it is stocked in >90 % of district pharmacies, inexpensive, and available as syrup suitable for infants.  \n- Levetiracetam is not a first‑line option for these infants; it may be considered only when valproate cannot be sourced or is contraindicated.  \n- Phenobarbital is reserved strictly for refractory cases after failure of optimized valproate (or levetiracetam) and should not be used as initial therapy in children <2 years.  \n- For children older than 2 years with focal seizures, carbamazepine is the first‑line agent unless a prior drug‑induced rash or hepatic intolerance is documented; it is widely available as tablets and has lower cost than valproate in this age group.  \n- Aromatic AEDs (carbamazepine, lamotrigine, phenytoin) should be discontinued only if the chart records a skin rash or a confirmed HLA‑B*1502‑related hypersensitivity; otherwise they remain appropriate first‑line for focal epilepsy.  \n- When a rash is present and an aromatic AED is currently prescribed, the drug must be stopped and an alternative non‑aromatic AED considered.  \n- Valproate dosing in children >12 kg follows 10 mg/kg/day divided BID, titrated by 5–10 % of the current total dose every 1–2 weeks up to a maximum of 30 mg/kg/day, with baseline and 1‑month LFT/CBC monitoring.  \n- Carbamazepine dosing starts at 5–10 mg/kg/day divided BID, with target 15–25 mg/kg/day; serum level monitoring (8–12 µg/mL) is advised after 2–3 weeks of steady dosing.  \n- Adherence is optimized by prescribing a regimen that can be given twice daily in a single formulation (syrup for valproate, tablets for carbamazepine); complex multi‑drug schedules should be avoided unless the patient has demonstrated failure of monotherapy.  \n- Cost‑effectiveness favors valproate for infants and carbamazepine for older children when seizure control is comparable, because monitoring requirements for valproate increase overall care costs.  \n- In children with cerebral palsy or spastic tone, avoid phenobarbital due to high sedation; prefer valproate or carbamazepine based on seizure type.  \n- Any prescription decision must result in exactly one AED for the current visit; alternative agents are only listed for future contingency planning.",
+  "learnings_after": "- Valproate syrup is stocked in >90 % of district‑level pharmacies in Uganda, is inexpensive (~$0.08 per dose), and is the preferred first‑line agent for early‑onset focal and generalized epilepsies per the Ugandan National Essential Medicines List and ILAE 2022 guidelines.\n- Carbamazepine, lamotrigine, and phenytoin are classified as aromatic AEDs; patients with a history of drug‑induced skin rash are advised to avoid these agents.\n- Levetiracetam is non‑aromatic and has a low rash risk, but its dispersible tablets are intermittently available and cost ~2–3 times more per mg than valproate, making it a secondary option when valproate is contraindicated or unavailable.\n- Phenobarbital tablets are widely available but are associated with a high sedation rate (~30 % of children) and are less favored for children with cerebral palsy or developmental delay; it is reserved for refractory cases after failure of two optimized first‑line AEDs.\n- In children weighing 8–12 kg, the recommended valproate starting dose is 10 mg/kg/day divided BID, titrated by 5–10 mg/kg every 1–2 weeks to a target of 20–30 mg/kg/day, with baseline and 1‑month LFT/CBC monitoring; this dosing schema yields seizure‑free rates >70 % in local cohorts.\n- adherence scores based on caregiver report and pharmacy refill data strongly predict seizure control; when adherence is low, the preferred strategy is to simplify regimens (single‑daily or twice‑daily dosing) rather than add additional agents.\n- Children with cerebral palsy and spastic tone benefit from AEDs with minimal sedation; valproate and levetiracetam are preferred over phenobarbital in this subgroup.\n- For infants with seizure onset <3 months and electrographic patterns of epileptic encephalopathy, early initiation of valproate (within the first month) is associated with improved developmental outcomes compared with delayed treatment.\n- Drug‑interaction profiles are critical: baclofen co‑administration does not significantly affect carbamazepine levels, whereas phenobarbital induces CYP enzymes and may reduce efficacy of concurrent antimalarials; valproate inhibition of CYP can increase plasma levels of co‑prescribed antiretrovirals.\n- Cost‑effectiveness analyses in Ugandan public health settings show that maintaining a child on valproate monotherapy (including monitoring) reduces total care costs by ~15 % relative to switching to phenobarbital or adding a second AED.",
+  "train_correct": 8,
+  "train_total": 10,
+  "train_results": [
+    {
+      "patient_id": "67_Ssenyonjo Waswa",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": false
+    },
+    {
+      "patient_id": "259_Ayaan Abdrizak",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": false
+    },
+    {
+      "patient_id": "34_Semakula Miracle",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "226_Muganga Dauda",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "119_Odur Hillary",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "158_Namugalu Shatra",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "161_Alonyo Ellijah",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "201_Namozi Chloe Miracle",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "259_Ayaan Abdrizak",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    },
+    {
+      "patient_id": "72_Nalusiba Sandra",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "any_match": true
+    }
+  ],
+  "total": 60,
+  "top1_correct": 35,
+  "top3_correct": 47,
+  "top1_rate": 0.5833333333333334,
+  "top3_rate": 0.7833333333333333,
+  "mono_top3": 39,
+  "mono_total": 44,
+  "poly_top3": 8,
+  "poly_total": 16,
+  "per_case": [
+    {
+      "patient_id": "296_Kulumba Jeremiah",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "126_Ayebale Shilla",
+      "gt": [
+        "lamotrigine",
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "clobazam",
+        "levetiracetam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "196_Kigozi David",
+      "gt": [
+        "topiramate",
+        "valproate"
+      ],
+      "pred": [
+        "clobazam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "168_Kato Paul",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "265_Kateregga David",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "296_Kulumba Jeremiah",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "217_Koloba Steven",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "78_Katamba Druscilla",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "150_Tumwebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "168_Kato Paul",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "71_Nabbossa Meghan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "37_Tamale Jonathan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "171_Afaayo Francis",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "171_Afaayo Francis",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "159_Nyanzi Rowan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "53_Bukenya Patrick",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "210_Kitabwa Jonathan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "53_Bukenya Patrick",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "120_Tumaebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "78_Katamba Druscilla",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "264_Bukenya Daniel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "71_Nabbossa Meghan",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "53_Bukenya Patrick",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "314_Kitibwa Hussein",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "314_Kitibwa Hussein",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "171_Afaayo Francis",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "150_Tumwebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "264_Bukenya Daniel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "13_Hikima Rautha",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "120_Tumaebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "196_Kigozi David",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "210_Kitabwa Jonathan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "177_Natukunda Promise",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "168_Kato Paul",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "217_Koloba Steven",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "264_Bukenya Daniel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "13_Hikima Rautha",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "177_Natukunda Promise",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "265_Kateregga David",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "126_Ayebale Shilla",
+      "gt": [
+        "lamotrigine",
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "lamotrigine",
+        "levetiracetam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "265_Kateregga David",
+      "gt": [
+        "phenobarbital"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "13_Hikima Rautha",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "71_Nabbossa Meghan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "126_Ayebale Shilla",
+      "gt": [
+        "levetiracetam",
+        "valproate"
+      ],
+      "pred": [
+        "lamotrigine",
+        "levetiracetam",
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "patient_id": "210_Kitabwa Jonathan",
+      "gt": [
+        "clonazepam",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "120_Tumaebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "175_Nsimbi Ethan",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "37_Tamale Jonathan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "37_Tamale Jonathan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "159_Nyanzi Rowan",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "175_Nsimbi Ethan",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "175_Nsimbi Ethan",
+      "gt": [
+        "carbamazepine",
+        "valproate"
+      ],
+      "pred": [],
+      "is_poly": true,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "78_Katamba Druscilla",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "196_Kigozi David",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "clobazam",
+        "topiramate",
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "150_Tumwebaze Emmanuel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "217_Koloba Steven",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "159_Nyanzi Rowan",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "264_Bukenya Daniel",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": false,
+      "top3_match": false
+    },
+    {
+      "patient_id": "296_Kulumba Jeremiah",
+      "gt": [
+        "carbamazepine"
+      ],
+      "pred": [
+        "carbamazepine"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "patient_id": "314_Kitibwa Hussein",
+      "gt": [
+        "valproate"
+      ],
+      "pred": [
+        "valproate"
+      ],
+      "is_poly": false,
+      "top1_match": true,
+      "top3_match": true
+    }
+  ],
+  "candidate_eval": {
+    "total": 60,
+    "top1_correct": 35,
+    "top3_correct": 44,
+    "top1_rate": 0.5833333333333334,
+    "top3_rate": 0.7333333333333333,
+    "mono_top3": 41,
+    "mono_total": 44,
+    "poly_top3": 3,
+    "poly_total": 16,
+    "per_case": [
+      {
+        "patient_id": "296_Kulumba Jeremiah",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "126_Ayebale Shilla",
+        "gt": [
+          "lamotrigine",
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "196_Kigozi David",
+        "gt": [
+          "topiramate",
+          "valproate"
+        ],
+        "pred": [
+          "clobazam"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "168_Kato Paul",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "265_Kateregga David",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "296_Kulumba Jeremiah",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "217_Koloba Steven",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "78_Katamba Druscilla",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "150_Tumwebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "168_Kato Paul",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "71_Nabbossa Meghan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "37_Tamale Jonathan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "171_Afaayo Francis",
+        "gt": [
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "171_Afaayo Francis",
+        "gt": [
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "159_Nyanzi Rowan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "53_Bukenya Patrick",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "210_Kitabwa Jonathan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "53_Bukenya Patrick",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "120_Tumaebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "78_Katamba Druscilla",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "lamotrigine"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "264_Bukenya Daniel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "71_Nabbossa Meghan",
+        "gt": [
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "53_Bukenya Patrick",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "314_Kitibwa Hussein",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "314_Kitibwa Hussein",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "171_Afaayo Francis",
+        "gt": [
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "150_Tumwebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "264_Bukenya Daniel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "13_Hikima Rautha",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "120_Tumaebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "196_Kigozi David",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "levetiracetam"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "210_Kitabwa Jonathan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "177_Natukunda Promise",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "168_Kato Paul",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "217_Koloba Steven",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "264_Bukenya Daniel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "13_Hikima Rautha",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "177_Natukunda Promise",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "265_Kateregga David",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "126_Ayebale Shilla",
+        "gt": [
+          "lamotrigine",
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "265_Kateregga David",
+        "gt": [
+          "phenobarbital"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "13_Hikima Rautha",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "71_Nabbossa Meghan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "126_Ayebale Shilla",
+        "gt": [
+          "levetiracetam",
+          "valproate"
+        ],
+        "pred": [
+          "lamotrigine",
+          "levetiracetam",
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "210_Kitabwa Jonathan",
+        "gt": [
+          "clonazepam",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "120_Tumaebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "175_Nsimbi Ethan",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "37_Tamale Jonathan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "37_Tamale Jonathan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "159_Nyanzi Rowan",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": true
+      },
+      {
+        "patient_id": "175_Nsimbi Ethan",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "175_Nsimbi Ethan",
+        "gt": [
+          "carbamazepine",
+          "valproate"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": true,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "78_Katamba Druscilla",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "196_Kigozi David",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "150_Tumwebaze Emmanuel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "217_Koloba Steven",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "159_Nyanzi Rowan",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "264_Bukenya Daniel",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": false,
+        "top3_match": false
+      },
+      {
+        "patient_id": "296_Kulumba Jeremiah",
+        "gt": [
+          "carbamazepine"
+        ],
+        "pred": [
+          "carbamazepine"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      },
+      {
+        "patient_id": "314_Kitibwa Hussein",
+        "gt": [
+          "valproate"
+        ],
+        "pred": [
+          "valproate"
+        ],
+        "is_poly": false,
+        "top1_match": true,
+        "top3_match": true
+      }
+    ]
+  }
+}
