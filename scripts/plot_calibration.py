@@ -75,13 +75,19 @@ def deferral_precision(path, match_key, conf_key):
     correct_sorted = correct[order]
     cumulative_correct = np.cumsum(correct_sorted)
     n_total = len(correct)
-    n_auto = np.arange(1, n_total + 1)
-    n_deferred = n_total - n_auto
 
-    # Deferred cases are assumed to receive the correct physician recommendation.
-    precision = (cumulative_correct + n_deferred) / n_total
-    deferral = n_deferred / n_total
-    return np.r_[deferral[::-1] * 100, 100.0], np.r_[precision[::-1] * 100, 100.0]
+    # Display 5% operating points. Precision is measured on the non-deferred
+    # subset, matching Table 3; the 100% endpoint is all-clinician review.
+    deferral = np.arange(0, 101, 5)
+    precision = []
+    for rate in deferral:
+        if rate == 100:
+            precision.append(100.0)
+            continue
+        n_auto = max(1, int(round(n_total * (1 - rate / 100))))
+        precision.append(cumulative_correct[n_auto - 1] / n_auto * 100)
+
+    return deferral, np.array(precision)
 
 
 def reliability_bins(path, match_key, conf_key, min_bin_n=5):
@@ -265,7 +271,7 @@ ax.scatter(
     zorder=5,
 )
 ax.annotate(
-    f"50% deferral\n{headline_y:.1f}% precision",
+    f"50% deferral\n{headline_y:.0f}% precision",
     xy=(headline_x, headline_y),
     xytext=(58, 93.3),
     fontsize=8.5,
@@ -356,7 +362,7 @@ headline_y = np.interp(50.0, *summary_deferral_curves["Multi-agent B"])
 ax.scatter([50.0], [headline_y], s=38, color=styles["Multi-agent B"]["color"],
            edgecolor="white", linewidth=1.0, zorder=5)
 ax.annotate(
-    f"50% deferral\n{headline_y:.1f}% precision",
+    f"50% deferral\n{headline_y:.0f}% precision",
     xy=(50.0, headline_y),
     xytext=(58, 93.4),
     fontsize=8.5,
