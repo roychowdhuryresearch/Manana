@@ -297,8 +297,8 @@ plt.close()
 
 
 # --- Paper figure: reliability cohorts and deferral side by side ---
-fig = plt.figure(figsize=(12.0, 4.4))
-gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 1.22], wspace=0.34)
+fig = plt.figure(figsize=(12.0, 4.75))
+gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 1.22], wspace=0.32)
 ax_rel_a = fig.add_subplot(gs[0, 0])
 ax_rel_b = fig.add_subplot(gs[0, 1], sharey=ax_rel_a)
 ax_deferral = fig.add_subplot(gs[0, 2])
@@ -333,17 +333,17 @@ for ax_idx, cohort in enumerate(["A", "B"]):
         )
         for x, y, n in zip(bin_centers[valid], bin_acc[valid], bin_n[valid]):
             ax.annotate(f"n={n}", (x, y * 100), textcoords="offset points",
-                        xytext=(4, 4), fontsize=5.8, alpha=0.6)
+                        xytext=(4, 4), fontsize=6.2, alpha=0.6)
     ax.plot([0, 1], [0, 100], "k--", alpha=0.4, label="Perfectly calibrated")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 105)
     ax.set_yticks(range(0, 101, 20))
-    ax.set_xlabel("Predicted confidence", fontsize=9)
-    ax.set_ylabel("Empirical precision (%)", fontsize=9)
-    ax.set_title(f"Cohort {cohort}", fontsize=10)
+    ax.set_xlabel("Predicted confidence", fontsize=10)
+    ax.set_ylabel("Empirical precision (%)", fontsize=10)
+    ax.set_title(f"Cohort {cohort}", fontsize=11)
     ax.grid(alpha=0.3)
-    ax.tick_params(labelsize=8)
-    bold_legend(ax, loc="upper left", fontsize=6.6, frameon=True, framealpha=0.92)
+    ax.tick_params(labelsize=9)
+    bold_legend(ax, loc="upper left", fontsize=7.2, frameon=True, framealpha=0.92)
 
 # Deferral-precision.
 ax = ax_deferral
@@ -359,27 +359,27 @@ ax.annotate(
     f"50% deferral\n{headline_y:.1f}% precision",
     xy=(50.0, headline_y),
     xytext=(58, 93.4),
-    fontsize=8,
+    fontsize=8.5,
     color="#333333",
     arrowprops={"arrowstyle": "->", "color": styles["Multi-agent B"]["color"], "lw": 1.0},
     bbox={"boxstyle": "round,pad=0.22", "facecolor": "white", "edgecolor": "#cccccc", "alpha": 0.92},
 )
-ax.set_title("Deferral Rate vs Precision", fontsize=10)
-ax.set_xlabel("Deferral rate (%)", fontsize=9)
-ax.set_ylabel("Precision (%)", fontsize=9)
+ax.set_title("Deferral Rate vs Precision", fontsize=11)
+ax.set_xlabel("Deferral rate (%)", fontsize=10)
+ax.set_ylabel("Precision (%)", fontsize=10)
 ax.set_xlim(0, 100)
 ax.set_ylim(60, 102)
 ax.set_xticks(range(0, 101, 25))
 ax.grid(alpha=0.3)
-ax.tick_params(labelsize=8)
-bold_legend(ax, loc="lower left", fontsize=7.5, frameon=True, framealpha=0.92)
+ax.tick_params(labelsize=9)
+bold_legend(ax, loc="lower left", fontsize=8.0, frameon=True, framealpha=0.92)
 
-fig.subplots_adjust(left=0.06, right=0.985, bottom=0.18, top=0.84, wspace=0.34)
+fig.subplots_adjust(left=0.058, right=0.99, bottom=0.16, top=0.86, wspace=0.32)
 fig.canvas.draw()
 rel_a_pos = ax_rel_a.get_position()
 rel_b_pos = ax_rel_b.get_position()
 rel_mid_x = (rel_a_pos.x0 + rel_b_pos.x1) / 2
-fig.text(rel_mid_x, 0.94, "Reliability Diagram", ha="center", va="center", fontsize=10)
+fig.text(rel_mid_x, 0.94, "Reliability Diagram", ha="center", va="center", fontsize=11)
 
 save_plot("calibration_summary")
 plt.close()
