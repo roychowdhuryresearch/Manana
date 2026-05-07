@@ -44,11 +44,8 @@ OUT_DIR = "figs"
 os.makedirs(OUT_DIR, exist_ok=True)
 
 
-def bold_legend(ax, **kwargs):
-    legend = ax.legend(**kwargs)
-    for text in legend.get_texts():
-        text.set_fontweight("bold")
-    return legend
+def add_legend(ax, **kwargs):
+    return ax.legend(**kwargs)
 
 
 def load(path, match_key, conf_key):
@@ -142,7 +139,7 @@ ax.set_xlim(0, 100)
 ax.set_ylim(60, 102)
 ax.set_xticks(range(0, 101, 25))
 ax.grid(alpha=0.3)
-bold_legend(ax, loc="lower left", fontsize=10)
+add_legend(ax, loc="lower left", fontsize=10)
 
 # Annotate the headline finding
 ax.annotate(
@@ -192,11 +189,6 @@ for ax_idx, cohort in enumerate(["A", "B"]):
             label=label.replace(f" {cohort}", ""),
             **styles[label],
         )
-        # Bubble size = bin count (annotation)
-        for x, y, n in zip(bin_centers[valid], bin_acc[valid], bin_n[valid]):
-            ax.annotate(f"n={n}", (x, y * 100), textcoords="offset points",
-                        xytext=(5, 5), fontsize=7, alpha=0.6)
-
     # Diagonal
     ax.plot([0, 1], [0, 100], "k--", alpha=0.4, label="Perfectly calibrated")
     ax.set_xlim(0, 1)
@@ -206,7 +198,7 @@ for ax_idx, cohort in enumerate(["A", "B"]):
     ax.set_ylabel("Empirical precision (%)", fontsize=10)
     ax.set_title(f"Cohort {cohort}", fontsize=11)
     ax.grid(alpha=0.3)
-    bold_legend(ax, loc="upper left", fontsize=8)
+    add_legend(ax, loc="upper left", fontsize=8)
 
 fig.suptitle("Reliability Diagram (BMA Beta-Binomial)", fontsize=12, y=1.00)
 plt.tight_layout(w_pad=1.6)
@@ -236,7 +228,7 @@ for ax_idx, (label, (path, (mk, ck))) in enumerate(PATHS.items()):
             transform=ax.transAxes, va="top", ha="left", fontsize=9,
             bbox={"boxstyle": "round", "facecolor": "white", "edgecolor": "gray", "alpha": 0.85})
     ax.set_title(label, fontsize=10)
-    bold_legend(ax, loc="upper right", fontsize=8)
+    add_legend(ax, loc="upper right", fontsize=8)
     ax.set_xlim(0, 1)
     ax.set_xlabel("Confidence")
     ax.set_ylabel("Number of cases")
@@ -273,7 +265,7 @@ ax.scatter(
 ax.annotate(
     f"50% deferral\n{headline_y:.0f}% precision",
     xy=(headline_x, headline_y),
-    xytext=(58, 93.3),
+    xytext=(16, 96.0),
     fontsize=8.5,
     color="#333333",
     arrowprops={
@@ -296,7 +288,7 @@ ax.set_xlim(0, 100)
 ax.set_ylim(60, 102)
 ax.set_xticks(range(0, 101, 25))
 ax.grid(alpha=0.3)
-bold_legend(ax, loc="lower left", ncol=2, frameon=True, framealpha=0.92, fontsize=9)
+add_legend(ax, loc="lower left", ncol=2, frameon=True, framealpha=0.92, fontsize=9)
 
 save_plot("deferral_precision")
 plt.close()
@@ -342,9 +334,6 @@ for ax_idx, cohort in enumerate(["A", "B"]):
             label=label.replace(f" {cohort}", ""),
             **summary_styles[label],
         )
-        for x, y, n in zip(bin_centers[valid], bin_acc[valid], bin_n[valid]):
-            ax.annotate(f"n={n}", (x, y * 100), textcoords="offset points",
-                        xytext=(4, 4), fontsize=7.0, alpha=0.6)
     ax.plot([0, 1], [0, 100], "k--", lw=2.2, alpha=0.4, label="Perfectly calibrated")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 105)
@@ -354,7 +343,7 @@ for ax_idx, cohort in enumerate(["A", "B"]):
     ax.set_title(f"Cohort {cohort}", fontsize=13)
     ax.grid(alpha=0.3)
     ax.tick_params(labelsize=11)
-    bold_legend(ax, loc="upper left", fontsize=8.4, frameon=True, framealpha=0.92)
+    add_legend(ax, loc="upper left", fontsize=8.4, frameon=True, framealpha=0.92)
 
 # Deferral-precision.
 ax = ax_deferral
@@ -369,7 +358,7 @@ ax.scatter([50.0], [headline_y], s=58, color=styles["Multi-agent B"]["color"],
 ax.annotate(
     f"50% deferral\n{headline_y:.0f}% precision",
     xy=(50.0, headline_y),
-    xytext=(58, 93.4),
+    xytext=(16, 96.0),
     fontsize=9.8,
     color="#333333",
     arrowprops={"arrowstyle": "->", "color": styles["Multi-agent B"]["color"], "lw": 1.0},
@@ -383,7 +372,7 @@ ax.set_ylim(60, 102)
 ax.set_xticks(range(0, 101, 25))
 ax.grid(alpha=0.3)
 ax.tick_params(labelsize=11)
-bold_legend(ax, loc="lower left", fontsize=9.0, frameon=True, framealpha=0.92)
+add_legend(ax, loc="lower left", fontsize=9.0, frameon=True, framealpha=0.92)
 
 fig.subplots_adjust(left=0.075, right=0.993, bottom=0.205, top=0.87, wspace=0.25)
 fig.canvas.draw()
