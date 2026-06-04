@@ -1,0 +1,39 @@
+name: mimic_iv_epilepsy
+tag: mimic
+adapter: data_adapters.jsonl:load_split
+prompt_root: ../prompts
+
+setting: "a neurology unit at a US hospital"
+input_description: "cleaned clinical notes with discharge-side treatment leakage removed"
+target_description: "the clinician-prescribed active antiseizure medication regimen at discharge"
+
+drug_list:
+  - carbamazepine
+  - clobazam
+  - clonazepam
+  - gabapentin
+  - lacosamide
+  - lamotrigine
+  - levetiracetam
+  - lorazepam
+  - oxcarbazepine
+  - phenobarbital
+  - phenytoin
+  - pregabalin
+  - topiramate
+  - valproate
+  - zonisamide
+
+paths:
+  cases: ../mimic/filtered/cases.jsonl
+
+split:
+  strategy: stratified
+  train_patients: 150
+  val_patients: 60
+  split_seed: 42
+  max_visits: 1
+  strata:
+    mono: 0.5
+    mixed: 0.0
+    poly: 0.5

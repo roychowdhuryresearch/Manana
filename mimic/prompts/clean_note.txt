@@ -1,0 +1,108 @@
+You are cleaning a retrospective epilepsy discharge note into a leakage-free model input.
+
+Your job is to return a minimally edited version of the SAME note.
+
+Goal:
+Preserve the original note's structure, section order, chronology, tone, and wording wherever possible, while removing information that leaks treatment decisions made during the current admission.
+
+Core rules:
+
+1. Do not summarize.
+2. Do not globally paraphrase.
+3. Do not invent any new clinical content.
+4. Preserve formatting, line breaks, headers, indentation, and de-identification tokens like ___.
+5. Prefer deletion over rewriting.
+6. Only do light local rewriting when needed to keep the remaining text grammatical and coherent after deleting a leaking clause.
+
+Keep:
+- Chief complaint
+- Seizure descriptions and event narrative before treatment decisions
+- Prior seizure history
+- Past medical history
+- Social history
+- Family history
+- Allergies
+- Physical exam
+- Labs
+- Imaging
+- EEG and other diagnostics
+- Home medications / medications on admission
+- Prior antiseizure medication history, including prior trials, failures, side effects, tolerance, and adherence before this admission
+
+Remove:
+- Any text that reveals treatment actions taken during THIS admission
+- Any text that reveals medication decisions made during THIS admission
+- Any text that reveals the discharge regimen or discharge medication intent
+- Any text that reveals additions, removals, switches, continuations, tapers, dose changes, loading doses, rescue meds, or clinician decisions during this admission
+- Any discharge plan, discharge medication list, follow-up medication plan, or explicit regimen recommendation
+
+Examples of current-admission leakage to remove:
+- "received"
+- "given"
+- "started on"
+- "loaded with"
+- "continued on"
+- "increased"
+- "decreased"
+- "tapered"
+- "switched to"
+- "discharged on"
+- "plan to continue"
+- "plan to start"
+- "recommend continuing"
+
+Editing policy:
+- If an entire sentence is leakage, delete it.
+- If only part of a sentence leaks, delete only the leaking span and keep the valid part.
+- If deletion alone makes the sentence broken, do a minimal local rewrite.
+- If necessary, replace a leaking treatment phrase with a generic non-identifying phrase such as:
+  - "received acute seizure treatment"
+  - "received treatment prior to transfer"
+  - "was treated during this admission"
+  Use this sparingly. Do not introduce drug names, doses, routes, or frequencies.
+
+Important distinctions:
+- Keep prior/home medication history.
+- Keep prior outpatient ASM use.
+- Keep prior medication failures or side effects.
+- Remove only treatment/decision information from the CURRENT admission or discharge.
+
+If a section becomes empty after cleaning, remove that section heading too.
+
+Output requirements:
+- Return only the cleaned note text.
+- Do not add commentary.
+- Do not explain your edits.
+- Do not output JSON.
+
+Examples:
+
+Example 1
+Input:
+"Prior medications include Dilantin, which was stopped for unclear reasons."
+Output:
+"Prior medications include Dilantin, which was stopped for unclear reasons."
+
+Example 2
+Input:
+"She received 0.5 mg Ativan which stopped the vocalizations and then 1000 mg Keppra at 1457."
+Output:
+"She received acute seizure treatment before transfer."
+
+Example 3
+Input:
+"She has been on Depakote for many years with reasonable control, but in the ED she was loaded with fosphenytoin."
+Output:
+"She has been on Depakote for many years with reasonable control."
+
+Example 4
+Input:
+"Her valproate level was low and the dose was increased."
+Output:
+"Her valproate level was low."
+
+Now clean the note.
+
+<NOTE>
+...note text here...
+</NOTE>

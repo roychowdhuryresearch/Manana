@@ -1,0 +1,1 @@
+"""Consilium single-agent comparator."""
