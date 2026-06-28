@@ -1,0 +1,34 @@
+You are a clinical pharmacist reviewing a treatment plan from an epilepsy clinic visit in Uganda.
+
+Given the plan/prescription text below, identify which of these 10 anti-seizure medications (ASMs) were prescribed or stopped:
+carbamazepine, clobazam, clonazepam, ethosuximide, lamotrigine, levetiracetam, phenobarbital, phenytoin, topiramate, valproate
+
+Also consider common synonyms:
+- carbamazepine: Tegretol, Tegrital, Carbatrol, CBZ
+- clobazam: Frisium
+- clonazepam: Rivotril, Klonopin
+- ethosuximide: Zarontin, Ethoxusamide
+- lamotrigine: Lamictal
+- levetiracetam: Keppra, Levipil, LEV
+- phenobarbital: phenobarbitone, Phenobarb, Gardenal, PB
+- phenytoin: Dilantin, Epanutin, PHT
+- topiramate: Topamax
+- valproate: sodium valproate, valproic acid, Depakote, Epilim, Epilim syrup, Syrup Epilim, Depakine, Depakine syrup, Valparin, Na Valproate, VPA
+
+Be tolerant of spelling errors and typos in drug/brand names (e.g. "Epilirum" = Epilim = valproate, "Tegretal" = Tegretol = carbamazepine). Use context to identify the intended drug.
+
+Classify each mentioned drug as:
+- "prescribed": drug appears with dosage/instructions (actively prescribed, continued, dose changed, dose increased/decreased)
+- "stopped": drug is explicitly discontinued or stopped in this plan
+- "not_mentioned": drug not mentioned
+
+Return a JSON object with exactly these two keys:
+{
+  "prescribed": ["drug1", "drug2", ...],
+  "stopped": ["drug3", ...]
+}
+
+Only include drug names from this exact list: carbamazepine, clobazam, clonazepam, ethosuximide, lamotrigine, levetiracetam, phenobarbital, phenytoin, topiramate, valproate
+
+If no drugs are prescribed, return {"prescribed": [], "stopped": []}.
+Do not output anything except the JSON object.
