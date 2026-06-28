@@ -6,6 +6,9 @@ __pycache__/
 .claude/
 .codex
 .pytest_cache/
+
+# Local-only checks
+tests/
 .ruff_cache/
 build/
 dist/

@@ -24,7 +24,6 @@ consilium/
   lib/                    Shared LLM, parser, patient, and grader utilities
   mimic/                  MIMIC-IV preprocessing and export recipe
   baseline/               Lightweight baseline code kept for this release
-  tests/                  Unit tests
 ```
 
 Runtime flow:
@@ -38,25 +37,17 @@ configs/*.yaml
         v
 data_adapters.jsonl:load_split
         |
-        +-------------------------------+
-        |                               |
-        v                               v
-  manana.run                     consilium.run
-        |                               |
-        |                               +--> fixed specialists
-        |                               +--> epileptologist
-        |                               +--> pharmacologist debate
+        v
+manana.run
         |
-        +--> single
-        |     Predictor -> Inspector -> Buffer -> Architect -> learned rules
-        |
-        +--> multi
-        |     Agents -> Predictor -> Inspector -> Buffer -> Architect -> agent edits
-        |
-        +--> manana.bpa  (ensemble over the learned trajectory -> deferral)
+        +--> single  Predictor -> Inspector -> Buffer -> Architect
+        +--> multi   Agents -> Predictor -> Inspector -> Buffer -> Architect
+        +--> BPA     ensemble over learned trajectory -> deferral
         |
         v
 manana.evaluate / lib.grader
+
+consilium.run uses the fixed expert-designed agents through consilium.loader.
 ```
 
 ## Setup
@@ -76,32 +67,31 @@ Manana uses Case JSONL. Each line is one prediction case.
 
 Required fields:
 
-- `pid`
-- `visit_num`
-- `cohort`
-- `input`
-- `prescribed`
+- `pid` or `patient_id`
+- `input`, `clinical_context`, or `notes`
+- `prescribed` or `gt`
+
+Recommended fields:
+
+- `visit_num` or `visit` (defaults to `1` if omitted)
 
 Optional fields:
 
+- `cohort` (defaults to the config `name`; include it when mixing cohorts or
+  using a cohort filter)
 - `output`
 - `stopped`
-- `split`
+- `split` (`train`, `eval`/`val`/`validation`, or `test`)
 
 Example:
 
 ```json
-{"pid":"p001","visit_num":1,"cohort":"local","input":"clinical note...","prescribed":["levetiracetam"],"stopped":[]}
+{"pid":"p001","visit_num":1,"input":"clinical note...","prescribed":["levetiracetam"],"stopped":[]}
 ```
 
-Configs:
-
-- `configs/uganda_anon.yaml`: anonymized Uganda JSONL recipe.
-- `configs/jsonl_example.yaml`: generic Case JSONL template.
-- `configs/mimic.yaml`: MIMIC-IV export recipe.
-
-The Uganda config points to `data/uganda_cases_anon.jsonl`; `data/` is ignored
-so the dataset can be swapped before release.
+Use `configs/jsonl_example.yaml` for the generic template,
+`configs/uganda_anon.yaml` for the anonymized Uganda recipe, and
+`configs/mimic.yaml` for the MIMIC-IV export.
 
 ## Manana
 
@@ -196,16 +186,6 @@ uv run python -m consilium.ablation --visit 1 --limit 5
 ```
 
 Optional analysis utilities live in `consilium/analysis/`.
-
-## Tests
-
-```bash
-uv run pytest
-```
-
-Unit tests cover the BPA round-selection, vote aggregation, and
-coverage/precision logic (`tests/test_bpa_aggregate.py`). `pytest` is declared
-in the `dev` dependency group and installed by `uv sync`.
 
 ## Outputs
 
