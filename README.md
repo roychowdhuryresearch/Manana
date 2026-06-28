@@ -5,7 +5,8 @@ prediction.
 
 This repository has two main systems:
 
-- `manana`: self-learning prompt memory over clinical cases.
+- `manana`: self-learning prompt memory over clinical cases, plus Bayesian
+  Prompt Averaging (BPA) for uncertainty-aware deferral.
 - `consilium`: fixed expert-designed multi-agent reference system.
 
 Private Uganda data, raw MIMIC files, credentials, and generated runs are not
@@ -16,13 +17,14 @@ part of the repository.
 ```text
 consilium/
   consilium/              Fixed expert-designed multi-agent system
-  manana/                 Self-learning single/multi systems and ablations
+  manana/                 Self-learning single/multi systems, ablations, and BPA
   prompts/                Manana prompt templates
   configs/                Dataset/run YAML configs
   data_adapters/          Generic Case JSONL adapter
   lib/                    Shared LLM, parser, patient, and grader utilities
   mimic/                  MIMIC-IV preprocessing and export recipe
   baseline/               Lightweight baseline code kept for this release
+  tests/                  Unit tests
 ```
 
 Runtime flow:
@@ -49,7 +51,9 @@ data_adapters.jsonl:load_split
         |     Predictor -> Inspector -> Buffer -> Architect -> learned rules
         |
         +--> multi
-              Agents -> Predictor -> Inspector -> Buffer -> Architect -> agent edits
+        |     Agents -> Predictor -> Inspector -> Buffer -> Architect -> agent edits
+        |
+        +--> manana.bpa  (ensemble over the learned trajectory -> deferral)
         |
         v
 manana.evaluate / lib.grader
@@ -131,6 +135,30 @@ uv run python -m manana.ablations.icl.run --config configs/uganda_anon.yaml
 uv run python -m manana.ablations.rewrite.run --config configs/uganda_anon.yaml --system single
 ```
 
+## Bayesian Prompt Averaging (BPA)
+
+BPA turns a completed multi-agent Manana run into an uncertainty-aware,
+deferral-capable predictor. It treats the learned prompt trajectory as an
+ensemble: it selects the top rounds by validation top-3 rate, re-runs each as an
+ensemble member, and combines their ranked regimens into a weighted vote over
+complete regimens. The winner's normalized vote mass is a per-case confidence
+used for selective prediction — auto-handle the high-confidence cases, defer the
+low-confidence ones to a specialist.
+
+It needs a finished multi-agent run directory containing `eval_progression.json`
+and the per-round prompts:
+
+```bash
+uv run python -m manana.bpa.run \
+  --config configs/uganda_anon.yaml \
+  --run-dir manana/multi/outputs/uganda_anon/openai_gpt-oss-120b-1_0/<run_id> \
+  --num 5 --weighting softmax --split test
+```
+
+This writes a `lib.grader`-compatible predictions JSON (so scoring is unchanged)
+and prints exact-match scores plus a selective-prediction (coverage -> precision)
+table. Defaults match the paper: `--num 5`, `--weighting softmax`, `--tau 5`.
+
 ## MIMIC-IV
 
 MIMIC is a credentialed-access reproducibility setting. Raw files are not
@@ -168,6 +196,16 @@ uv run python -m consilium.ablation --visit 1 --limit 5
 ```
 
 Optional analysis utilities live in `consilium/analysis/`.
+
+## Tests
+
+```bash
+uv run pytest
+```
+
+Unit tests cover the BPA round-selection, vote aggregation, and
+coverage/precision logic (`tests/test_bpa_aggregate.py`). `pytest` is declared
+in the `dev` dependency group and installed by `uv sync`.
 
 ## Outputs
 

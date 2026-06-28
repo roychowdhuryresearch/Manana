@@ -24,3 +24,8 @@ force-include = { "configs" = "configs", "prompts" = "prompts" }
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.0",
+]
