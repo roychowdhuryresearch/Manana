@@ -8,8 +8,8 @@ unchanged) plus a per-case BPA confidence used for selective prediction.
 
 Example:
     uv run python -m manana.bpa.run \
-      --config configs/uganda_anon.yaml \
-      --run-dir manana/multi/outputs/uganda_anon/openai_gpt-oss-120b-1_0/20260603_141013 \
+      --config configs/jsonl_example.yaml \
+      --run-dir manana/multi/outputs/<dataset>/<model>/<run_id> \
       --num 5 --split test
 """
 

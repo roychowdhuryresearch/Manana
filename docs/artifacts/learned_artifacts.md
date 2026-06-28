@@ -1,8 +1,8 @@
 # Learned Artifacts Across Optimization Methods
 
-These are representative text artifacts from high-performing runs discussed in the arXiv paper. They are examples of what each adaptation method produces, not hand-written prompts.
+These are representative text artifacts from high-performing runs discussed in the arXiv paper. They show what each adaptation method produces.
 
-The paper keeps the interpretation in the appendix and points here for the full text, so the arXiv PDF does not need to carry long prompt-like listings.
+The paper keeps the interpretation in the appendix and points here for the full text.
 
 ## TextGrad
 
@@ -185,7 +185,7 @@ The single-agent variant learns a compact list of global correction rules that a
 
 7. If the clinical note explicitly instructs continuation of the current antiseizure medication at the same dose, maintain that regimen unchanged, even if seizures are ongoing, unless a contradictory directive to modify therapy is present.
 
-8. When a medication is prescribed with a specific limited duration or is omitted from the current prescription list without an explicit instruction to continue, assume the drug has been discontinued and do not automatically carry it forward to subsequent visits.
+8. When a medication is prescribed with a specific limited duration or is absent from the current prescription list without an explicit instruction to continue, assume the drug has been discontinued and do not automatically carry it forward to subsequent visits.
 ```
 
 ## Manana Multi

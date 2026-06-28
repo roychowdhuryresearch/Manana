@@ -59,7 +59,7 @@ Group 1 is most preferred. Group 2 and Group 3 are lower-ranked options. Medicat
 
 ## Modifier Rules
 
-Modifiers move medications up or down by class. A worsening by 1 means the medication is less preferred by one group; an improvement by 1 means it is more preferred by one group. Removed medications are excluded.
+Modifiers move medications up or down by class. A worsening by 1 means the medication is less preferred by one group; an improvement by 1 means it is more preferred by one group. Removed medications fall outside the ranked groups.
 
 | Condition | Rule |
 | --- | --- |

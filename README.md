@@ -9,23 +9,6 @@ This repository has two main systems:
   Prompt Averaging (BPA) for uncertainty-aware deferral.
 - `consilium`: fixed expert-designed multi-agent reference system.
 
-Private Uganda data, raw MIMIC files, credentials, and generated runs are not
-part of the repository.
-
-## Repository Design
-
-```text
-consilium/
-  consilium/              Fixed expert-designed multi-agent system
-  manana/                 Self-learning single/multi systems, ablations, and BPA
-  prompts/                Manana prompt templates
-  configs/                Dataset/run YAML configs
-  data_adapters/          Generic Case JSONL adapter
-  lib/                    Shared LLM, parser, patient, and grader utilities
-  mimic/                  MIMIC-IV preprocessing and export recipe
-  baseline/               Lightweight baseline code kept for this release
-```
-
 Runtime flow:
 
 ```text
@@ -57,9 +40,8 @@ uv sync
 cp .env.example .env
 ```
 
-Model calls use AWS Bedrock through `lib.llm.LLMClient`. Configure credentials
-through `.env`, `~/.aws/credentials`, `AWS_PROFILE`, or an IAM role. The `.env`
-file is ignored.
+Model calls use AWS Bedrock through `lib.llm.LLMClient`; configure AWS access
+through the standard local environment.
 
 ## Data
 
@@ -73,7 +55,7 @@ Required fields:
 
 Recommended fields:
 
-- `visit_num` or `visit` (defaults to `1` if omitted)
+- `visit_num` or `visit` (defaults to `1`)
 
 Optional fields:
 
@@ -89,8 +71,7 @@ Example:
 {"pid":"p001","visit_num":1,"input":"clinical note...","prescribed":["levetiracetam"],"stopped":[]}
 ```
 
-Use `configs/jsonl_example.yaml` for the generic template,
-`configs/uganda_anon.yaml` for the anonymized Uganda recipe, and
+Use `configs/jsonl_example.yaml` for the generic template and
 `configs/mimic.yaml` for the MIMIC-IV export.
 
 ## Manana
@@ -98,31 +79,31 @@ Use `configs/jsonl_example.yaml` for the generic template,
 Run self-learning:
 
 ```bash
-uv run python -m manana.run --config configs/uganda_anon.yaml --system single
-uv run python -m manana.run --config configs/uganda_anon.yaml --system multi
+uv run python -m manana.run --config configs/jsonl_example.yaml --system single
+uv run python -m manana.run --config configs/jsonl_example.yaml --system multi
 ```
 
 Evaluate a saved run:
 
 ```bash
 uv run python -m manana.evaluate \
-  --config configs/uganda_anon.yaml \
-  --run-dir manana/single/outputs/uganda_anon/openai_gpt-oss-120b-1_0/<run_id> \
+  --config configs/jsonl_example.yaml \
+  --run-dir manana/single/outputs/<dataset>/<model>/<run_id> \
   --split test \
   --round best
 
 uv run python -m lib.grader \
-  --predictions manana/single/outputs/uganda_anon/openai_gpt-oss-120b-1_0/<run_id>/evaluations/test_r<round>_predictions.json \
-  --config configs/uganda_anon.yaml
+  --predictions manana/single/outputs/<dataset>/<model>/<run_id>/evaluations/test_r<round>_predictions.json \
+  --config configs/jsonl_example.yaml
 ```
 
 Ablations:
 
 ```bash
-uv run python -m manana.ablations.run --config configs/uganda_anon.yaml --system single --ablation no-buffer
-uv run python -m manana.ablations.run --config configs/uganda_anon.yaml --system multi --ablation no-inspector
-uv run python -m manana.ablations.icl.run --config configs/uganda_anon.yaml
-uv run python -m manana.ablations.rewrite.run --config configs/uganda_anon.yaml --system single
+uv run python -m manana.ablations.run --config configs/jsonl_example.yaml --system single --ablation no-buffer
+uv run python -m manana.ablations.run --config configs/jsonl_example.yaml --system multi --ablation no-inspector
+uv run python -m manana.ablations.icl.run --config configs/jsonl_example.yaml
+uv run python -m manana.ablations.rewrite.run --config configs/jsonl_example.yaml --system single
 ```
 
 ## Bayesian Prompt Averaging (BPA)
@@ -140,8 +121,8 @@ and the per-round prompts:
 
 ```bash
 uv run python -m manana.bpa.run \
-  --config configs/uganda_anon.yaml \
-  --run-dir manana/multi/outputs/uganda_anon/openai_gpt-oss-120b-1_0/<run_id> \
+  --config configs/jsonl_example.yaml \
+  --run-dir manana/multi/outputs/<dataset>/<model>/<run_id> \
   --num 5 --weighting softmax --split test
 ```
 
@@ -151,10 +132,7 @@ table. Defaults match the paper: `--num 5`, `--weighting softmax`, `--tau 5`.
 
 ## MIMIC-IV
 
-MIMIC is a credentialed-access reproducibility setting. Raw files are not
-included.
-
-Prepare the local export:
+Prepare the MIMIC-IV local export:
 
 ```bash
 uv run python mimic/filter.py
@@ -186,8 +164,3 @@ uv run python -m consilium.ablation --visit 1 --limit 5
 ```
 
 Optional analysis utilities live in `consilium/analysis/`.
-
-## Outputs
-
-Generated outputs are ignored under `outputs/`, `runs/`, `runs_old/`,
-`baseline/*/outputs/`, `manana/*/outputs/`, and `mimic/test_results/`.

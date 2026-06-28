@@ -1,8 +1,7 @@
 # MIMIC-IV Pipeline
 
-This folder prepares the MIMIC-IV epilepsy reproducibility dataset used by the
-release. Raw MIMIC files are credentialed PhysioNet data and are not
-distributed with this repository.
+This folder prepares the MIMIC-IV epilepsy reproducibility dataset from
+credentialed PhysioNet tables.
 
 ## Sources
 
@@ -45,7 +44,7 @@ cases.jsonl
 `cases.jsonl` is the Case JSONL file consumed by `configs/mimic.yaml`.
 In the exported JSONL, `pid` is `subject_id` for patient-level splitting,
 `visit_num` is the admission rank for that patient, and `hadm_id` is retained
-as ignored metadata.
+as metadata.
 
 ## Cohort Construction
 
@@ -54,12 +53,11 @@ The released pipeline follows the paper:
 - Primary epilepsy ICD code: ICD-9 `345.x` or ICD-10 `G40.x` at `seq_num=1`.
 - First managing service is Neurology (`NMED`).
 - Longest discharge summary retained per admission.
-- Ground truth is extracted from prescriptions, not from the note.
+- Ground truth comes from prescriptions.
 - A target ASM must be oral/enteral, scheduled, active at discharge, and newly
   started during the admission.
-- Fosphenytoin is excluded.
 - Cleaned notes remove discharge-side treatment leakage before export.
-- Manually audited leaky admissions are excluded in `mimic/loader.py`.
+- Manual leakage-audit rules live in `mimic/loader.py`.
 
 Final paper cohort:
 
