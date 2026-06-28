@@ -13,6 +13,7 @@ tests/
 build/
 dist/
 *.egg-info/
+uv.lock
 
 # Outputs (generated, not tracked)
 outputs/
