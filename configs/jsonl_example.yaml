@@ -1,0 +1,28 @@
+name: example_clinical_dataset
+tag: example
+adapter: data_adapters.jsonl:load_split
+prompt_root: ../prompts
+
+setting: "a local clinical setting"
+input_description: "patient clinical notes available before the prescribing decision"
+target_description: "the clinician-prescribed active medication regimen"
+
+drug_list:
+  - carbamazepine
+  - clobazam
+  - clonazepam
+  - ethosuximide
+  - lamotrigine
+  - levetiracetam
+  - phenobarbital
+  - phenytoin
+  - topiramate
+  - valproate
+
+paths:
+  cases: ../data/example_cases.jsonl
+
+split:
+  train_patients: 50
+  val_patients: 20
+  split_seed: 42

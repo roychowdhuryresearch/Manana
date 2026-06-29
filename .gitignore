@@ -4,9 +4,23 @@
 __pycache__/
 *.pyc
 .claude/
+.codex
+.pytest_cache/
+
+# Local-only checks
+tests/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+uv.lock
 
 # Outputs (generated, not tracked)
 outputs/
+runs/
+runs_old/
+baseline/classical/outputs/
+baseline/epipick/outputs/
 
 # Data (large files, tracked separately or via DVC)
 data/
@@ -14,6 +28,11 @@ data_prep/
 evaluation/
 extraction/
 pdf_pats/
+
+# MIMIC raw and generated data
+mimic/data/
+mimic/filtered/
+mimic/test_results/
 
 # IDE
 .vscode/
@@ -28,3 +47,7 @@ Thumbs.db
 # streamlit
 stream/
 create_data/
+
+stats/
+openreview_signup/
+doctor_review/

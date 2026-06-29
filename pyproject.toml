@@ -1,18 +1,31 @@
 [project]
 name = "consilium"
 version = "0.1.0"
-description = "Multi-agent LLM system for epilepsy drug prediction"
+description = "Clinical LLM systems for epilepsy regimen prediction"
+readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "boto3>=1.35.0",
     "pandas>=2.0.0",
     "python-dotenv>=1.0.0",
     "tqdm>=4.65.0",
+    "datasets>=2.14.0",
+    "scikit-learn>=1.8.0",
+    "matplotlib>=3.10.8",
+    "xgboost>=3.2.0",
+    "pyyaml>=6.0.0",
+    "pyarrow>=23.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["agents", "orchestrator", "schemas", "llm", "evaluation", "baseline", "data"]
+packages = ["consilium", "lib", "baseline", "manana", "data_adapters", "mimic"]
+force-include = { "configs" = "configs", "prompts" = "prompts" }
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.0",
+]
