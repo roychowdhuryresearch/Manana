@@ -1,4 +1,4 @@
-# Consilium
+# Manana
 
 Clinical LLM systems for epilepsy antiseizure medication (ASM) regimen
 prediction.
