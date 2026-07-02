@@ -1,4 +1,4 @@
-# Manana: Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care
+# Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care
 
 <p align="center">
 <a href="https://arxiv.org/abs/2606.31036"><img src="https://img.shields.io/badge/arXiv-2606.31036-b31b1b.svg"></a>
@@ -11,8 +11,6 @@
 Clinical LLM systems for epilepsy antiseizure medication (ASM) regimen
 prediction. In the spirit of scientific reproducibility, we provide code to
 reproduce the main results from the paper.
-
-- [Paper](https://arxiv.org/abs/2606.31036) — arXiv:2606.31036
 
 The repository has two systems:
 
