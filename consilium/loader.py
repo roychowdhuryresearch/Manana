@@ -14,7 +14,7 @@ from datasets import load_dataset
 from lib.patient import PatientCase
 
 DATASET_NAME = "[REDACTED]"
-# Set this locally when running experiments with authorized gated data.
+# The underlying clinical dataset cannot be shared under the approved IRB protocol.
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_CASES_PATH = os.path.join(_ROOT, "data", "uganda_cases.jsonl")
 
