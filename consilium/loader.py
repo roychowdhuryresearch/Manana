@@ -13,7 +13,8 @@ from datasets import load_dataset
 
 from lib.patient import PatientCase
 
-DATASET_NAME = "kartiksharma4/consilium"
+DATASET_NAME = "[REDACTED]"
+# Set this locally when running experiments with authorized gated data.
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_CASES_PATH = os.path.join(_ROOT, "data", "uganda_cases.jsonl")
 
