@@ -16,7 +16,7 @@ from typing import Any
 # once from a small training subset (paper: pi = (0.85, 0.11, 0.04)).
 RANK_PRIOR: dict[int, float] = {1: 0.85, 2: 0.11, 3: 0.04}
 
-WEIGHTINGS = ("uniform", "linear", "softmax")
+WEIGHTINGS = ("uniform", "linear", "softmax", "beta-binomial")
 DEFAULT_TAU = 5.0
 
 
@@ -59,11 +59,57 @@ def select_rounds(
     rounds.sort(key=lambda rr: (-rr[1], rr[0]))
     chosen = rounds[: min(num, len(rounds))]
 
-    weights = _weights([rate for _, rate in chosen], weighting, tau)
+    if weighting == "beta-binomial":
+        rows = {row["round"]: row for row in progression if type(row.get("round")) is int}
+        if len(rows) != len(rounds):
+            raise ValueError("Beta-Binomial weighting requires unique integer round IDs")
+        weights = beta_binomial_weights([rows[rid] for rid, _ in chosen], tau)
+    else:
+        weights = _weights([rate for _, rate in chosen], weighting, tau)
     return [
         RoundSelection(round_id=rid, top3_rate=rate, weight=w)
         for (rid, rate), w in zip(chosen, weights)
     ]
+
+
+
+def beta_binomial_weights(rows: list[dict[str, Any]], tau: float) -> list[float]:
+    """Paper likelihood with Beta(1, 1), normalized as exp(log L / tau).
+
+    Uses aggregate validation counts only: c1=top1_correct,
+    c_gt1=top3_correct-top1_correct, misses=total-top3_correct.
+    No binomial coefficient: the paper scores the observed validation outcomes,
+    not an unordered hit-count event. Missing counts must not be inferred from
+    rounded rates. All selected rounds must use the same validation size.
+    """
+    if not math.isfinite(tau) or tau <= 0:
+        raise ValueError("Beta-Binomial tau must be finite and positive")
+    if not rows:
+        raise ValueError("Beta-Binomial weighting requires validation counts")
+    totals = set()
+    log_likelihoods = []
+    for row in rows:
+        counts = [row.get(key) for key in ("top1_correct", "top3_correct", "total")]
+        if any(type(value) is not int for value in counts):
+            raise ValueError("Beta-Binomial weighting requires integer top1_correct, top3_correct, total")
+        c1, hits, total = counts
+        if not 0 <= c1 <= hits <= total or total <= 0:
+            raise ValueError("Validation counts must satisfy 0 <= top1_correct <= top3_correct <= total, total > 0")
+        totals.add(total)
+        misses = total - hits
+        log_likelihoods.append(
+            c1 * math.log(RANK_PRIOR[1])
+            + (hits - c1) * math.log(RANK_PRIOR[2] + RANK_PRIOR[3])
+            + math.lgamma(hits + 1) + math.lgamma(misses + 1)
+            - math.lgamma(total + 2)
+        )
+    if len(totals) != 1:
+        raise ValueError("Selected rounds must have the same validation total")
+    # Subtract before dividing to avoid overflow even for very small tau.
+    maximum = max(log_likelihoods)
+    masses = [math.exp((value - maximum) / tau) for value in log_likelihoods]
+    normalizer = sum(masses)
+    return [mass / normalizer for mass in masses]
 
 
 def _weights(rates: list[float], weighting: str, tau: float) -> list[float]:

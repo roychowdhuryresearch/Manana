@@ -1,4 +1,4 @@
-"""Run Bayesian Prompt Averaging (BPA) over a multi-agent Manana run trajectory.
+"""Run Bayesian Prompt Averaging (BPA) over a Single or Multi Manana run trajectory.
 
 For each case in a split, the top-``num`` rounds (by validation top-3 rate) each
 produce a ranked regimen via the existing `manana.evaluate` inference; their
@@ -28,14 +28,16 @@ from lib.grader import (
     resolve_gt_jsonl_from_config,
 )
 from lib.llm import DEFAULT_MODEL, LLMClient
-from manana.bpa.aggregate import DEFAULT_TAU, aggregate, coverage_precision, select_rounds
+from manana.bpa.aggregate import DEFAULT_TAU, WEIGHTINGS, aggregate, coverage_precision, select_rounds
 from manana.datasets import load_configured_split
 from manana.evaluate import (
+    build_single_prompt,
     case_record,
     detect_model,
     detect_seed,
     load_multi_agents,
     run_multi_case,
+    run_single_case,
     split_cases,
 )
 from manana.prompts import load_rendered_prompt
@@ -60,13 +62,22 @@ async def _bpa_one_case(
     split_name: str,
     temperature: float | None,
     sem: asyncio.Semaphore,
+    *,
+    system: str = "multi",
+    single_prompts: dict[int, str] | None = None,
 ) -> dict[str, Any] | None:
     """Run the selected rounds for one case and aggregate into a BPA prediction."""
     async with sem:
-        tasks = [
-            run_multi_case(client, predictor_template, agents_by_round[s.round_id], case, split_name, temperature)
-            for s in selected
-        ]
+        if system == "single":
+            tasks = [
+                run_single_case(client, single_prompts[s.round_id], case, split_name, temperature)
+                for s in selected
+            ]
+        else:
+            tasks = [
+                run_multi_case(client, predictor_template, agents_by_round[s.round_id], case, split_name, temperature)
+                for s in selected
+            ]
         round_results = await asyncio.gather(*tasks)
 
     per_round_options: list[tuple[float, list[dict[str, Any]]]] = []
@@ -114,7 +125,10 @@ async def run_bpa(
     concurrency: int,
     thinking_budget: int,
     temperature: float | None,
+    system: str = "multi",
 ) -> dict[str, Any]:
+    if system not in {"single", "multi"}:
+        raise ValueError(f"Unknown BPA system: {system}")
     configured = load_configured_split(config_path, seed)
     cases = split_cases(configured, split_name)
     if limit is not None:
@@ -124,21 +138,30 @@ async def run_bpa(
 
     progression = load_progression(run_dir)
     selected = select_rounds(progression, num=num, weighting=weighting, tau=tau)
-    agents_by_round = {s.round_id: load_multi_agents(run_dir, s.round_id) for s in selected}
-    predictor_template = load_rendered_prompt("multi", "predictor", configured.config)
+    predictor_template = load_rendered_prompt(system, "predictor", configured.config)
+    agents_by_round = {}
+    single_prompts = {}
+    if system == "single":
+        single_prompts = {
+            s.round_id: build_single_prompt(predictor_template, run_dir, s.round_id)[0]
+            for s in selected
+        }
+    else:
+        agents_by_round = {s.round_id: load_multi_agents(run_dir, s.round_id) for s in selected}
 
     print(f"Selected {len(selected)} rounds (weighting={weighting}, tau={tau}):")
     for s in selected:
-        n_agents = len(agents_by_round[s.round_id])
+        n_agents = len(agents_by_round.get(s.round_id, {}))
         print(f"  round {s.round_id:>2}: val top3={s.top3_rate:.3f}  weight={s.weight:.3f}  agents={n_agents}")
     print(f"Running BPA on {len(cases)} {split_name} cases "
-          f"(~{num * (1 + max((len(a) for a in agents_by_round.values()), default=0))} Bedrock calls/case)...\n")
+          f"(~{sum(1 + len(agents_by_round.get(s.round_id, {})) for s in selected)} Bedrock calls/case)...\n")
 
     client = LLMClient(model=model, max_concurrency=concurrency, thinking_budget=thinking_budget)
     sem = asyncio.Semaphore(max(1, concurrency))
     try:
         tasks = [
-            _bpa_one_case(client, predictor_template, selected, agents_by_round, case, split_name, temperature, sem)
+            _bpa_one_case(client, predictor_template, selected, agents_by_round, case, split_name, temperature, sem,
+                          system=system, single_prompts=single_prompts)
             for case in cases
         ]
         predictions = []
@@ -155,7 +178,7 @@ async def run_bpa(
         "metadata": {
             "config": os.path.abspath(config_path),
             "run_dir": os.path.abspath(run_dir),
-            "system": "multi",
+            "system": system,
             "method": "bpa",
             "split": split_name,
             "num": num,
@@ -213,13 +236,14 @@ def report(predictions_path: str, config_path: str) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Bayesian Prompt Averaging over a Manana multi-agent trajectory.")
+    parser = argparse.ArgumentParser(description="Bayesian Prompt Averaging over a Manana Single or Multi trajectory.")
     parser.add_argument("--config", required=True, help="Run YAML config")
-    parser.add_argument("--run-dir", required=True, help="Completed multi-agent run directory")
+    parser.add_argument("--run-dir", required=True, help="Completed Single or Multi run directory")
+    parser.add_argument("--system", choices=["single", "multi"], default="multi", help="Checkpoint system (default: multi)")
     parser.add_argument("--split", choices=["train", "eval", "test", "all"], default="test")
     parser.add_argument("--num", type=int, default=5, help="Number of top rounds to ensemble (paper default: 5)")
-    parser.add_argument("--weighting", choices=["uniform", "linear", "softmax"], default="softmax")
-    parser.add_argument("--tau", type=float, default=DEFAULT_TAU, help="Softmax temperature (paper default: 5)")
+    parser.add_argument("--weighting", choices=WEIGHTINGS, default="softmax")
+    parser.add_argument("--tau", type=float, default=DEFAULT_TAU, help="Beta-Binomial log-likelihood divisor or legacy softmax rate multiplier (default: 5)")
     parser.add_argument("--seed", type=int, default=None, help="Defaults to seed in summary.md, then 42")
     parser.add_argument("--model", default=None, help="Defaults to model in summary.md, then project default")
     parser.add_argument("--limit", type=int, default=None, help="Optional case cap for sanity checks")
@@ -232,10 +256,11 @@ def main() -> None:
     seed = args.seed if args.seed is not None else (detect_seed(args.run_dir) or 42)
     model = args.model or detect_model(args.run_dir) or DEFAULT_MODEL
 
-    print(f"Method: BPA (multi-agent)\nRun:    {args.run_dir}\nModel:  {model}\nSeed:   {seed}\n")
+    print(f"Method: BPA ({args.system})\nRun:    {args.run_dir}\nModel:  {model}\nSeed:   {seed}\n")
 
     result = asyncio.run(
         run_bpa(
+            system=args.system,
             config_path=args.config,
             run_dir=args.run_dir,
             split_name=args.split,

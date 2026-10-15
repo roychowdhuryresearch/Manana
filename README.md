@@ -94,7 +94,7 @@ uv run python -m manana.ablations.rewrite.run --config configs/jsonl_example.yam
 
 ## Bayesian Prompt Averaging (BPA)
 
-BPA turns a completed multi-agent Manana run into an uncertainty-aware,
+BPA turns a completed Single or Multi Manana run into an uncertainty-aware,
 deferral-capable predictor. It treats the learned prompt trajectory as an
 ensemble — selecting the top rounds by validation top-3 rate, re-running each as
 an ensemble member, and combining their ranked regimens into a weighted vote.
@@ -108,7 +108,7 @@ uv run python -m manana.bpa.run \
   --num 5 --weighting softmax --split test
 ```
 
-Defaults match the paper: `--num 5`, `--weighting softmax`, `--tau 5`.
+`manana/bpa/run.py`: use `--system single` for Single-agent BPA and `--weighting beta-binomial` for Beta-Binomial weighting.
 
 ## MIMIC-IV
 
