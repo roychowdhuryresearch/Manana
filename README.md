@@ -3,6 +3,7 @@
 Manana has been accepted at Neurips 26 main!
 <p align="center">
 <a href="https://arxiv.org/abs/2606.31036"><img src="https://img.shields.io/badge/arXiv-2606.31036-b31b1b.svg"></a>
+<a href="https://roychowdhuryresearch.github.io/MANANA_Project_Page/"><img src="https://img.shields.io/badge/Project-Page-1d5c58.svg"></a>
 </p>
 
 ---
