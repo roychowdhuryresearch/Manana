@@ -106,10 +106,10 @@ prediction: auto-handle the confident cases, defer the rest to a specialist.
 uv run python -m manana.bpa.run \
   --config configs/jsonl_example.yaml \
   --run-dir manana/multi/outputs/<dataset>/<model>/<run_id> \
-  --num 5 --weighting softmax --split test
+  --num 5 --weighting linear --split test
 ```
 
-`manana/bpa/run.py`: use `--system single` for Single-agent BPA and `--weighting beta-binomial` for Beta-Binomial weighting.
+`manana/bpa/run.py`: use `--system single` for Single-agent BPA.
 
 ## MIMIC-IV
 
