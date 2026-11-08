@@ -243,7 +243,7 @@ def main() -> None:
     parser.add_argument("--split", choices=["train", "eval", "test", "all"], default="test")
     parser.add_argument("--num", type=int, default=5, help="Number of top rounds to ensemble (paper default: 5)")
     parser.add_argument("--weighting", choices=WEIGHTINGS, default="linear")
-    parser.add_argument("--tau", type=float, default=DEFAULT_TAU, help="Softmax rate multiplier (default: 5)")
+    parser.add_argument("--tau", type=float, default=DEFAULT_TAU, help="Softmax temperature (default: 0.2)")
     parser.add_argument("--seed", type=int, default=None, help="Defaults to seed in summary.md, then 42")
     parser.add_argument("--model", default=None, help="Defaults to model in summary.md, then project default")
     parser.add_argument("--limit", type=int, default=None, help="Optional case cap for sanity checks")

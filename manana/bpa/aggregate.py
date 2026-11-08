@@ -17,7 +17,7 @@ from typing import Any
 RANK_PRIOR: dict[int, float] = {1: 0.85, 2: 0.11, 3: 0.04}
 
 WEIGHTINGS = ("uniform", "linear", "softmax")
-DEFAULT_TAU = 5.0
+DEFAULT_TAU = 0.2
 
 
 @dataclass(frozen=True)
@@ -76,7 +76,7 @@ def _weights(rates: list[float], weighting: str, tau: float) -> list[float]:
             return [1.0 / k] * k
         return [r / total for r in rates]
     # softmax
-    exps = [math.exp(r * tau) for r in rates]
+    exps = [math.exp(r / tau) for r in rates]
     total = sum(exps)
     return [e / total for e in exps]
 
