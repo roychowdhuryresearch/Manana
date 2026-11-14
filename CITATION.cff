@@ -1,0 +1,86 @@
+cff-version: 1.2.0
+message: "If you use Manana or Bayesian prompt averaging, please cite the NeurIPS 2026 paper below."
+title: "Manana: Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care"
+type: software
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/roychowdhuryresearch/Manana"
+url: "https://arxiv.org/abs/2606.31036"
+abstract: >-
+  Manana is an LLM clinical decision-support framework for anti-seizure medication
+  prescribing, studied on pediatric epilepsy care in Uganda with longitudinal clinic
+  notes from two independently collected cohorts. It learns local prescribing
+  guidance from a small patient-level training set by turning prescription errors
+  into auditable prompt memory, with single-agent and multi-agent variants. Bayesian
+  prompt averaging (BPA) combines predictions across the learned prompt trajectory
+  to produce prescription likelihoods and a deferral signal, so lower-confidence
+  cases can be routed to specialists.
+keywords:
+  - clinical decision support
+  - large language models
+  - medication recommendation
+  - learning to defer
+  - selective prediction
+  - uncertainty calibration
+  - prompt learning
+  - multi-agent systems
+  - global health
+  - epilepsy
+authors:
+  - given-names: Shreyas
+    family-names: Rajesh
+  - given-names: Kartik
+    family-names: Sharma
+  - given-names: Tonmoy
+    family-names: Monsoor
+  - given-names: Mehmet Yigit
+    family-names: Turali
+  - given-names: Richard
+    family-names: Idro
+  - given-names: Juliana
+    family-names: Kayaga
+  - given-names: Robert
+    family-names: Sebunya
+  - given-names: Tracy Tushabe
+    family-names: Namata
+  - given-names: Jessica Nichole
+    family-names: Pasqua
+  - given-names: Vwani
+    family-names: Roychowdhury
+  - given-names: Rajarshi
+    family-names: Mazumder
+preferred-citation:
+  type: conference-paper
+  title: "Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care"
+  collection-title: "Advances in Neural Information Processing Systems"
+  conference:
+    name: "NeurIPS 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2606.31036"
+  identifiers:
+    - type: url
+      value: "https://arxiv.org/abs/2606.31036"
+      description: "arXiv:2606.31036"
+  authors:
+    - given-names: Shreyas
+      family-names: Rajesh
+    - given-names: Kartik
+      family-names: Sharma
+    - given-names: Tonmoy
+      family-names: Monsoor
+    - given-names: Mehmet Yigit
+      family-names: Turali
+    - given-names: Richard
+      family-names: Idro
+    - given-names: Juliana
+      family-names: Kayaga
+    - given-names: Robert
+      family-names: Sebunya
+    - given-names: Tracy Tushabe
+      family-names: Namata
+    - given-names: Jessica Nichole
+      family-names: Pasqua
+    - given-names: Vwani
+      family-names: Roychowdhury
+    - given-names: Rajarshi
+      family-names: Mazumder
